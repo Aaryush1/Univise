@@ -1,0 +1,81 @@
+{
+    "Comp Sci 320": {
+      "Name": "Data Science Programming II",
+      "Description": "Intermediate approach to Data Science programming using Python. Experience with basic tabular analysis in Python is assumed. Learn to implement data structures (e.g., graphs) to efficiently represent datasets. Software-engineering tools such as version control and Python virtual environments will be introduced, with an emphasis on reproducibility of analysis. Tracing and A/B testing will be introduced as techniques for generating meaningful datasets. Introduces basic classification, clustering, optimization, and simulation techniques. Plotting and visual communication will be emphasized throughout the course.",
+      "SubjectNotes": "Courses taught and managed by the Computer Sciences department often have enrollment restrictions that give students in UW-Madison Computer Sciences programs priority access during initial enrollment periods. Those restrictions are removed after the conclusion of sophomore enrollment. Some CS courses add seats gradually during enrollment. Once all seats have been released, a wait list will be added. Visit this Comp Sci webpage for specific CS course enrollment information: https://www.cs.wisc.edu/courses-2/ Evening exams are likely for most of our undergraduate courses.",
+      "Prerequisites": {
+        "Or": [
+          "CS220",
+          "CS301",
+          "CS300",
+          "CS319",
+          "Graduate Standing",
+          "Declared in CS for Professionals Capstone Certificate"
+        ]
+      },
+      "Credits": 4,
+      "Breadth": "Natural Science",
+      "Level": "Intermediate",
+      "School": "Letters and Science",
+      "Subject": "Computer Science",
+      "Lectures": {
+        "LEC001": {
+            "Time": [
+                {"8:50AM-9:40AM": ["M", "W", "F"]}
+            ],
+            "Location": "1125 DeLuca Biochem Building",
+            "Instructor": "Young Wu",
+            "Mode": "In-person",
+            "Labs": {
+                "LAB311": {
+                    "Location": "1370 Computer Sciences",
+                    "Time": [
+                        {"8:50AM-9:40AM": ["T"]}
+                    ],
+                    "Mode": "In-person"
+                },
+                "LAB312": {
+                    "Location": "1370 Computer Sciences",
+                    "Time": [
+                        {"9:55AM-10:45AM": ["T"]}
+                    ],
+                    "Mode": "In-person"
+                }
+            }
+        },
+        "LEC002": {
+            "Time": [
+                {"9:45AM-10:45AM": ["M", "W", "F"]}
+            ],
+            "Location": "1125 DeLuca Biochem Building",
+            "Instructor": "Young Wu",
+            "Mode": "In-person",
+            "Labs": {
+                "LAB321": {
+                    "Location": "1370 Computer Sciences",
+                    "Time": [
+                        {"7:45AM-8:35AM": ["T"]}
+                    ],
+                    "Mode": "In-person"
+                },
+                "LAB322": {
+                    "Location": "1370 Computer Sciences",
+                    "Time": [
+                        {"11:00AM-11:50AM": ["T"]}
+                    ],
+                    "Mode": "In-person"
+                }
+            }
+        },
+        "Textbooks": [
+            {
+            "Title": "Think Python",
+            "Requirement": "Recommended",
+            "Author": "Allen Downey",
+            "ISBN": "9781491939369",
+            "Year": "2016"
+            }
+        ]   
+        } 
+    } 
+}
