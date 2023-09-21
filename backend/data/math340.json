@@ -1,0 +1,73 @@
+{
+    "Math 340": {
+      "Name": "Elementary Matrix and Linear Algebra",
+      "Description": "An introduction to linear algebra. Topics include matrix algebra, linear systems of equations, vector spaces, sub-spaces, linear dependence, span, basis, rank of matrices, determinants, linear transformations, coordinate representations, kernel, range, eigenvalues and eigenvectors, diagonalization, inner products and orthogonal vectors, symmetric matrices. Covers linear algebra topics in greater depth and detail than MATH 320. Formal techniques in mathematical argument [MATH 341] not covered.",
+      "SubjectNotes": "Adequate placement scores or prerequisite course required for enrollment. Enrollment problems concerning unavailable or closed sections: Add section to the wait list if available.",
+      "Prerequisites": [
+        "MATH222"
+      ],
+      "Credits": 4,
+      "Breadth": "Natural Science",
+      "Level": "Elementary",
+      "School": "Letters and Science",
+      "Subject": "Mathematics",
+      "Additional Resources": {
+        "Website": "https://www.math.wisc.edu/",
+        "Undergraduate Info": "http://guide.wisc.edu/undergraduate/letters-science/mathematics/",
+        "Graduate Info": "http://guide.wisc.edu/graduate/mathematics/"
+      },
+      "Lectures": {
+        "LEC001": {
+            "Time": [
+                {"11:00AM-12:15PM": ["T", "H"]}
+            ],
+            "Location": "1214 Van Vleck",
+            "Instructor": "Jackson Roloff",
+            "Mode": "In-person",
+            "Labs": {
+                "LAB311": {
+                    "Location": "964 Van Hise",
+                    "Time": [
+                        {"8:50AM-9:40AM": ["H"]}
+                    ],
+                    "Mode": "In-person"
+                },
+                "LAB312": {
+                    "Location": "964 Van Hise",
+                    "Time": [
+                        {"9:55AM-10:45AM": ["H"]}
+                    ],
+                    "Mode": "In-person"
+                }                
+            }
+        },
+        "LEC002": {
+            "Time": [
+                {"11:00AM-12:15PM": ["M", "W"]}
+            ],
+            "Location": "1214 Van Vleck",
+            "Instructor": "Jackson Roloff",
+            "Mode": "In-person",
+            "Labs": {
+                "LAB321": {
+                    "Location": "964 Van Hise",
+                    "Time": [
+                        {"7:45AM-8:35AM": ["H"]}
+                    ],
+                    "Mode": "In-person"
+                },
+                "LAB322": {
+                    "Location": "964 Van Hise",
+                    "Time": [
+                        {"11:00AM-11:50AM": ["H"]}
+                    ],
+                    "Mode": "In-person"
+                }
+            }
+        },
+        "Textbooks": [
+            "Textbook will be provided for free in electronic form on Canvas."
+        ]   
+        } 
+    } 
+}

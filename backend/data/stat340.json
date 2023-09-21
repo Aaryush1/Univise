@@ -1,0 +1,48 @@
+{
+    "Stat 340": {
+      "Name": "Data Science Modeling II",
+      "Description": "Teaches how to apply statistical methods to learn from data. Topics include one- and two-sample inference; an introduction to Bayesian inference and associated probability theory; linear and logistic regression models; the bootstrap; and cross-validation. An integrated statistical computing environment is used to explore and analyze data, develop models, make inferences, and communicate results in a reproducible manner through a project-oriented approach to learning.",
+      "SubjectNotes": "This is the statistics department. Have an enrollment question? Visit https://stat.wisc.edu/courses-and-enrollment/.",
+      "Prerequisites": [
+        "STAT340",
+        {"OR": [
+            "MATH211",
+            "MATH217",
+            "MATH221",
+            "MATH275"
+            ]
+        }
+      ],
+      "Credits": 4,
+      "Breadth": "Natural Science",
+      "Level": "Intermediate",
+      "School": "Letters and Science",
+      "Subject": "Statistics",
+      "Additional Resources": {
+        "Website": "http://www.stat.wisc.edu/",
+        "Undergraduate Info": "http://guide.wisc.edu/undergraduate/letters-science/statistics/",
+        "Graduate Info": "http://guide.wisc.edu/graduate/statistics/"
+      },
+      "Lectures": {
+        "LEC001": {
+            "Time": [
+                {"8:00-9:15AM": ["M", "W"]}
+            ],
+            "Location": "168 Noland Hall",
+            "Instructor": "Bi Cheng Wu",
+            "Mode": "In-person",
+            "Labs": {}
+        },
+        "LEC002": {
+            "Time": [
+                {}
+            ],
+            "Location": "",
+            "Instructor": "Bi Cheng Wu",
+            "Mode": "Online",
+            "Labs": {}
+            }
+        },
+        "Textbooks": []   
+    } 
+} 

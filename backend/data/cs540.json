@@ -1,0 +1,57 @@
+{
+    "Comp Sci 540": {
+      "Name": "Introduction to Artificial Intelligence",
+      "Description": "Principles of knowledge-based search techniques, automatic deduction, knowledge representation using predicate logic, machine learning, probabilistic reasoning. Applications in tasks such as problem solving, data mining, game playing, natural language understanding, computer vision, speech recognition, and robotics.",
+      "SubjectNotes": "Courses taught and managed by the Computer Sciences department often have enrollment restrictions that give students in UW-Madison Computer Sciences programs priority access during initial enrollment periods. Those restrictions are removed after the conlusion of sophomore enrollment. Some CS courses add seats gradually during enrollment. Once all seats have been released, a wait list will be added. Visit this Comp Sci webpage for specific CS course enrollment information: https://www.cs.wisc.edu/courses-2/. Evening exams are likely for most of our undergraduate courses.",
+      "Prerequisites": [
+        {
+            "OR": [
+                "CS300",
+                "CS320",
+                "CS367"
+        ]
+        },
+        {
+            "OR": [
+                "MATH211",
+                "MATH217",
+                "MATH221",
+                "MATH275"
+            ]
+        },
+        "Graduate Standing",
+        "Declared in CS for Professionals Capstone Certificate"
+      ],
+      "Credits": 4,
+      "Breadth": "Natural Science",
+      "Level": "Advanced",
+      "School": "Letters and Science",
+      "Subject": "Computer Science",
+      "Additional Resources": {
+        "Website": "http://www.cs.wisc.edu/",
+        "Undergraduate Info": "http://guide.wisc.edu/undergraduate/letters-science/computer-sciences/",
+        "Graduate Info": "http://guide.wisc.edu/graduate/computer-sciences/"
+      },
+      "Lectures": {
+        "LEC001": {
+            "Time": [
+                {"9:30AM-10:45AM": ["M", "W"]}
+            ],
+            "Location": "168 Noland Hall",
+            "Instructor": "Jerry Gupta",
+            "Mode": "In-person",
+            "Labs": {}
+        },
+        "LEC002": {
+            "Time": [
+                {}
+            ],
+            "Location": "",
+            "Instructor": "Jerry Gupta",
+            "Mode": "Online",
+            "Labs": {}
+            }
+        },
+        "Textbooks": []   
+    } 
+} 
