@@ -1,0 +1,48 @@
+{
+    "Stat 240": {
+      "Name": "Data Science Modeling I",
+      "Description": "Introduces reproducible data management, modeling, and analysis through a practical, hands-on case studies approach. Topics include the use of an integrated statistical computing environment, data wrangling, the R programming language, data graphics and visualization, random variables and concepts of probability, data modeling, and report generation using R Markdown with applications to a wide variety of data to address open-ended questions.",
+      "SubjectNotes": "This is the statistics department. Have an enrollment question? Visit https://stat.wisc.edu/courses-and-enrollment/.",
+      "Prerequisites": { },
+      "Credits": 4,
+      "Breadth": "Natural Science",
+      "Level": "Intermediate",
+      "School": "Letters and Science",
+      "Subject": "Statistics",
+      "Additional Resources": {
+        "Website": "http://www.stat.wisc.edu/",
+        "Undergraduate Info": "http://guide.wisc.edu/undergraduate/letters-science/statistics/",
+        "Graduate Info": "http://guide.wisc.edu/graduate/statistics/"
+      },
+      "Lectures": {
+        "LEC001": {
+            "Time": [
+                {"11:00AM-11:50AM": ["M", "W", "F"]}
+            ],
+            "Location": "168 Noland Hall",
+            "Instructor": "Bi Cheng Wu",
+            "Mode": "In-person",
+            "Labs": {}
+        },
+        "LEC002": {
+            "Time": [
+                {"7:45AM-8:35AM": ["M", "W", "F"]}
+            ],
+            "Location": "168 Noland Hall",
+            "Instructor": "Bi Cheng Wu",
+            "Mode": "In-person",
+            "Labs": {}
+        },
+        "LEC003": {
+            "Time": [
+                {}
+            ],
+            "Location": "",
+            "Instructor": "Bi Cheng Wu",
+            "Mode": "Online",
+            "Labs": {}
+            }
+        },
+        "Textbooks": []   
+    } 
+} 
