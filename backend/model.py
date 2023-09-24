@@ -1,6 +1,61 @@
-from llama_index import SimpleDirectoryReader
+import os
 
 API_KEY = ""
-
 with open("./backend/API_KEY.txt", "r") as f:
     API_KEY = f.read()
+
+os.environ["OPENAI_API_KEY"] = API_KEY
+from llama_index import (
+    SimpleDirectoryReader,
+    VectorStoreIndex,
+    ServiceContext,
+    set_global_service_context,
+    StorageContext,
+    load_index_from_storage,
+)
+from llama_index.node_parser import SimpleNodeParser
+from llama_index.llms import OpenAI
+from llama_index.memory import ChatMemoryBuffer
+from llama_index.prompts import (
+    ChatMessage,
+    ChatPromptTemplate,
+    MessageRole,
+    PromptTemplate,
+)
+
+llm = OpenAI(model="gpt-3.5-turbo", temperature=0, max_tokens=512)
+service_context = ServiceContext.from_defaults(llm=llm)
+set_global_service_context(service_context)
+memory = ChatMemoryBuffer.from_defaults(token_limit=2500)
+
+# TODO: Figure out how to wrap chat in template
+template = (
+    "Below is the information about the courses relavent to the student's query. \n"
+    "---------------------\n"
+    "{context_str}"
+    "\n---------------------\n"
+    "Given this information, please answer in a way that the student can gain a deeper understanding about their query: {query_str}\n"
+)
+
+
+documents = SimpleDirectoryReader("./backend/data").load_data()
+parser = SimpleNodeParser.from_defaults()
+nodes = parser.get_nodes_from_documents(documents)
+
+
+# index = VectorStoreIndex(nodes, show_progress=True)
+# index.storage_context.persist(persist_dir="./backend/persist")
+
+storage_context = StorageContext.from_defaults(persist_dir="./backend/persist")
+index = load_index_from_storage(storage_context)
+
+query_engine = index.as_chat_engine(
+    chat_mode="context",
+    memory=memory,
+    system_prompt="You are an academic advisor for students at UW-Madison, understanding their needs and interests and recommending courses for them to take.",
+)
+
+response = query_engine.chat("What are prerequisites for CS 540?")
+print(response)
+response = query_engine.chat("Tell me more about the class and the prereqs.")
+print("\n" + response)
