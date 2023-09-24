@@ -41,6 +41,7 @@ template = (
 all_data = []
 data_dir = "./backend/data"
 
+# TODO: Find more memory efficient way to do at scale
 for filename in os.listdir(data_dir):
     if filename.endswith(".json"):
         with open(os.path.join(data_dir, filename), "r") as f:
@@ -65,7 +66,8 @@ query_engine = index.as_chat_engine(
     system_prompt="You are an academic advisor for students at UW-Madison, understanding their needs and interests and recommending courses for them to take.",
 )
 
-response = query_engine.chat("What are prerequisites for CS 540?")
-print(response)
-response = query_engine.chat("What lectures exist for this class?")
-print(response)
+query = input("Enter query or type 'quit' to exit: ")
+while query.lower() != "quit":
+    response = query_engine.chat(query)
+    print(response)
+    query = input("\nAsk a follow up or type 'quit' to exit: ")
