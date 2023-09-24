@@ -1,12 +1,13 @@
 import os
+import json
 
 API_KEY = ""
 with open("./backend/API_KEY.txt", "r") as f:
     API_KEY = f.read()
-
 os.environ["OPENAI_API_KEY"] = API_KEY
+
 from llama_index import (
-    SimpleDirectoryReader,
+    Document,
     VectorStoreIndex,
     ServiceContext,
     set_global_service_context,
@@ -37,8 +38,17 @@ template = (
     "Given this information, please answer in a way that the student can gain a deeper understanding about their query: {query_str}\n"
 )
 
+all_data = []
+data_dir = "./backend/data"
 
-documents = SimpleDirectoryReader("./backend/data").load_data()
+for filename in os.listdir(data_dir):
+    if filename.endswith(".json"):
+        with open(os.path.join(data_dir, filename), "r") as f:
+            data = json.load(f)
+            all_data.append(data)
+
+
+documents = [Document(text=json.dumps(data)) for data in all_data]
 parser = SimpleNodeParser.from_defaults()
 nodes = parser.get_nodes_from_documents(documents)
 
@@ -57,5 +67,5 @@ query_engine = index.as_chat_engine(
 
 response = query_engine.chat("What are prerequisites for CS 540?")
 print(response)
-response = query_engine.chat("Tell me more about the class and the prereqs.")
-print("\n" + response)
+response = query_engine.chat("What lectures exist for this class?")
+print(response)
