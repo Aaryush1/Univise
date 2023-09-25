@@ -1,4 +1,3 @@
 # DARS
 Universal Advising Platform
-
-@Harrison, to clone this, go into the folder you'd like to clone into, type git clone <URL to this repository>. That will create a new folder named DARS with everything in this repository.
+Currently an embedding model based on GPT3.5 using llama index to provide students with a natural language interface to help recommend relevant classes for their degree 
