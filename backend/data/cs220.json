@@ -1,0 +1,91 @@
+{
+    "Comp Sci 220": {
+      "Name": "Data Science Programming I",
+      "Description": "Introduction to Data Science programming using Python. No previous programming experience required. Emphasis on analyzing real datasets in a variety of forms and visual communication.",
+      "SubjectNotes": "Courses taught and managed by the Computer Sciences department often have enrollment restrictions that give students in UW-Madison Computer Sciences programs priority access during initial enrollment periods. Those restrictions are removed after the conclusion of sophomore enrollment. Some CS courses add seats gradually during enrollment. Once all seats have been released, a wait list will be added. Visit this Comp Sci webpage for specific CS course enrollment information: https://www.cs.wisc.edu/courses-2/ Evening exams are likely for most of our undergraduate courses.",
+      "Prerequisites": { },
+      "Credits": 4,
+      "Breadth": "Natural Science",
+      "Level": "Elementary",
+      "School": "Letters and Science",
+      "Subject": "Computer Science",
+      "Additional Resources": {
+        "Website": "http://www.cs.wisc.edu/",
+        "Undergraduate Info": "http://guide.wisc.edu/undergraduate/letters-science/computer-sciences/",
+        "Graduate Info": "http://guide.wisc.edu/graduate/computer-sciences/"
+      },
+      "Lectures": {
+        "LEC001": {
+            "Time": [
+                {"8:00AM-9:15AM": ["T", "H"]}
+            ],
+            "Location": "168 Noland Hall",
+            "Instructor": "Meena S",
+            "Mode": "In-person",
+            "Labs": {
+                "LAB211": {
+                    "Location": "1370 Computer Sciences",
+                    "Time": [
+                        {"8:50AM-9:40AM": ["F"]}
+                    ],
+                    "Mode": "In-person"
+                },
+                "LAB212": {
+                    "Location": "1370 Computer Sciences",
+                    "Time": [
+                        {"9:55AM-10:45AM": ["F"]}
+                    ],
+                    "Mode": "In-person"
+                },
+                "LAB213": {
+                    "Location": "1370 Computer Sciences",
+                    "Time": [
+                        {"7:45AM-8:35AM": ["M"]}
+                    ],
+                    "Mode": "In-person"
+                }
+            }
+        },
+        "LEC002": {
+            "Time": [
+                {"9:30AM-10:45AM": ["T", "H"]}
+            ],
+            "Location": "168 Noland Hall",
+            "Instructor": "Young Wu",
+            "Mode": "In-person",
+            "Labs": {
+                "LAB221": {
+                    "Location": "1370 Computer Sciences",
+                    "Time": [
+                        {"7:45AM-8:35AM": ["F"]}
+                    ],
+                    "Mode": "In-person"
+                },
+                "LAB222": {
+                    "Location": "1370 Computer Sciences",
+                    "Time": [
+                        {"11:00AM-11:50AM": ["F"]}
+                    ],
+                    "Mode": "In-person"
+                },
+                "LAB223": {
+                    "Location": "1370 Computer Sciences",
+                    "Time": [
+                        {"8:50AM-9:40AM": ["M"]}
+                    ],
+                    "Mode": "In-person"
+                }
+            }
+        },
+        "Textbooks": [
+            {
+            "Title": "Think Python Beginners",
+            "Requirement": "Required",
+            "Author": "Allen Downey",
+            "ISBN": "9781435235369",
+            "Year": "2015"
+            }
+        ]   
+        } 
+    } 
+}
