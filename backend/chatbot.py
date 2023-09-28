@@ -1,3 +1,11 @@
+import os
+import json
+
+API_KEY = ""
+with open("./backend/API_KEY.txt", "r") as f:
+    API_KEY = f.read()
+os.environ["OPENAI_API_KEY"] = API_KEY
+
 from llama_index import (
     Document,
     SimpleDirectoryReader,
@@ -32,7 +40,7 @@ class DARSModel:
                           max_tokens=max_tokens)
         self.service_context = ServiceContext.from_defaults(llm=self.llm)
         set_global_service_context(self.service_context)
-
+        self.data_dir = data_dir
         self.template = (
             "Below is the information about the courses relavent to the student's query. \n"
             "---------------------\n"
@@ -42,7 +50,7 @@ class DARSModel:
         )
         memory = ChatMemoryBuffer.from_defaults(token_limit=memory_limit)
 
-        nodes = self.create_nodes(data_dir, json_data)
+        nodes = self.create_nodes(json_data)
 
         if create_index:
             self.create_index(nodes)
@@ -57,22 +65,23 @@ class DARSModel:
 
     def get_index(self):
         self.storage_context = StorageContext.from_defaults(
-            persist_dir=data_dir)
+            persist_dir=self.data_dir)
         self.index = load_index_from_storage(self.storage_context)
 
-    def create_documents(self, data_dir, json_data=True):
+    def create_documents(self, json_data=True):
         if json_data:
-            for filename in os.listdir(data_dir):
+            all_data = []
+            for filename in os.listdir(self.data_dir):
                 if filename.endswith(".json"):
-                    with open(os.path.join(data_dir, filename), "r") as f:
+                    with open(os.path.join(self.data_dir, filename), "r") as f:
                         data = json.load(f)
                         all_data.append(data)
             return [Document(text=json.dumps(data)) for data in all_data]
 
-        return SimpleDirectoryReader(data_dir).load_data()
+        return SimpleDirectoryReader(self.data_dir).load_data()
 
-    def create_nodes(self, data_dir, json_data=True):
-        documents = self.create_documents(data_dir, json_data)
+    def create_nodes(self, json_data=True):
+        documents = self.create_documents(self.data_dir, json_data)
         parser = SimpleNodeParser.from_defaults()
         return parser.get_nodes_from_documents(documents)
 
