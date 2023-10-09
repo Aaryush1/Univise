@@ -95,5 +95,5 @@ class DARSModel:
     def chat(self):
         query = input("Enter query or type 'quit' to exit: ")
         while query.lower() != "quit":
-            response = query_engine.chat(query)
+            response = self.query_engine.chat(query)
             print(response)
