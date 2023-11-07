@@ -62,7 +62,7 @@ def upload_embeddings(index, embeddings):
     index.upsert(embeddings)
 
 
-course_corpus = parse_json("./data/courses-and-descriptions.json")
+course_corpus = parse_json("../data/courses-and-descriptions.json")
 course_list = parse_courses(course_corpus)
 
 

@@ -91,4 +91,4 @@ response = requests.post(
     json=json_data,
 )
 
-json.dump(response.json(), open("data/f23.json", "w"), indent=4)
+json.dump(response.json(), open("../data/f23.json", "w"), indent=4)

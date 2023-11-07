@@ -2,7 +2,7 @@ import os
 import json
 
 API_KEY = ""
-with open("./OPENAI_API_KEY.txt", "r") as f:
+with open("../OPENAI_API_KEY.txt", "r") as f:
     API_KEY = f.read()
 os.environ["OPENAI_API_KEY"] = API_KEY
 
@@ -33,7 +33,7 @@ class DARSModel:
         temperature=0,
         max_tokens=512,
         memory_limit=2500,
-        data_dir="./backend/data",
+        data_dir="../data",
         json_data=True,
         create_index=True,
     ):
@@ -61,7 +61,7 @@ class DARSModel:
 
     def create_index(self, nodes):
         self.index = VectorStoreIndex(nodes, show_progress=True)
-        self.index.storage_context.persist(persist_dir="./backend/persist")
+        self.index.storage_context.persist(persist_dir="./persist")
 
     def get_index(self):
         self.storage_context = StorageContext.from_defaults(persist_dir=self.data_dir)
