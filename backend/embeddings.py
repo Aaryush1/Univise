@@ -1,21 +1,30 @@
 import os
+import json
+import pinecone
 
-API_KEY = ""
-with open("./API_KEY.txt", "r") as f:
+OPENAI_API_KEY = ""
+with open("./OPENAI_API_KEY.txt", "r") as f:
     API_KEY = f.read()
 os.environ["OPENAI_API_KEY"] = API_KEY
 
+PINECONE_API_KEY = ""
+with open("./PINECONE_API_KEY.txt", "r") as f:
+    PINECONE_API_KEY = f.read()
+
+pinecone.init(api_key=PINECONE_API_KEY, environment="us-west4-gcp-free")
+index = pinecone.Index("courses-and-descriptions")
+
 from openai import Embedding
-import json
-import re
 
 
-def create_embedding(text):
+def create_embedding(course: [str, str]):
+    course[0] = course[0].replace("—", "-")
     response = Embedding.create(
-        input=text,
+        input=" ".join(course),
         model="text-embedding-ada-002",
     )
-    return response.data[0].embedding
+    print(course[0])
+    return (course[0], response.data[0].embedding)
 
 
 def embed_dataset(dataset):
@@ -25,17 +34,14 @@ def embed_dataset(dataset):
     return embeddings
 
 
-# TODO: Parse courses from list of course text
 def parse_courses(data):
-    pattern = r"([A-Z/​]+ [0-9]+ — [A-Z ].+?)\n(\d+ credits\.\n.+?)(?=\n[A-Z/​]+ [0-9]+ — [A-Z ]|\Z)"
-    for course in data:
-        courses = re.findall(pattern, course, re.DOTALL)
-
-        course_dict = {
-            course.replace("\u200b", ""): description.strip()
-            for course, description in courses
-        }
-    return course_dict
+    course_data = []
+    for courses in data:
+        courses = courses.replace("\u200b", "")
+        courses = courses.split("\n")
+        for idx in range(0, len(courses), 3):
+            course_data.append([courses[idx], " ".join(courses[idx + 1 : idx + 3])])
+    return course_data
 
 
 def parse_json(file_path):
@@ -52,9 +58,17 @@ def parse_json(file_path):
     return course_text
 
 
-# TODO: Upload embeddings to Pinecone
-def upload_embeddings(embeddings):
-    pass
+def upload_embeddings(index, embeddings):
+    index.upsert(embeddings)
 
 
-print(parse_courses(parse_json("./data/biology.json")))
+course_corpus = parse_json("./data/courses-and-descriptions.json")
+course_list = parse_courses(course_corpus)
+
+
+# Test string
+# print(Embedding.create(input="Animal Sciences", model="text-embedding-ada-002",).data[0].embedding)
+
+# embeddings = embed_dataset(course_list[:150])
+
+# upload_embeddings(index, embeddings)
