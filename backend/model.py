@@ -2,7 +2,7 @@ import os
 import json
 
 API_KEY = ""
-with open("./backend/API_KEY.txt", "r") as f:
+with open("./OPENAI_API_KEY.txt", "r") as f:
     API_KEY = f.read()
 os.environ["OPENAI_API_KEY"] = API_KEY
 
@@ -42,7 +42,7 @@ template = (
 )
 
 all_data = []
-data_dir = "./backend/data"
+data_dir = "./data"
 
 # TODO: Find more memory efficient way to do at scale
 for filename in os.listdir(data_dir):
@@ -60,7 +60,7 @@ nodes = parser.get_nodes_from_documents(documents)
 # index = VectorStoreIndex(nodes, show_progress=True)
 # index.storage_context.persist(persist_dir="./backend/persist")
 
-storage_context = StorageContext.from_defaults(persist_dir="./backend/persist")
+storage_context = StorageContext.from_defaults(persist_dir="./persist")
 index = load_index_from_storage(storage_context)
 
 query_engine = index.as_chat_engine(

@@ -2,7 +2,7 @@ import os
 import json
 
 API_KEY = ""
-with open("./backend/API_KEY.txt", "r") as f:
+with open("./OPENAI_API_KEY.txt", "r") as f:
     API_KEY = f.read()
 os.environ["OPENAI_API_KEY"] = API_KEY
 
@@ -25,6 +25,7 @@ from llama_index.prompts import (
     PromptTemplate,
 )
 
+
 class DARSModel:
     def __init__(
         self,
@@ -36,8 +37,7 @@ class DARSModel:
         json_data=True,
         create_index=True,
     ):
-        self.llm = OpenAI(model=model, temperature=temperature,
-                          max_tokens=max_tokens)
+        self.llm = OpenAI(model=model, temperature=temperature, max_tokens=max_tokens)
         self.service_context = ServiceContext.from_defaults(llm=self.llm)
         set_global_service_context(self.service_context)
         self.data_dir = data_dir
@@ -64,8 +64,7 @@ class DARSModel:
         self.index.storage_context.persist(persist_dir="./backend/persist")
 
     def get_index(self):
-        self.storage_context = StorageContext.from_defaults(
-            persist_dir=self.data_dir)
+        self.storage_context = StorageContext.from_defaults(persist_dir=self.data_dir)
         self.index = load_index_from_storage(self.storage_context)
 
     def create_documents(self, json_data=True):
