@@ -74,5 +74,3 @@ while query.lower() != "quit":
     response = query_engine.chat(query)
     print(response)
     query = input("\nAsk a follow up or type 'quit' to exit: ")
-
-
