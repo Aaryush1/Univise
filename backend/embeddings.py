@@ -25,7 +25,7 @@ def embed_dataset(dataset):
     return embeddings
 
 
-# TODO: Pull text from a single category and organize by course
+# TODO: Parse courses from list of course text
 def parse_courses(data):
     pattern = r"([A-Z/​]+ [0-9]+ — [A-Z ].+?)\n(\d+ credits\.\n.+?)(?=\n[A-Z/​]+ [0-9]+ — [A-Z ]|\Z)"
     for course in data:
@@ -40,8 +40,8 @@ def parse_courses(data):
 
 def parse_json(file_path):
     with open(file_path, "r", encoding="utf-8") as file:
-        # Load the JSON content into a dictionary
         json_data = json.load(file)
+
     if type(json_data) is list:
         course_text = []
         for course in json_data:
