@@ -60,7 +60,7 @@ nodes = parser.get_nodes_from_documents(documents)
 # index = VectorStoreIndex(nodes, show_progress=True)
 # index.storage_context.persist(persist_dir="./backend/persist")
 
-storage_context = StorageContext.from_defaults(persist_dir="./persist")
+storage_context = StorageContext.from_defaults(persist_dir="./manual_model_5_persist")
 index = load_index_from_storage(storage_context)
 
 query_engine = index.as_chat_engine(

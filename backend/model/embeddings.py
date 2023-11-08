@@ -62,13 +62,18 @@ def upload_embeddings(index, embeddings):
     index.upsert(embeddings)
 
 
-course_corpus = parse_json("../data/courses-and-descriptions.json")
-course_list = parse_courses(course_corpus)
+def create_documents(file_path="./data/web_all.json", slice=100):
+    course_corpus = parse_json(file_path)
+    course_list = parse_courses(course_corpus)
+    return [" ".join(course) for course in course_list[:slice]]
 
 
-# Test string
-# print(Embedding.create(input="Animal Sciences", model="text-embedding-ada-002",).data[0].embedding)
+if __name__ == "__main__":
+    print(create_documents())
 
-# embeddings = embed_dataset(course_list[:150])
+    # Test string
+    # print(Embedding.create(input="Animal Sciences", model="text-embedding-ada-002",).data[0].embedding)
 
-# upload_embeddings(index, embeddings)
+    # embeddings = embed_dataset(course_list[:150])
+
+    # upload_embeddings(index, embeddings)

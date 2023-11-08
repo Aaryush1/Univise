@@ -9,34 +9,28 @@ os.environ["OPENAI_API_KEY"] = API_KEY
 from chatbot import DARSModel
 
 from llama_index import (
-    Document,
-    SimpleDirectoryReader,
-    VectorStoreIndex,
     ServiceContext,
     set_global_service_context,
     StorageContext,
     load_index_from_storage,
 )
-from llama_index.node_parser import SimpleNodeParser
 from llama_index.llms import OpenAI
 from llama_index.memory import ChatMemoryBuffer
-from llama_index.prompts import (
-    ChatMessage,
-    ChatPromptTemplate,
-    MessageRole,
-    PromptTemplate,
-)
+
 
 llm = OpenAI(model="gpt-3.5-turbo", temperature=0, max_tokens=1024)
 service_context = ServiceContext.from_defaults(llm=llm)
 set_global_service_context(service_context)
 memory = ChatMemoryBuffer.from_defaults(token_limit=2500)
 
+
 # TODO: Pinecone Vector Store
 # index =
-# index.storage_context.persist(persist_dir="./backend/persist")
+# index.storage_context.persist(persist_dir="./pinecone_model_150_persist")
 
-storage_context = StorageContext.from_defaults(persist_dir="./persist")
+storage_context = StorageContext.from_defaults(
+    persist_dir="./pinecone_model_150_persist"
+)
 index = load_index_from_storage(storage_context)
 
 # TODO: Pass in index parameters
