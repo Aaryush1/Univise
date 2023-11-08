@@ -1,6 +1,6 @@
 import requests
 import json
-import f23_cleaner
+import cleaner
 
 cookies = {
     "_hjSessionUser_1421853": "eyJpZCI6ImEwNzYwZmVkLWUwOTEtNWU1OS1hNjczLTg5ZDJjNDQxMzQ4YyIsImNyZWF0ZWQiOjE2NDM1ODU2MDc5NzksImV4aXN0aW5nIjp0cnVlfQ==",
@@ -55,7 +55,7 @@ headers = {
 }
 
 json_data = {
-    "selectedTerm": "1242",
+    "selectedTerm": "1244",
     "queryString": "*",
     "filters": [
         {
@@ -81,7 +81,7 @@ json_data = {
         },
     ],
     "page": 1,
-    "pageSize": 4771,
+    "pageSize": 5443,
     "sortOrder": "SCORE",
 }
 
@@ -92,4 +92,4 @@ response = requests.post(
     json=json_data,
 )
 
-json.dump(response.json(), open("../data/f23.json", "w"), indent=4)
+json.dump(response.json(), open("./data/s24.json", "w"), indent=4)
