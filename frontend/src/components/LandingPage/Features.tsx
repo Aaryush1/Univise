@@ -16,25 +16,25 @@ const Features = () => {
         <Grid item xs={12} sm={6} md={3}>
           <img src={Icon1} alt="Feature 1" style={{ width: '50%', height: 'auto' }} />
           <Typography>
-            Feature 1 description goes here.
+            Custom tailored to your preferences and journey
           </Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <img src={Icon2} alt="Feature 2" style={{ width: '50%', height: 'auto' }} />
           <Typography>
-            Feature 2 description goes here.
+            24/7 access to free chatbot
           </Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <img src={Icon3} alt="Feature 3" style={{ width: '50%', height: 'auto' }} />
           <Typography>
-            Feature 3 description goes here.
+            Scheduling and enrollment recommendations
           </Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <img src={Icon4} alt="Feature 4" style={{ width: '50%', height: 'auto' }} />
           <Typography>
-            Feature 4 description goes here.
+            Degree and graduation planning
           </Typography>
         </Grid>
       </Grid>
