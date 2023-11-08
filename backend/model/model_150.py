@@ -36,8 +36,6 @@ template = (
 
 document_list = create_documents(slice=100)
 
-print(document_list[0])
-
 documents = [Document(text=course) for course in document_list]
 parser = SimpleNodeParser.from_defaults()
 nodes = parser.get_nodes_from_documents(documents)
