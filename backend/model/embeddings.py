@@ -69,7 +69,8 @@ def create_documents(file_path="./data/web_all.json", slice=100):
 
 
 if __name__ == "__main__":
-    print(create_documents())
+    with open("./data/web_150.txt", "w", encoding="utf-8") as file:
+        file.write(str(create_documents(slice=150)))
 
     # Test string
     # print(Embedding.create(input="Animal Sciences", model="text-embedding-ada-002",).data[0].embedding)
