@@ -20,7 +20,7 @@ const Chat: React.FC = () => {
           gutterBottom 
           sx={{ textAlign: 'center' }} // Centers the title text
         >
-          Univise AdvisorBot
+          Univise - 0.1
         </Typography>
         {/* Subtitle */}
         <Typography 
