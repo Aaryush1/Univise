@@ -1,14 +1,14 @@
+// components/QuestionInput.tsx
 import { Box, Input, IconButton } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { useState } from 'react';
 
-const QuestionInput = () => {
-  const [question, setQuestion] = useState('');
+interface QuestionInputProps {
+  question: string;
+  setQuestion: (question: string) => void;
+  handleSend: () => void;
+}
 
-  const handleSend = () => {
-    console.log(question);
-  };
-
+const QuestionInput: React.FC<QuestionInputProps> = ({ question, setQuestion, handleSend }) => {
   return (
     <Box
       component="form"
@@ -21,14 +21,19 @@ const QuestionInput = () => {
       }}
       noValidate
       autoComplete="off"
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleSend();
+      }}
     >
       <Input
         placeholder="Ask any question ..."
         fullWidth
+        value={question}
         inputProps={{ 'aria-label': 'Ask any question' }}
         onChange={(e) => setQuestion(e.target.value)}
       />
-      <IconButton onClick={handleSend} color="primary" size="large">
+      <IconButton type="submit" color="primary" size="large">
         <ArrowForwardIcon />
       </IconButton>
     </Box>
