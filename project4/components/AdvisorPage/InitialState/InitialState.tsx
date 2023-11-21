@@ -1,9 +1,9 @@
 // components/AdvisorPage/InitialState.tsx
 import { Box, Typography, Stack } from '@mui/material';
-import UniviseButton from './UniviseButton';
-import CapabilitiesButton from './CapabilitiesButton';
+import UniviseButton from '../UniviseButton';
+import CapabilitiesButton from '../CapabilitiesButton';
 import SampleQuestions from './SampleQuestions';
-import QuestionInput from './QuestionInput';
+import QuestionInput from '../QuestionInput';
 
 interface InitialStateProps {
   question: string;

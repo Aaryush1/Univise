@@ -4,8 +4,8 @@
 import { useState } from 'react';
 import { Box, Typography, Button, Input, IconButton } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send'; // Placeholder for the send button icon
-import InitialState from './AdvisorPage/InitialState'; // Component for the initial state
-import ResponseState from './AdvisorPage/ResponseState'; // Component for the response state
+import InitialState from './InitialState/InitialState'; // Component for the initial state
+import ResponseState from './ResponseState/ResponseState'; // Component for the response state
 
 export default function Chat() {
   const [question, setQuestion] = useState('');

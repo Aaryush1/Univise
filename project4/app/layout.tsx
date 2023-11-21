@@ -1,5 +1,5 @@
 import React from 'react';
-import Footer from '../components/Footer';
+import Footer from '../components/LandingPage/Footer';
 
 export const metadata = {
   title: 'Next.js',
