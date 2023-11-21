@@ -1,5 +1,5 @@
 import os
-from embeddings import create_documents
+import flask
 
 API_KEY = ""
 with open("./OPENAI_API_KEY.txt", "r") as f:
@@ -7,9 +7,6 @@ with open("./OPENAI_API_KEY.txt", "r") as f:
 os.environ["OPENAI_API_KEY"] = API_KEY
 
 from llama_index import (
-    Document,
-    SimpleDirectoryReader,
-    VectorStoreIndex,
     ServiceContext,
     set_global_service_context,
     StorageContext,
