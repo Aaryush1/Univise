@@ -2,16 +2,32 @@ import { Grid, Typography, Box } from '@mui/material';
 
 const OurStory = () => {
   return (
-    <Box sx={{ flexGrow: 1, padding: 4 }}> {/* Adjust padding as needed */}
-      <Grid container spacing={2}> {/* Adjust spacing as needed */}
-        <Grid item xs={12} md={6}>
-          <Typography variant="h3" gutterBottom>
+    <Box
+      sx={{
+        flexGrow: 1,
+        padding: 4, // Adjust padding as needed
+        minHeight: '50vh', // Adjust the height as needed to make the section larger
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        background: 'linear-gradient(138deg, rgba(153,27,27,1) 0%, rgba(230,46,46,1) 50%, rgba(153,27,27,1) 100%)',
+        color: 'white', // Set text color to white
+      }}
+    >
+      <Grid container spacing={2} justifyContent="center" alignItems="center" direction="column"> {/* Adjust spacing as needed */}
+        <Grid item xs={12}>
+          <Typography variant="h3" gutterBottom align="center" sx={{ color: 'white' }}>
             Our Story
           </Typography>
         </Grid>
-        <Grid item xs={12} md={6}>
-          <Typography variant="body1">
-          Instantaneous, 24/7 enrollment and advising advice powered through generative AI technologies.           </Typography>
+        <Grid item xs={12} md={8} lg={6}> {/* Adjust width as needed */}
+          <Typography variant="body1" align="center" sx={{ color: 'white' }}>
+            Instantaneous, 24/7 enrollment and advising advice powered through generative AI technologies.
+            Instantaneous, 24/7 enrollment and advising advice powered through generative AI technologies.
+            Instantaneous, 24/7 enrollment and advising advice powered through generative AI technologies.
+            Instantaneous, 24/7 enrollment and advising advice powered through generative AI technologies.
+          </Typography>
         </Grid>
       </Grid>
     </Box>
