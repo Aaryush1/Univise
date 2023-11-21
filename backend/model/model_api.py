@@ -24,9 +24,9 @@ chat_engine = None
 # TODO: Generate as API
 
 
-def init_model(model_name="model_150"):
+def init_model(model_name="model_150", GPT_model="gpt-3.5-turbo"):
     global chat_engine
-    llm = OpenAI(model="gpt-3.5-turbo", temperature=0, max_tokens=512)
+    llm = OpenAI(model=GPT_model, temperature=0, max_tokens=512)
     service_context = ServiceContext.from_defaults(llm=llm)
     set_global_service_context(service_context)
     memory = ChatMemoryBuffer.from_defaults(token_limit=2500)
