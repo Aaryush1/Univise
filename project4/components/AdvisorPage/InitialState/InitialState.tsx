@@ -1,6 +1,7 @@
 // components/AdvisorPage/InitialState/InitialState.tsx
-import { Box, Typography, Button } from '@mui/material';
+import { Box } from '@mui/material';
 import AdvisorFooter from '../AdvisorFooter'; // Import the AdvisorFooter component
+import Header from '../Header'; // Import the Header component
 
 type InitialStateProps = {
   question: string;
@@ -10,19 +11,13 @@ type InitialStateProps = {
 
 const InitialState: React.FC<InitialStateProps> = ({ question, setQuestion, handleSendClick }) => {
   return (
-    <Box sx={{ width: '100%', padding: 2 }}>
-      <Box sx={{ textAlign: 'center', marginBottom: 4 }}>
-        <Typography variant="h3" gutterBottom>
-          Univise 0.1.0
-        </Typography>
-        <Typography variant="subtitle1" color="textSecondary">
-          Subtext description of model
-        </Typography>
-      </Box>
+    <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', height: '100vh' }}>
+      {/* Include the Header component */}
+      <Header />
 
-      <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, marginBottom: 4 }}>
-        <Button variant="outlined">Sample Question 1</Button>
-        <Button variant="outlined">Sample Question 2</Button>
+      {/* Content area */}
+      <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+        {/* Placeholder for any additional content */}
       </Box>
 
       {/* Include the AdvisorFooter component */}
