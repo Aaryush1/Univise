@@ -1,52 +1,38 @@
-// components/AdvisorPage/InitialState.tsx
-import { Box, Typography, Stack } from '@mui/material';
-import UniviseButton from '../UniviseButton';
-import CapabilitiesButton from '../CapabilitiesButton';
-import SampleQuestions from './SampleQuestions';
-import QuestionInput from '../QuestionInput';
+// components/AdvisorPage/InitialState/InitialState.tsx
+import { Box, Typography, Button } from '@mui/material';
+import AdvisorFooter from '../AdvisorFooter'; // Import the AdvisorFooter component
 
-interface InitialStateProps {
+type InitialStateProps = {
   question: string;
   setQuestion: React.Dispatch<React.SetStateAction<string>>;
   handleSendClick: () => void;
-}
-
-// components/AdvisorPage/InitialState.tsx
-// ... (other imports remain unchanged)
+};
 
 const InitialState: React.FC<InitialStateProps> = ({ question, setQuestion, handleSendClick }) => {
-    return (
-      <Stack
-        sx={{
-          height: '100vh',
-          flexDirection: 'column',
-          justifyContent: 'center', // Centers content vertically
-          alignItems: 'center', // Centers content horizontally
-          padding: 4,
-          overflow: 'hidden',
-        }}
-      >
-        <Box sx={{ width: '100%', textAlign: 'center' }}>
-        <UniviseButton />
-          <Typography variant="h4" component="h1" gutterBottom>
-            Univise 0.1.0
-          </Typography>
-          <Typography variant="subtitle1" gutterBottom>
-            Subtext description of model
-          </Typography>
-          <SampleQuestions />
-        </Box>
-        
-        <QuestionInput 
-          question={question}
-          setQuestion={setQuestion}
-          handleSend={handleSendClick}
-        />
-  
-        <CapabilitiesButton />
-      </Stack>
-    );
-  };
-  
+  return (
+    <Box sx={{ width: '100%', padding: 2 }}>
+      <Box sx={{ textAlign: 'center', marginBottom: 4 }}>
+        <Typography variant="h3" gutterBottom>
+          Univise 0.1.0
+        </Typography>
+        <Typography variant="subtitle1" color="textSecondary">
+          Subtext description of model
+        </Typography>
+      </Box>
+
+      <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, marginBottom: 4 }}>
+        <Button variant="outlined">Sample Question 1</Button>
+        <Button variant="outlined">Sample Question 2</Button>
+      </Box>
+
+      {/* Include the AdvisorFooter component */}
+      <AdvisorFooter
+        question={question}
+        setQuestion={setQuestion}
+        handleSendClick={handleSendClick}
+      />
+    </Box>
+  );
+};
+
 export default InitialState;
-  

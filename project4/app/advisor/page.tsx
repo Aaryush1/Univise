@@ -1,4 +1,3 @@
-// advisor/page.tsx
 'use client';
 
 import { useState } from 'react';
@@ -17,7 +16,7 @@ export default function AdvisorPage() {
   };
 
   return (
-    <Box>
+    <Box sx={{ padding: 0, margin: 0, width: '100%', boxSizing: 'border-box' }}>
       {!hasSubmitted ? (
         <InitialState
           question={question}

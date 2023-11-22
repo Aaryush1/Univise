@@ -8,7 +8,7 @@ const Features = () => {
         padding: 4,
         textAlign: 'center',
         minHeight: '60vh', 
-        background: 'linear-gradient(138deg, rgba(164,164,164,1) 0%, rgba(194,194,194,1) 50%, rgba(132,132,132,1) 100%)', // Darker grey gradient background
+        background: 'linear-gradient(138deg, rgba(164,164,164,1) 0%, rgba(194,194,194,1) 50%, rgba(132,132,132,1) 100%)', 
       }}
     >
       <Typography variant="h3" component="h2" gutterBottom sx={{ mb: 5 }}>
