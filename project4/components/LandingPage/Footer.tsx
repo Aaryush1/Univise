@@ -5,8 +5,8 @@ const Footer = () => {
     <Box
       sx={{
         width: '100%',
-        height: '12vh', // 12% of the viewport height
-        backgroundColor: 'darkGrey', // Replace with actual color code or MUI theme color
+        height: '12vh', 
+        backgroundColor: 'black', 
         color: 'white',
         display: 'flex',
         justifyContent: 'center',
@@ -14,7 +14,7 @@ const Footer = () => {
       }}
     >
       <Typography variant="body1">
-        © 2023 Your Company Name. All rights reserved.
+        © 2023 Univise.org  |  Aaryush Gupta  |  Harrison Roloff
       </Typography>
     </Box>
   );

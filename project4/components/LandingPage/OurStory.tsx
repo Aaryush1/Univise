@@ -6,7 +6,7 @@ const OurStory = () => {
       sx={{
         flexGrow: 1,
         padding: 4, // Adjust padding as needed
-        minHeight: '50vh', // Adjust the height as needed to make the section larger
+        minHeight: '40vh', // Adjust the height as needed to make the section larger
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',

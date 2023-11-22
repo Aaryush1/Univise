@@ -11,7 +11,7 @@ const MainContent = () => {
         justifyContent: 'center',
         alignItems: 'center',
         textAlign: 'center',
-        background: 'linear-gradient(138deg, rgba(128,128,128,1) 0%, rgba(192,192,192,1) 50%, rgba(128,128,128,1) 100%)',
+        background: 'linear-gradient(107deg, rgba(138,138,138,1) 0%, rgba(192,192,192,1) 50%, rgba(118,118,118,1) 100%)',
         color: 'white',
         width: '100vw',
       }}
