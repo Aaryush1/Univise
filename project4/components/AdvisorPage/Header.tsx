@@ -3,7 +3,11 @@ import { Box, Typography, IconButton, Button } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home'; // Home icon
 import React from 'react';
 
-const Header: React.FC = () => {
+type HeaderProps = {
+  onOpenCapabilities: () => void;
+};
+
+const Header: React.FC<HeaderProps> = ({ onOpenCapabilities }) => {
   return (
     <Box sx={{
       display: 'flex',
@@ -22,11 +26,15 @@ const Header: React.FC = () => {
         Univise-0.1.0
       </Typography>
 
-      <Button variant="outlined" sx={{
-        borderRadius: 50, // Oval shape
-        color: 'red', // Red text
-        borderColor: 'red', // Red outline
-      }}>
+      <Button 
+        variant="outlined" 
+        sx={{
+          borderRadius: 50, 
+          color: 'red', 
+          borderColor: 'red', 
+        }}
+        onClick={onOpenCapabilities} // Use the prop function for onClick
+      >
         Capabilities
       </Button>
     </Box>

@@ -1,7 +1,8 @@
-// components/AdvisorPage/InitialState/InitialState.tsx
-import { Box } from '@mui/material';
-import AdvisorFooter from '../AdvisorFooter'; // Import the AdvisorFooter component
-import Header from '../Header'; // Import the Header component
+import { Box, Typography } from '@mui/material';
+import React, { useState } from 'react';
+import AdvisorFooter from '../AdvisorFooter';
+import Header from '../Header';
+import CapabilitiesPopup from '../CapabilitesPopup';
 
 type InitialStateProps = {
   question: string;
@@ -10,22 +11,34 @@ type InitialStateProps = {
 };
 
 const InitialState: React.FC<InitialStateProps> = ({ question, setQuestion, handleSendClick }) => {
+  // State for managing the visibility of the popup
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  // Function to open the popup
+  const openPopup = () => setIsPopupOpen(true);
+
+  // Function to close the popup
+  const closePopup = () => setIsPopupOpen(false);
+
   return (
     <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', height: '100vh' }}>
-      {/* Include the Header component */}
-      <Header />
+      <Header onOpenCapabilities={openPopup} />
 
-      {/* Content area */}
-      <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-        {/* Placeholder for any additional content */}
+      {/* Main content */}
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Typography variant="subtitle1" color="textSecondary" sx={{ textAlign: 'center' }}>
+          Ask anything related to advising and enrollment
+        </Typography>
       </Box>
 
-      {/* Include the AdvisorFooter component */}
       <AdvisorFooter
         question={question}
         setQuestion={setQuestion}
         handleSendClick={handleSendClick}
       />
+
+      {/* Capabilities Popup */}
+      <CapabilitiesPopup open={isPopupOpen} onClose={closePopup} />
     </Box>
   );
 };
