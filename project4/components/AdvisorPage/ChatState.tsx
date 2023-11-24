@@ -24,30 +24,33 @@ const ChatState: React.FC<ChatStateProps> = ({ chatHistory, currentQuestion, set
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
       <Header onOpenCapabilities={openPopup} />
 
-      {/* Chat history or initial subtitle */}
+      {/* Chat history display */}
       <Box sx={{ flexGrow: 1, overflowY: 'auto', padding: 4, marginTop: '15vh', marginBottom: '15vh' }}>
-      <List>
-        {chatHistory.map((message, index) => (
-          <ListItem key={index} sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: message.type === 'question' ? 'flex-start' : 'flex-end',
-          }}>
-            <Box sx={{ display: 'flex', flexDirection: message.type === 'question' ? 'row' : 'row-reverse' }}>
-              <ListItemIcon sx={{ minWidth: 'auto', marginRight: message.type === 'question' ? 1 : 0, marginLeft: message.type === 'response' ? 1 : 0 }}>
-                {message.type === 'question' ? <PersonIcon color="primary" /> : <AndroidIcon color="secondary" />}
-              </ListItemIcon>
-              <Typography variant="body1" sx={{ fontWeight: 'bold', textAlign: message.type === 'question' ? 'left' : 'left' }}>
-                {message.type === 'question' ? 'YOU' : 'ADVISOR'}
-              </Typography>
-            </Box>
-            <Typography sx={{ textAlign: 'left' }}>
-              {message.text}
-            </Typography>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
+        <List>
+          {chatHistory.map((message, index) => (
+            <ListItem key={index} sx={{
+              display: 'flex',
+              justifyContent: message.type === 'question' ? 'flex-start' : 'flex-end',
+              alignItems: 'flex-start'
+            }}>
+              {message.type === 'question' && <PersonIcon color="primary" />}
+              <ListItemText
+                primary={
+                  <Typography variant="body1" sx={{ fontWeight: 'bold', textAlign: message.type === 'question' ? 'left' : 'right' }}>
+                    {message.type === 'question' ? 'YOU' : 'ADVISOR'}
+                  </Typography>
+                }
+                secondary={
+                  <Typography sx={{ textAlign: message.type === 'question' ? 'left' : 'right' }}>
+                    {message.text}
+                  </Typography>
+                }
+              />
+              {message.type === 'response' && <AndroidIcon color="secondary" />}
+            </ListItem>
+          ))}
+        </List>
+      </Box>
 
       <AdvisorFooter
         question={currentQuestion}
