@@ -2,6 +2,7 @@
 import { Box, Typography, IconButton, Button } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home'; // Home icon
 import React from 'react';
+import Link from 'next/link';
 
 type HeaderProps = {
   onOpenCapabilities: () => void;
@@ -18,9 +19,11 @@ const Header: React.FC<HeaderProps> = ({ onOpenCapabilities }) => {
       px: 2,
       boxSizing: 'border-box',
     }}>
-      <IconButton sx={{ color: 'red' }}>
-        <HomeIcon /> {/* Home icon colored red */}
-      </IconButton>
+      <Link href="/" passHref>
+        <IconButton sx={{ color: 'red' }}>
+          <HomeIcon /> {/* Home icon colored red */}
+        </IconButton>
+      </Link>
 
       <Typography variant="h4">
         Univise-0.1.0
@@ -33,7 +36,7 @@ const Header: React.FC<HeaderProps> = ({ onOpenCapabilities }) => {
           color: 'red', 
           borderColor: 'red', 
         }}
-        onClick={onOpenCapabilities} // Use the prop function for onClick
+        onClick={onOpenCapabilities}
       >
         Capabilities
       </Button>

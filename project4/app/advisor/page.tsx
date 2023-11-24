@@ -1,31 +1,36 @@
-'use client';
-
+'use client'
+// advisor/page.tsx
 import { useState } from 'react';
 import { Box } from '@mui/material';
-import InitialState from '@/components/AdvisorPage/InitialState/InitialState'; // Component for the initial state
-import ResponseState from '@/components/AdvisorPage/ResponseState/ResponseState'; // Component for the response state
+import ChatState from '@/components/AdvisorPage/ChatState';
+
+interface ChatMessage {
+  type: 'question' | 'response';
+  text: string;
+}
 
 export default function AdvisorPage() {
-  const [question, setQuestion] = useState('');
-  const [hasSubmitted, setHasSubmitted] = useState(false);
+  const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
+  const [currentQuestion, setCurrentQuestion] = useState('');
 
   const handleSendClick = () => {
-    // Placeholder for sending the question
-    setHasSubmitted(true);
-    // Simulate getting a response here
+    const newHistory: ChatMessage[] = [
+      ...chatHistory,
+      { type: 'question', text: currentQuestion },
+      { type: 'response', text: `Here is the response to your question: ${currentQuestion}` },
+    ];
+    setChatHistory(newHistory);
+    setCurrentQuestion(''); // Reset current question
   };
 
   return (
     <Box sx={{ padding: 0, margin: 0, width: '100%', boxSizing: 'border-box' }}>
-      {!hasSubmitted ? (
-        <InitialState
-          question={question}
-          setQuestion={setQuestion}
-          handleSendClick={handleSendClick}
-        />
-      ) : (
-        <ResponseState question={question} />
-      )}
+      <ChatState
+        chatHistory={chatHistory}
+        currentQuestion={currentQuestion}
+        setCurrentQuestion={setCurrentQuestion}
+        handleSendClick={handleSendClick}
+      />
     </Box>
   );
 }
