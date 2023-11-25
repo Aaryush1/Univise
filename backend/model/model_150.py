@@ -34,7 +34,7 @@ template = (
     "Given this information, please answer in a way that the student can gain a deeper understanding about their query: {query_str}\n"
 )
 
-document_list = create_documents(slice=100)
+document_list = create_documents(start=0, end=150)
 
 documents = [Document(text=course) for course in document_list]
 parser = SimpleNodeParser.from_defaults()

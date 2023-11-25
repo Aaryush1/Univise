@@ -62,14 +62,15 @@ def upload_embeddings(index, embeddings):
     index.upsert(embeddings)
 
 
-def create_documents(file_path="./data/web_all.json", slice=100):
+def create_documents(file_path="./data/web_all.json", start=0, end=150):
     course_corpus = parse_json(file_path)
     course_list = parse_courses(course_corpus)
-    return [" ".join(course) for course in course_list[:slice]]
+    return [" ".join(course) for course in course_list[start:end]]
 
 
 if __name__ == "__main__":
-    print(create_documents())
+    with open("./data/web_150-300.txt", "w", encoding="utf-8") as file:
+        file.write(str(create_documents(start=150, end=300)))
 
     # Test string
     # print(Embedding.create(input="Animal Sciences", model="text-embedding-ada-002",).data[0].embedding)

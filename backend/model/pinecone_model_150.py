@@ -37,6 +37,7 @@ storage_context = StorageContext.from_defaults(vector_store=vector_store)
 document_list = create_documents(slice=100)
 documents = [Document(text=course) for course in document_list]
 
+# TODO: Update to get index from VectorStore
 index = VectorStoreIndex.from_documents(documents, storage_context=storage_context)
 
 
