@@ -18,9 +18,12 @@ from llama_index.memory import ChatMemoryBuffer
 
 chat_engine = None
 
+# TODO: Parallelize this
+
 # TODO: Generate as API
 
 
+# TODO: Return class knowledge base
 def init_model(model_name="model_150", GPT_model="gpt-3.5-turbo"):
     global chat_engine
     llm = OpenAI(model=GPT_model, temperature=0, max_tokens=512)
