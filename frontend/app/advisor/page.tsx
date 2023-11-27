@@ -26,8 +26,8 @@ export default function AdvisorPage() {
 
     const newHistory = [
       ...chatHistory,
-      { type: 'question', text: currentQuestion },
-      { type: 'response', text: responseText },
+      { type: 'question', text: currentQuestion } as ChatMessage,
+      { type: 'response', text: responseText } as ChatMessage,
     ];
     setChatHistory(newHistory);
     setCurrentQuestion(''); // Reset current question
