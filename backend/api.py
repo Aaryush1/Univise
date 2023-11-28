@@ -18,6 +18,11 @@ existing_models = ["model_150"]
 gpt_options = ["gpt-3.5-turbo", "gpt-3.5-turbo-1106", "gpt-4", "gpt-4-1106-preview"]
 
 
+@app.route("/")
+def index():
+    return "Univise API is functional"
+
+
 # TODO: Return class knowledge base
 @app.route("/init/<string:model_name>/<string:GPT_model>", methods=["POST"])
 def init_model(model_name, GPT_model):

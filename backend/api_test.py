@@ -1,6 +1,6 @@
 import requests
 
-url = "https://univise-backend-aaryush.vercel.app"
+url = "https://univise-backend.vercel.app"
 
 requests.post(f"{url}/init/model_150/gpt-3.5-turbo")
 
