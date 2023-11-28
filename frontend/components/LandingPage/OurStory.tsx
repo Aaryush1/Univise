@@ -23,10 +23,10 @@ const OurStory = () => {
         </Grid>
         <Grid item xs={12} md={8} lg={6}> {/* Adjust width as needed */}
           <Typography variant="body1" align="center" sx={{ color: 'white' }}>
-            Instantaneous, 24/7 enrollment and advising advice powered through generative AI technologies.
-            Instantaneous, 24/7 enrollment and advising advice powered through generative AI technologies.
-            Instantaneous, 24/7 enrollment and advising advice powered through generative AI technologies.
-            Instantaneous, 24/7 enrollment and advising advice powered through generative AI technologies.
+          Frustrated by the inefficiencies of traditional academic advising, we created Univise to address the challenges we and many others faced: information scattered across various sources, limited availability of advisors, and a one-size-fits-all approach that often missed the mark. Our journey as students struggling to navigate the complex world of academic planning, course selection, and career advice sparked a desire for change. 
+          <br></br>
+          <br></br>
+          We envisioned a system where guidance is not only readily available but also consolidated and tailored to individual needs. Univise is the culmination of our efforts to transform academic advising into a more efficient, accessible, and personalized experience for every student.
           </Typography>
         </Grid>
       </Grid>
