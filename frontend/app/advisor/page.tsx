@@ -21,7 +21,7 @@ export default function AdvisorPage() {
     } else if (currentQuestion.includes('lectures after noon')) {
       responseText = "Yes, Intro to Sci Fi (ENG-104) has lectures on Monday and Wednesdays at 1:20pm. Also, Science Fiction Short Stories has lectures on Tuesdays and Thursdays at 2:30pm.";
     } else {
-      responseText = "Sorry, I don't have information on that query.";
+      responseText = "We're currently working on this feature.";
     }
 
     const newHistory = [
