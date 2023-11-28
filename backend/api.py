@@ -6,7 +6,6 @@ from llama_index import (
     StorageContext,
     load_index_from_storage,
 )
-from llama_index.node_parser import SimpleNodeParser
 from llama_index.llms import OpenAI
 from llama_index.memory import ChatMemoryBuffer
 
@@ -34,7 +33,7 @@ def init_model(model_name, GPT_model):
     set_global_service_context(service_context)
     memory = ChatMemoryBuffer.from_defaults(token_limit=2500)
     storage_context = StorageContext.from_defaults(
-        persist_dir=f"./{model_name}_persist"
+        persist_dir=f"./models/{model_name}_persist"
     )
     index = load_index_from_storage(storage_context)
     chat_engine = index.as_chat_engine(
