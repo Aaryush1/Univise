@@ -26,7 +26,7 @@ const OurStory = () => {
           Univise stands out with its cutting-edge approach to academic advising, employing a Retrieval Augmented Generation model. This means we combine the latest in AI technology with up-to-date, publicly available university information to offer personalized, reliable advice. Our system constantly updates itself with the newest data, ensuring you get the most current and relevant guidance. 
           <br></br>
           <br></br>
-          It's designed to understand and adapt to your specific academic needs, making navigating your university experience simpler, more efficient, and tailored just for you. In short, Univise is not just a tool; it's your personalized pathfinder through the complexities of college life.
+          It is designed to understand and adapt to your specific academic needs, making navigating your university experience simpler, more efficient, and tailored just for you. In short, Univise is not just a tool; it is your personalized pathfinder through the complexities of college life.
           </Typography>
         </Grid>
       </Grid>
