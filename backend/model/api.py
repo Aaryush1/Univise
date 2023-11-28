@@ -1,5 +1,5 @@
 import os
-import flask
+from flask import Flask, jsonify, request
 
 API_KEY = ""
 with open("./OPENAI_API_KEY.txt", "r") as f:
@@ -16,16 +16,25 @@ from llama_index.node_parser import SimpleNodeParser
 from llama_index.llms import OpenAI
 from llama_index.memory import ChatMemoryBuffer
 
-chat_engine = None
-
 # TODO: Parallelize this
 
-# TODO: Generate as API
+
+app = Flask(__name__)
+chat_engine = None
+existing_models = ["model_150"]
+gpt_options = ["gpt-3.5-turbo", "gpt-3.5-turbo-1106", "gpt-4", "gpt-4-1106-preview"]
 
 
 # TODO: Return class knowledge base
-def init_model(model_name="model_150", GPT_model="gpt-3.5-turbo"):
+@app.route("/init/<string:model_name>/<string:GPT_model>", methods=["POST"])
+def init_model(model_name, GPT_model):
     global chat_engine
+
+    if model_name not in existing_models:
+        return jsonify({"success": False, "error": "Model not found"})
+    if GPT_model not in gpt_options:
+        return jsonify({"success": False, "error": "GPT model not found"})
+
     llm = OpenAI(model=GPT_model, temperature=0, max_tokens=512)
     service_context = ServiceContext.from_defaults(llm=llm)
     set_global_service_context(service_context)
@@ -39,18 +48,36 @@ def init_model(model_name="model_150", GPT_model="gpt-3.5-turbo"):
         memory=memory,
         system_prompt="You are an academic advisor for students at UW-Madison, understanding their needs and interests and recommending courses for them to take. Understand the student's query based on the data you have available and answer their questions.",
     )
+    return jsonify(
+        {
+            "success": True,
+            "model_name": model_name,
+            "GPT_model": GPT_model,
+            "known_courses": ["biology", "biomedical engineering", "IN PROGRESS"],
+        }
+    )
 
 
-def get_response_stream(query):
+@app.route("/get_response_stream", methods=["GET"])
+def get_response_stream():
     global chat_engine
-    response = chat_engine.stream_chat(query)
-    return response.response_gen
+    query = request.args.get("query")
+    response_stream = chat_engine.stream_chat(query)
+
+    def read_stream():
+        for response in response_stream.response_gen:
+            yield response
+
+    return app.response_class(read_stream(), mimetype="text/plain")
 
 
-def get_response(query):
+@app.route("/get_response", methods=["GET"])
+def get_response():
     global chat_engine
-    response = chat_engine.chat(query)
-    return response.response
+    query = request.args.get("query")
+    response = str(chat_engine.chat(query))
+    return response
 
 
-# TODO: Index model?
+if __name__ == "__main__":
+    app.run()
