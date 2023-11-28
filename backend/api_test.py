@@ -1,6 +1,6 @@
 import requests
 
-url = "https://univise-backend.vercel.app"
+url = "https://univise-backend-aaryush.vercel.app"
 
 requests.post(f"{url}/init/model_150/gpt-3.5-turbo")
 
@@ -25,4 +25,4 @@ print(
 )
 
 # Streaming Response Example
-print(get_stream())
+# print(get_stream())
