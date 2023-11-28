@@ -1,11 +1,6 @@
 import os
 from flask import Flask, jsonify, request
 
-API_KEY = ""
-with open("./OPENAI_API_KEY.txt", "r") as f:
-    API_KEY = f.read()
-os.environ["OPENAI_API_KEY"] = API_KEY
-
 from llama_index import (
     ServiceContext,
     set_global_service_context,
