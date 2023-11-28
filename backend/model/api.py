@@ -1,4 +1,3 @@
-import os
 from flask import Flask, jsonify, request
 
 from llama_index import (
@@ -12,7 +11,7 @@ from llama_index.llms import OpenAI
 from llama_index.memory import ChatMemoryBuffer
 
 # TODO: Parallelize this
-
+# TODO: Add authentication for API usage
 
 app = Flask(__name__)
 chat_engine = None
