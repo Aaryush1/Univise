@@ -1,10 +1,26 @@
-from model_api import init_model, get_response_stream, get_response
 import requests
 
-init_model(model_name="model_150", GPT_model="gpt-3.5-turbo")
-print(get_response("What are good freshman bio classes?\n"))
-for token in get_response_stream("Explain Bio 101 to me."):
-    print(token, end="")
+requests.post("http://127.0.0.1:5000/init/model_150/gpt-3.5-turbo")
 
 
-# TODO: Add API calls
+def get_stream():
+    s = requests.Session()
+    with s.get(
+        "http://127.0.0.1:5000/get_response_stream",
+        params={"query": "Tell me about some classes I can take as a freshman"},
+        stream=True,
+    ) as r:
+        for token in r.iter_lines():
+            print(token.decode("utf-8"))
+
+
+# Get Response Example
+print(
+    requests.get(
+        "http://127.0.0.1:5000/get_response",
+        params={"query": "What do you know about biology classes?"},
+    ).text
+)
+
+# Streaming Response Example
+print(get_stream())
