@@ -1,8 +1,9 @@
-'use client'
+'use client';
 // advisor/page.tsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Box } from '@mui/material';
 import ChatState from '@/components/AdvisorPage/ChatState';
+import { getResponse } from "../../services/apiService";
 
 interface ChatMessage {
   type: 'question' | 'response';
@@ -10,26 +11,51 @@ interface ChatMessage {
 }
 
 export default function AdvisorPage() {
+  useEffect(() => {
+    const initModel = async () => {
+      try {
+        const modelName = 'model_150'; // Replace with your actual model name
+        const response = await fetch(`https://univise-backend.vercel.app/init/${modelName}/gpt-3.5-turbo`, {
+          method: 'POST',
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to initialize model');
+        }
+
+        const data = await response.json();
+        console.log(data); // Log the response from initialization
+      } catch (error) {
+        console.error('Error during model initialization:', error);
+      }
+    };
+
+    initModel();
+  }, []);
+  
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState('');
 
-  const handleSendClick = () => {
-    let responseText = '';
-
-    if (currentQuestion.includes('literature classes')) {
-      responseText = "Here are some recommendations based on your preferences:     ENG-104: Intro to Sci Fi: Exploring New Worlds, with average GPA of 3.78.     ENG-131: Contemporary Dystopian Visions, with average GPA of 3.66.     ENG-128: Science Fiction Short Stories, with average GPA of 3.81.      These courses all have highly-rated instructors and great grade point averages. Let me know if any of these interest you, or if you'd like more information or recommendations.";
-    } else if (currentQuestion.includes('lectures after noon')) {
-      responseText = "Yes, Intro to Sci Fi (ENG-104) has lectures on Monday and Wednesdays at 1:20pm. Also, Science Fiction Short Stories has lectures on Tuesdays and Thursdays at 2:30pm.";
-    } else {
-      responseText = "We're currently working on this feature.";
-    }
-
-    const newHistory = [
-      ...chatHistory,
-      { type: 'question', text: currentQuestion } as ChatMessage,
-      { type: 'response', text: responseText } as ChatMessage,
-    ];
-    setChatHistory(newHistory);
+  const handleSendClick = async () => {
+    // Add the user's question to the chat history
+    const questionMessage: ChatMessage = {
+      type: 'question',
+      text: currentQuestion
+    };
+  
+    setChatHistory(prevHistory => [...prevHistory, questionMessage]);
+  
+    // Fetch the response from the API
+    const apiResponse = await getResponse(currentQuestion);
+    console.log(apiResponse)
+    // Add the API response to the chat history
+    const responseMessage: ChatMessage = {
+      type: 'response',
+      text: apiResponse || "We're currently working on this feature."
+    };
+  
+    setChatHistory(prevHistory => [...prevHistory, responseMessage]);
+  
     setCurrentQuestion(''); // Reset current question
   };
 
