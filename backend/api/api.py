@@ -38,7 +38,7 @@ def init_model(model_name, GPT_model):
     set_global_service_context(service_context)
     memory = ChatMemoryBuffer.from_defaults(token_limit=2500)
     storage_context = StorageContext.from_defaults(
-        persist_dir=f"./models/{model_name}_persist"
+        persist_dir=f"../models/{model_name}_persist"
     )
     index = load_index_from_storage(storage_context)
     chat_engine = index.as_chat_engine(
