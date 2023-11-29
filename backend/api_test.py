@@ -1,8 +1,12 @@
 import requests
+import time
 
-url = "https://univise-backend.vercel.app"
+url = "https://api.univise.org"
+local_server = "http://localhost:5000"
 
 requests.post(f"{url}/init/model_150/gpt-3.5-turbo")
+
+time.sleep(2)
 
 
 def get_stream():
@@ -23,6 +27,8 @@ print(
         params={"query": "What do you know about biology classes?"},
     ).text
 )
+
+# time.sleep(2)
 
 # Streaming Response Example
 # print(get_stream())
