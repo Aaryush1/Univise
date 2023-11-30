@@ -26,7 +26,7 @@ const Header: React.FC<HeaderProps> = ({ onOpenCapabilities }) => {
       </Link>
 
       <Typography variant="h4">
-        Univise-0.1.0
+        Univise-0.1.2
       </Typography>
 
       <Button 
