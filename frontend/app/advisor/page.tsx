@@ -15,7 +15,7 @@ export default function AdvisorPage() {
     const initModel = async () => {
       try {
         const modelName = 'model_150'; // Replace with your actual model name
-        const response = await fetch(`http://127.0.0.1:5000/init/${modelName}/gpt-3.5-turbo`, {
+        const response = await fetch(`https://aaryush.pythonanywhere.com/init/${modelName}/gpt-3.5-turbo`, {
           method: 'POST',
         });
         

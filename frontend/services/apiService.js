@@ -1,7 +1,7 @@
 // apiService.js
 export const getResponse = async (query) => {
   try {
-    const url = new URL(`http://127.0.0.1:5000/get_response`);
+    const url = new URL(`https://aaryush.pythonanywhere.com/get_response`);
     url.search = new URLSearchParams({ query }).toString();
 
     const response = await fetch(url);

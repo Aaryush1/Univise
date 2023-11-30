@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 
 from llama_index import (
     ServiceContext,
@@ -13,6 +14,7 @@ from llama_index.memory import ChatMemoryBuffer
 # TODO: Add authentication for API usage
 
 app = Flask(__name__)
+CORS(app)
 chat_engine = None
 existing_models = ["model_150"]
 gpt_options = ["gpt-3.5-turbo", "gpt-3.5-turbo-1106", "gpt-4", "gpt-4-1106-preview"]
