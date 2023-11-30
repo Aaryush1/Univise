@@ -1,18 +1,22 @@
 // apiService.js
 export const getResponse = async (query) => {
-    try {
-      const url = new URL(`https://univise-backend.vercel.app/get_response`);
-      url.search = new URLSearchParams({ query }).toString();
-  
-      const response = await fetch(url);
-  
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-  
-      return await response.text();
-    } catch (error) {
-      console.error('There was a problem with the fetch operation:', error);
+  try {
+    const url = new URL(`http://127.0.0.1:5000/get_response`);
+    url.search = new URLSearchParams({ query }).toString();
+
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
     }
-  };
-  
+
+    const responseText = await response.text();
+
+    // Log the response text for debugging
+    console.log("Response from API:", responseText);
+
+    return responseText;
+  } catch (error) {
+    console.error('There was a problem with the fetch operation:', error);
+  }
+};
