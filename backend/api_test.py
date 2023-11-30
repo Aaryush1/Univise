@@ -1,8 +1,11 @@
 import requests
+import time
 
-url = "http://127.0.0.1:5000"
+url = "https://aaryush.pythonanywhere.com"
 
 requests.post(f"{url}/init/model_150/gpt-3.5-turbo")
+
+time.sleep(2)
 
 
 def get_stream():
@@ -18,12 +21,12 @@ def get_stream():
 print("API_TEST RUNNING")
 
 # Get Response Example
-# print(
-#     requests.get(
-#         f"{url}/get_response",
-#         params={"query": "What do you know about biology classes?"},
-#     ).text
-# )
+print(
+    requests.get(
+        f"{url}/get_response",
+        params={"query": "What do you know about biology classes?"},
+    ).text
+)
 
 # Streaming Response Example
 print(get_stream())
