@@ -76,4 +76,4 @@ def save_data(path):
     json.dump(list(subjects), open(f"./{path}_subjects.json", "w"), indent=4)
 
 
-save_data("data/s24_clean")\
+save_data("data/s24_clean")
