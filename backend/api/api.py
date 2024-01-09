@@ -9,6 +9,7 @@ from llama_index import (
 )
 from llama_index.llms import OpenAI
 from llama_index.memory import ChatMemoryBuffer
+import json
 
 # TODO: Parallelize this
 # TODO: Add authentication for API usage
@@ -25,7 +26,6 @@ def index():
     return "Univise API is functional"
 
 
-# TODO: Return class knowledge base
 @app.route("/init/<string:model_name>/<string:GPT_model>", methods=["POST"])
 def init_model(model_name, GPT_model):
     global chat_engine
@@ -48,12 +48,16 @@ def init_model(model_name, GPT_model):
         memory=memory,
         system_prompt="You are an academic advisor for students at UW-Madison, understanding their needs and interests and recommending courses for them to take. Understand the student's query based on the data you have available and answer their questions.",
     )
+
+    with open(f"./data/{model_name}_subjects.json") as f:
+        subjects = json.load(f)
+
     return jsonify(
         {
             "success": True,
             "model_name": model_name,
             "GPT_model": GPT_model,
-            "known_courses": ["biology", "biomedical engineering", "IN PROGRESS"],
+            "known_subjects": subjects,
         }
     )
 
