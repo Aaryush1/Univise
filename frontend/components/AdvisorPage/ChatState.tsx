@@ -1,65 +1,105 @@
-// components/AdvisorPage/ChatState.tsx
-import { Box, Typography, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
-import PersonIcon from '@mui/icons-material/Person'; // Human icon
-import AndroidIcon from '@mui/icons-material/Android'; // Robot icon
-import React from 'react';
+import React, { useState } from 'react';
+import { Box, Typography, List, ListItem, ListItemIcon, ListItemText, Button } from '@mui/material';
+import PersonIcon from '@mui/icons-material/Person';
+import AndroidIcon from '@mui/icons-material/Android';
 import Header from './Header';
 import AdvisorFooter from './AdvisorFooter';
 import CapabilitiesPopup from './CapabilitiesPopup';
+import '../../styles/ChatState.css';
+import { getResponse } from '../../services/apiService';
 
-interface ChatStateProps {
-  chatHistory: { type: string, text: string }[];
-  currentQuestion: string;
-  setCurrentQuestion: React.Dispatch<React.SetStateAction<string>>;
-  handleSendClick: () => void;
+interface ChatMessage {
+  type: string;
+  text: string;
 }
 
-const ChatState: React.FC<ChatStateProps> = ({ chatHistory, currentQuestion, setCurrentQuestion, handleSendClick }) => {
-  const [isPopupOpen, setIsPopupOpen] = React.useState(false);
+interface ChatStateProps {
+  chatHistory: ChatMessage[];
+  currentQuestion: string;
+  setCurrentQuestion: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const ChatState: React.FC<ChatStateProps> = ({ chatHistory, currentQuestion, setCurrentQuestion }) => {
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // New state to track loading
+  const [localChatHistory, setLocalChatHistory] = useState<ChatMessage[]>(chatHistory);
 
   const openPopup = () => setIsPopupOpen(true);
   const closePopup = () => setIsPopupOpen(false);
 
-  return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-      <Header onOpenCapabilities={openPopup} />
+  const handleSendClick = async () => {
+    if (!currentQuestion.trim()) return; // Prevent sending empty messages
+    setIsLoading(true);
+    const updatedChatHistory = [...localChatHistory, { type: 'question', text: currentQuestion }];
+    setLocalChatHistory(updatedChatHistory);
 
-      {/* Chat history display */}
-      <Box sx={{ flexGrow: 1, overflowY: 'auto', padding: 4, marginTop: '15vh', marginBottom: '15vh' }}>
-        <List>
-          {chatHistory.map((message, index) => (
-            <ListItem key={index} sx={{
-              display: 'flex',
-              justifyContent: message.type === 'question' ? 'flex-start' : 'flex-end',
-              alignItems: 'flex-start'
-            }}>
-              {message.type === 'question' && <PersonIcon color="primary" />}
-              <ListItemText
-                primary={
-                  <Typography variant="body1" sx={{ fontWeight: 'bold', textAlign: message.type === 'question' ? 'left' : 'right' }}>
-                    {message.type === 'question' ? 'YOU' : 'ADVISOR'}
-                  </Typography>
-                }
-                secondary={
-                  <Typography sx={{ textAlign: message.type === 'question' ? 'left' : 'right' }}>
-                    {message.text}
-                  </Typography>
-                }
-              />
-              {message.type === 'response' && <AndroidIcon color="secondary" />}
+    try {
+      const response = await getResponse(currentQuestion);
+      if (response) {
+        updatedChatHistory.push({ type: 'response', text: response });
+      } else {
+        updatedChatHistory.push({ type: 'response', text: 'No response received.' });
+      }
+    } catch (error) {
+      console.error('Error fetching response:', error);
+      updatedChatHistory.push({ type: 'response', text: 'Error fetching response.' });
+    }
+
+    setLocalChatHistory(updatedChatHistory);
+    setCurrentQuestion(''); // Clear the input box after sending
+    setIsLoading(false);
+  };
+
+  const handleSamplePrompt = async (prompt: string) => {
+    setCurrentQuestion(prompt);
+    handleSendClick();
+  };
+
+
+  return (
+    <>
+    <Header />
+    <Box className="chat-container">
+      <Box className="chat-history">
+        {localChatHistory.length === 0 ? (
+          <Box className="sample-prompts-container">
+            <Button className="sample-prompt" onClick={() => handleSamplePrompt("What classes can I take?")}>
+              What classes can I take?
+            </Button>
+            <Button className="sample-prompt" onClick={() => handleSamplePrompt("Help me plan for graduation...")}>
+              Help me plan for graduation...
+            </Button>
+          </Box>
+        ) : (
+          <List>
+          {localChatHistory.map((message, index) => (
+            <ListItem key={index} className={`chat-message ${message.type}`} style={{ position: 'relative' }}>
+              <Box className="message-icon">
+                {message.type === 'response' ? <AndroidIcon /> : <PersonIcon />}
+              </Box>
+              <Box className="message-text-block">
+                <Typography className="message-title">
+                  {message.type === 'response' ? 'ADVISOR' : 'YOU'}
+                </Typography>
+                <Typography className="message-content">{message.text}</Typography>
+              </Box>
             </ListItem>
           ))}
         </List>
+        )}
       </Box>
 
       <AdvisorFooter
         question={currentQuestion}
         setQuestion={setCurrentQuestion}
         handleSendClick={handleSendClick}
+        onOpenCapabilities={openPopup}
+        isLoading={isLoading} // Pass the loading state
       />
 
       <CapabilitiesPopup open={isPopupOpen} onClose={closePopup} />
     </Box>
+    </>
   );
 };
 

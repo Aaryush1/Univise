@@ -1,61 +1,43 @@
-import { Box, TextField, InputAdornment, IconButton } from '@mui/material';
-import SendIcon from '@mui/icons-material/Send'; // Send button icon
-import AccountCircleIcon from '@mui/icons-material/AccountCircle'; // Profile icon
 import React from 'react';
+import { Box, TextField, InputAdornment, IconButton, Button, CircularProgress } from '@mui/material';
+import SendIcon from '@mui/icons-material/Send';
+import '../../styles/AdvisorPage.css'; // Import the stylesheet
 
 type AdvisorFooterProps = {
   question: string;
   setQuestion: React.Dispatch<React.SetStateAction<string>>;
   handleSendClick: () => void;
+  onOpenCapabilities: () => void; // Added prop for opening capabilities
+  isLoading: boolean; // New prop to indicate loading state
 };
 
-const AdvisorFooter: React.FC<AdvisorFooterProps> = ({ question, setQuestion, handleSendClick }) => {
+const AdvisorFooter: React.FC<AdvisorFooterProps> = ({ question, setQuestion, handleSendClick, onOpenCapabilities,isLoading  }) => {
   return (
-    <Box sx={{
-      height: '15vh', // Footer height
-      display: 'flex',
-      alignItems: 'center',
-      backgroundColor: 'lightgrey',
-      position: 'fixed',
-      bottom: 0,
-      left: 0,
-      right: 0,
-      px: '5%', // Increased horizontal padding
-      boxSizing: 'border-box',
-    }}>
-      <IconButton size="large" sx={{ color: 'black', fontSize: '250%', mr: 4 }}> {/* Increased icon size and added right margin */}
-        <AccountCircleIcon />
-      </IconButton>
+    <Box className="advisor-footer">
+      <Button 
+        variant="outlined" 
+        className="capabilities-button"
+        onClick={onOpenCapabilities}
+      >
+        Capabilities
+      </Button>
       <TextField
         fullWidth
         variant="outlined"
         placeholder="Ask any question ..."
         value={question}
         onChange={(e) => setQuestion(e.target.value)}
-        sx={{
-          borderRadius: 50,
-          height: '60%', // Adjust the height percentage as needed
-          width: '85%', // Adjust the width to extend from about 20% to 90% of the page width
-          '& .MuiOutlinedInput-root': {
-            height: '100%',
-            alignItems: 'center',
-            paddingRight: 1, // Adjusted right padding for the send button
-            border: '1px solid black', // Black border for the input box
-            backgroundColor: 'white', // White background for the input box
-          },
-          '& .MuiOutlinedInput-input': {
-            padding: '0 24px',
-          },
-        }}
+        className="advisor-footer-input"
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
-              <IconButton onClick={handleSendClick} sx={{ color: 'red' }}> {/* Send icon color */}
-                <SendIcon />
+              <IconButton onClick={handleSendClick} className="send-button" disabled={isLoading}>
+                {isLoading ? <CircularProgress size={24} /> : <SendIcon />}
               </IconButton>
             </InputAdornment>
           ),
         }}
+        disabled={isLoading} // Disable the input field when loading
       />
     </Box>
   );

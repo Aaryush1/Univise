@@ -1,0 +1,17 @@
+{
+    "capabilities": [
+      {
+        "title": "Training Set",
+        "description": "This chatbot is trained on 164 classes from the Spring 2024 semester."
+      },
+      {
+        "title": "Abilities",
+        "description": "This chatbot can answer general questions, help you discover new classes, and help you prepare for graduation."
+      },
+      {
+        "title": "Information",
+        "description": "This chatbot is a preliminary beta version, used solely for test purposes."
+      }
+    ]
+}
+  
