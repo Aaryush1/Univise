@@ -1,27 +1,20 @@
-// components/AdvisorPage/Header.tsx
-import { Box, Typography, IconButton, Button } from '@mui/material';
-import HomeIcon from '@mui/icons-material/Home'; // Home icon
 import React from 'react';
+import { Box, Typography, IconButton } from '@mui/material';
+import HomeIcon from '@mui/icons-material/Home'; // Home icon
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'; // Profile icon
 import Link from 'next/link';
+import '../../styles/AdvisorPage.css'; // Import the stylesheet
 
 type HeaderProps = {
-  onOpenCapabilities: () => void;
+  // No longer needs onOpenCapabilities
 };
 
-const Header: React.FC<HeaderProps> = ({ onOpenCapabilities }) => {
+const Header: React.FC<HeaderProps> = () => {
   return (
-    <Box sx={{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      height: '15vh',
-      backgroundColor: 'white',
-      px: 2,
-      boxSizing: 'border-box',
-    }}>
+    <Box className="advisor-header">
       <Link href="/" passHref>
-        <IconButton sx={{ color: 'red' }}>
-          <HomeIcon /> {/* Home icon colored red */}
+        <IconButton className="home-icon">
+          <HomeIcon /> {/* Home icon */}
         </IconButton>
       </Link>
 
@@ -29,17 +22,9 @@ const Header: React.FC<HeaderProps> = ({ onOpenCapabilities }) => {
         Univise-0.1.2
       </Typography>
 
-      <Button 
-        variant="outlined" 
-        sx={{
-          borderRadius: 50, 
-          color: 'red', 
-          borderColor: 'red', 
-        }}
-        onClick={onOpenCapabilities}
-      >
-        Capabilities
-      </Button>
+      <IconButton className="profile-icon">
+        <AccountCircleIcon /> {/* Profile icon */}
+      </IconButton>
     </Box>
   );
 };
