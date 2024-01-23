@@ -4,7 +4,7 @@ import time
 url = "https://api.univise.org"
 local_server = "http://localhost:5000"
 
-requests.post(f"{url}/init/model_150/gpt-3.5-turbo")
+print(requests.post(f"{local_server}/init/s24_clean/gpt-3.5-turbo").json())
 
 time.sleep(2)
 
@@ -12,8 +12,10 @@ time.sleep(2)
 def get_stream():
     s = requests.Session()
     with s.get(
-        f"{url}/get_response_stream",
-        params={"query": "Tell me about some classes I can take as a freshman"},
+        f"{local_server}/get_response_stream",
+        params={
+            "query": "I just took CS540, what class should I take next if I'm interested in AI?"
+        },
         stream=True,
     ) as r:
         for token in r.iter_lines():
@@ -23,8 +25,10 @@ def get_stream():
 # Get Response Example
 print(
     requests.get(
-        f"{url}/get_response",
-        params={"query": "What do you know about biology classes?"},
+        f"{local_server}/get_response",
+        params={
+            "query": "I just took CS540, what class should I take next if I'm interested in AI?"
+        },
     ).text
 )
 

@@ -17,7 +17,7 @@ import json
 app = Flask(__name__)
 CORS(app)
 chat_engine = None
-existing_models = ["model_150"]
+existing_models = ["model_150", "s24_clean"]
 gpt_options = ["gpt-3.5-turbo", "gpt-3.5-turbo-1106", "gpt-4", "gpt-4-1106-preview"]
 
 
@@ -35,12 +35,12 @@ def init_model(model_name, GPT_model):
     if GPT_model not in gpt_options:
         return jsonify({"success": False, "error": "GPT model not found"})
 
-    llm = OpenAI(model=GPT_model, temperature=0, max_tokens=512)
+    llm = OpenAI(model=GPT_model, temperature=0, max_tokens=2048)
     service_context = ServiceContext.from_defaults(llm=llm)
     set_global_service_context(service_context)
-    memory = ChatMemoryBuffer.from_defaults(token_limit=2500)
+    memory = ChatMemoryBuffer.from_defaults(token_limit=4096)
     storage_context = StorageContext.from_defaults(
-        persist_dir=f"../models/{model_name}_persist"
+        persist_dir=f"./models/{model_name}_persist"
     )
     index = load_index_from_storage(storage_context)
     chat_engine = index.as_chat_engine(

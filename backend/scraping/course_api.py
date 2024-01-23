@@ -24,6 +24,18 @@ def filter_json(data):
                     "openToFirstYear": item["openToFirstYear"],
                     "advisingPrerequisites": item["advisoryPrerequisites"],
                     "enrollmentPrerequisites": item["enrollmentPrerequisites"],
+                    "undergraduateCatalogURI": item["subject"][
+                        "undergraduateCatalogURI"
+                    ],
+                    "graduateCatalogURI": item["subject"]["graduateCatalogURI"],
+                    "departmentURI": item["subject"]["departmentURI"],
+                    "schoolCollegeURI": item["subject"]["schoolCollege"][
+                        "schoolCollegeURI"
+                    ],
+                    "footnotes": item["subject"]["footnotes"],
+                    "topics": item["topics"],
+                    "lettersAndScienceCredits": item["lettersAndScienceCredits"],
+                    "repeatability": item["repeatable"],
                 }
             }
         )
