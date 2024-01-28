@@ -26,9 +26,9 @@
   top: 0;
   right: 0;
   color: black;
-  background: transparent; /* Set background to transparent */
-  border: none; /* Remove border */
-  cursor: pointer; /* Change cursor to pointer to indicate clickability */
+  background: transparent; 
+  border: none; 
+  cursor: pointer; 
   padding: 10px;
 }
 

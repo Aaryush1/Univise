@@ -23,7 +23,7 @@ const Header: React.FC<HeaderProps> = () => {
       </Typography>
 
       <IconButton className={styles.profileIcon}>
-        <AccountCircleIcon /> {/* Profile icon */}
+        <AccountCircleIcon style={{ color: 'black' }} /> 
       </IconButton>
     </Box>
   );
