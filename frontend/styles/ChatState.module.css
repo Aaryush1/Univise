@@ -81,14 +81,14 @@
   font-weight: bold;
 }
 
-.samplePromptsContainer {
+.samplePromptsContainer .samplePromptsContainer {
   display: flex;
   justify-content: center;
   gap: 20px;
   padding: 20px;
 }
 
-.samplePrompt {
+.samplePrompt .samplePrompt {
   border-radius: 50px;
   padding: 10px 20px;
   text-align: center;
