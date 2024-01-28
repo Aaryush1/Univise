@@ -8,15 +8,13 @@ interface SamplePromptsProps {
 
 const SamplePrompts: React.FC<SamplePromptsProps> = ({ onSamplePrompt }) => {
   return (
-    <Box className={styles.samplePromptsContainer}> {/* Updated class name */}
-      <Button className={styles.samplePrompt} onClick={() => onSamplePrompt("What are some good literature electives?")}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, p: 2 }}>
+      <Button sx={{ borderRadius: '50px', px: 2, textAlign: 'center', backgroundColor: 'white', border: '2px solid black', color: 'black', cursor: 'pointer', textTransform: 'capitalize' }} onClick={() => onSamplePrompt("What are some good literature electives?")}>
         What are some good literature electives? 
       </Button>
-      <Button className={styles.samplePrompt} onClick={() => onSamplePrompt("Help me plan for graduation...")}>
+      <Button sx={{ borderRadius: '50px', px: 2, textAlign: 'center', backgroundColor: 'white', border: '2px solid black', color: 'black', cursor: 'pointer', textTransform: 'capitalize' }} onClick={() => onSamplePrompt("Help me plan for graduation...")}>
         Help me plan for graduation...
       </Button>
     </Box>
   );
 };
-
-export default SamplePrompts;
