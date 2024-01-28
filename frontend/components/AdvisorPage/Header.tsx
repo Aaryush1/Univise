@@ -14,7 +14,7 @@ const Header: React.FC<HeaderProps> = () => {
     <Box className={styles.advisorHeader}>
       <Link href="/about" passHref>
         <IconButton className={styles.homeIcon}>
-          <InfoIcon /> 
+          <InfoIcon style={{ color: 'black' }}/> 
         </IconButton>
       </Link>
 
