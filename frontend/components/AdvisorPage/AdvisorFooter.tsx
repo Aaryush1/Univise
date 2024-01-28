@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Box, TextField, Typography, IconButton, Button, CircularProgress } from '@mui/material';
-import SendIcon from '@mui/icons-material/Send';
+import SendIcon from '@mui/icons-material/Send'; // Using only the MUI icon
 import FeedbackPopup from './FeedbackPopup'; // Import the new component
 
 type AdvisorFooterProps = {
@@ -27,21 +26,20 @@ const AdvisorFooter: React.FC<AdvisorFooterProps> = ({ question, setQuestion, ha
   };
 
   return (
-      <Box style={{
-        height: '15vh',
-        display: 'flex',
-        alignItems: 'center',
-        backgroundColor: '#ff9797',
-        position: 'fixed',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        padding: '0 5%',
-        boxSizing: 'border-box',
-        gap: '50px'
-      }}>
-      <Button 
-        variant="outlined" 
+    <div style={{
+      height: '15vh',
+      display: 'flex',
+      alignItems: 'center',
+      backgroundColor: '#ff9797',
+      position: 'fixed',
+      bottom: 0,
+      left: 0,
+      right: 0,
+      padding: '0 5%',
+      boxSizing: 'border-box',
+      gap: '50px'
+    }}>
+      <button 
         style={{
           fontSize: '1.05rem',
           padding: '14px 22px',
@@ -51,15 +49,15 @@ const AdvisorFooter: React.FC<AdvisorFooterProps> = ({ question, setQuestion, ha
           color: 'black',
           fontWeight: 'bold',
           borderRadius: '100px',
-          transition: 'background-color 0.3s'
+          transition: 'background-color 0.3s',
+          cursor: 'pointer'
         }}
         onClick={onOpenCapabilities}
       >
         Capabilities
-      </Button>
+      </button>
 
-      <Box 
-      style={{
+      <div style={{
         display: 'flex',
         alignItems: 'center',
         position: 'relative',
@@ -72,7 +70,7 @@ const AdvisorFooter: React.FC<AdvisorFooterProps> = ({ question, setQuestion, ha
           onChange={(e) => setQuestion(e.target.value)}
           style={{
             borderRadius: '50px',
-            border: ' 2px solid black',
+            border: '2px solid black',
             backgroundColor: 'white',
             outline: 'none',
             width: '100%',
@@ -82,21 +80,23 @@ const AdvisorFooter: React.FC<AdvisorFooterProps> = ({ question, setQuestion, ha
           }} 
           disabled={isLoading}
         />
-        <IconButton 
-        onClick={handleSendClick} 
-        style={{
-          position: 'absolute',
-          right: 0,
-          padding: '16px',
-          color: 'black'
-        }}
-        disabled={isLoading}>
-          {isLoading ? <CircularProgress size={24} /> : <SendIcon />}
-        </IconButton>
-      </Box>
+        <button 
+          onClick={handleSendClick} 
+          style={{
+            position: 'absolute',
+            right: 0,
+            padding: '16px',
+            border: 'none',
+            background: 'none',
+            cursor: 'pointer'
+          }}
+          disabled={isLoading}
+        >
+          {isLoading ? <span>Loading...</span> : <SendIcon />}
+        </button>
+      </div>
 
-      <Button 
-        variant="outlined" 
+      <button 
         style={{
           fontSize: '1.05rem',
           padding: '14px 22px',
@@ -106,19 +106,20 @@ const AdvisorFooter: React.FC<AdvisorFooterProps> = ({ question, setQuestion, ha
           color: 'black',
           fontWeight: 'bold',
           borderRadius: '100px',
-          transition: 'background-color 0.3s'
+          transition: 'background-color 0.3s',
+          cursor: 'pointer'
         }}
         onClick={handleOpenFeedback}
       >
         Feedback
-      </Button>
+      </button>
 
       <FeedbackPopup
         open={isFeedbackPopupOpen}
         onClose={handleCloseFeedback}
         onSubmitFeedback={handleSubmitFeedback}
       />
-    </Box>
+    </div>
   );
 };
 
