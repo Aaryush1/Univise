@@ -44,7 +44,7 @@ const AdvisorFooter: React.FC<AdvisorFooterProps> = ({ question, setQuestion, ha
           disabled={isLoading}
         />
         <button className={styles.sendButton} onClick={handleSendClick} disabled={isLoading}>
-        {isLoading ? <CircularProgress size={24} /> : <SendIcon />}
+        {isLoading ? <CircularProgress size={24} style={{ color: 'black' }} /> : <SendIcon style={{ color: 'black' }}/>}
         </button>
       </div>
 
