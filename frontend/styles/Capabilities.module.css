@@ -29,6 +29,7 @@
   background: transparent; /* Set background to transparent */
   border: none; /* Remove border */
   cursor: pointer; /* Change cursor to pointer to indicate clickability */
+  padding: 10px;
 }
 
 .capabilitiesContent {
@@ -37,16 +38,19 @@
 
 .contentTitle {
   text-align: center;
+  font-family: Helvetica, sans-serif;
   margin-bottom: 2rem;
 }
 
 .contentItem {
+  font-family: Helvetica, sans-serif;
   text-align: center;
 }
 
 .itemTitle {
   font-weight: bold;
   font-size: 1.1rem;
+  font-family: Helvetica, sans-serif;
 }
 
 
