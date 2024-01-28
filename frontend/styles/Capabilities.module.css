@@ -1,4 +1,54 @@
 /* Capabilities.css */
+/* CapabilitiesPopup Styles */
+.capabilitiesOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.capabilitiesPopup {
+  position: fixed;
+  top: 10%;
+  left: 10%;
+  width: 80%;
+  height: 80%;
+  background-color: white;
+  border-radius: 10px;
+  z-index: 1001;
+}
+
+.closeIcon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: black;
+  background: transparent; /* Set background to transparent */
+  border: none; /* Remove border */
+  cursor: pointer; /* Change cursor to pointer to indicate clickability */
+}
+
+.capabilitiesContent {
+  padding: 2rem;
+}
+
+.contentTitle {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.contentItem {
+  text-align: center;
+}
+
+.itemTitle {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
 
 .capabilitiesContainer {
     padding: 20px;
