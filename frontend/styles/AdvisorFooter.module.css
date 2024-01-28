@@ -14,7 +14,20 @@
     gap: 50px;
   }
   
-  .capabilitiesButton, .feedbackButton {
+  .capabilitiesButton {
+      font-size: 1.05rem;
+      padding: 14px 22px;
+      font-family: 'Roboto', sans-serif;
+      background: none;
+      border: none;
+      color: black;
+      font-weight: bold;
+      border-radius: 100px;
+      transition: background-color 0.3s;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+  .feedbackButton {
     font-size: 1.05rem;
     padding: 14px 22px;
     font-family: 'Roboto', sans-serif;
@@ -68,4 +81,29 @@
     flex-grow: 1;
     font-size: 1rem;
   }
+
+  @media (max-width: 700px) {
+    .advisorFooter {
+      flex-direction: column;
+      height: 25vh;
+      gap: 10px;
+      align-items: stretch;
+    }
   
+    .inputWrapper {
+      width: 100%;
+      justify-content: center;
+      order: 1; /* Move inputWrapper to first position */
+    }
+  
+    .capabilitiesButton, .feedbackButton {
+      width: 100%;
+      order: 2; /* Move buttons to second position */
+    }
+    .buttonRow {
+      display: flex;
+      width: 100%;
+      justify-content: space-between; /* Align buttons in a row */
+      order: 2; /* Position after inputWrapper */
+    }
+  }
