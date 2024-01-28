@@ -1,3 +1,5 @@
 *KEY.txt
 *.pyc
 .vercel
+*.yaml
+vector_store.json
