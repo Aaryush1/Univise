@@ -14,7 +14,7 @@ const Footer = () => {
       }}
     >
       <Typography variant="body1">
-      © 2023 Univise.org  |  
+      © 2024 Univise.org  |  
       <a href="https://www.aaryush.com" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>
         Aaryush Gupta
       </a>  |  
