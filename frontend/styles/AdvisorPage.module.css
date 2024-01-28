@@ -96,10 +96,11 @@
   z-index: 1001;
 }
 
-.closeIcon {
+.close-icon {
   position: absolute;
   top: 0;
   right: 0;
+  color:black;
 }
 
 .capabilitiesContent {

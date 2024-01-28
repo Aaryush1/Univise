@@ -87,7 +87,8 @@ const AdvisorFooter: React.FC<AdvisorFooterProps> = ({ question, setQuestion, ha
         style={{
           position: 'absolute',
           right: 0,
-          padding: '16px'
+          padding: '16px',
+          color: 'black'
         }}
         disabled={isLoading}>
           {isLoading ? <CircularProgress size={24} /> : <SendIcon />}
