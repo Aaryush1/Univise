@@ -22,7 +22,7 @@ const MainContent = () => {
       <Typography variant="h5" component="h2" sx={{ mt: 1, mb: 2 }}>
         Transforming Advising, One Chat at a Time
       </Typography>
-      <Link href="/advisor" passHref>
+      <Link href="/" passHref>
         <Button
           variant="contained"
           size="large"
@@ -36,7 +36,7 @@ const MainContent = () => {
             },
           }}
         >
-          Meet Your Advisor
+          Back to Advisor
         </Button>
       </Link>
     </Box>

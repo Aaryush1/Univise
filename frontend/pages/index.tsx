@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Box } from '@mui/material';
 import ChatState from '@/components/AdvisorPage/ChatState';
-import { getResponse } from "../../services/apiService";
+import { getResponse } from "../services/apiService";
 
 interface ChatMessage {
   type: 'question' | 'response';
