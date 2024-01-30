@@ -1,0 +1,87 @@
+/* ChatState.module.css */
+
+.chatContainer {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 30vh);
+  overflow-y: auto;
+  background-color: #ff9797;
+}
+
+.chatHistory {
+  padding: 4px;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 800px;
+  min-width: 800px;
+  background-color: #ff9797;
+}
+
+/* Custom scrollbar styles */
+.chatContainer::-webkit-scrollbar {
+  width: 10px;
+}
+
+.chatContainer::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.chatContainer::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+.chatContainer::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+@media (max-width: 800px) {
+  .chatHistory {
+    min-width: 0;
+    max-width: 96%;
+  }
+}
+
+.chatMessage {
+  align-items: flex-start;
+  padding-bottom: 10px;
+}
+
+.messageIcon {
+  position: absolute;
+  left: 10px;
+}
+
+.messageTextBlock {
+  flex-direction: column;
+  margin-left: 50px;
+  padding-bottom: 15px;
+}
+
+.messageTitle, .messageContent {
+  font-weight: bold;
+  text-align: left;
+  padding-bottom: 10px;
+}
+
+/* Style for icons */
+.chatMessage .MuiListItemIcon-root {
+  min-width: auto;
+  margin-right: 16px;
+}
+
+.chatMessage.question {
+  justify-content: flex-end;
+}
+
+.chatMessage.response {
+  justify-content: flex-start;
+}
+
+.messageText {
+  font-weight: bold;
+}
+
+/* Ensure scrollbar extends to the header */
+.header {
+  margin-top: 0;
+}
