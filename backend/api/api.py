@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+import os
 
 from llama_index import (
     ServiceContext,
@@ -13,6 +14,7 @@ import json
 
 # TODO: Parallelize this
 # TODO: Add authentication for API usage
+
 
 app = Flask(__name__)
 CORS(app)
