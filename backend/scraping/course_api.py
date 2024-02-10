@@ -80,6 +80,9 @@ def get_data(term="1244"):
     )
     return response
 
+#TODO: Make lecture API calls for each course code and append to data
+def get_timings(courses_list):
+    pass
 
 def save_data(path):
     response = get_data()
