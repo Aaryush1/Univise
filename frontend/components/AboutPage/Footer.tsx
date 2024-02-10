@@ -14,8 +14,14 @@ const Footer = () => {
       }}
     >
       <Typography variant="body1">
-        © 2023 Univise.org  |  Aaryush Gupta  |  Harrison Roloff
-      </Typography>
+      © 2024 Univise.org  |  
+      <a href="https://www.aaryush.com" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>
+        Aaryush Gupta
+      </a>  |  
+      <a href="https://www.harrisonroloff.com" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>
+        Harrison Roloff
+      </a>
+    </Typography>
     </Box>
   );
 };
