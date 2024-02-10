@@ -1,7 +1,6 @@
 'use client';
 // advisor/page.tsx
 import { useState, useEffect } from 'react';
-import { Head } from 'next/document';
 import { Box } from '@mui/material';
 import ChatState from '@/components/AdvisorPage/ChatState';
 import { getResponse } from "../services/apiService";
@@ -62,9 +61,11 @@ export default function AdvisorPage() {
 
   return (
     <>
-      <div><head>
-        <title>Univise Advisor</title>
-      </head></div>
+      <div>
+        <head>
+          <title>Univise Advisor</title>
+        </head>
+      </div>
 
       <Box sx={{ padding: 0, margin: 0, width: '100%', boxSizing: 'border-box' }}>
         <ChatState
