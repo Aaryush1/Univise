@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
+import { Box, TextField, Typography, IconButton, Button, CircularProgress } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
-import FeedbackPopup from './FeedbackPopup';
-import styles from '../../styles/AdvisorFooter.module.css'; // Import the CSS Module
-import CircularProgress from '@mui/material/CircularProgress';
-
+import styles from '../../styles/AdvisorPage.module.css'; // Import the CSS Module
+import FeedbackPopup from './FeedbackPopup'; // Import the new component
 
 type AdvisorFooterProps = {
   question: string;
@@ -29,12 +28,16 @@ const AdvisorFooter: React.FC<AdvisorFooterProps> = ({ question, setQuestion, ha
   };
 
   return (
-    <div className={styles.advisorFooter}>
-      <button className={styles.capabilitiesButton} onClick={onOpenCapabilities}>
+      <Box className={styles.advisorFooter}>
+      <Button 
+        variant="outlined" 
+        className={styles.capabilitiesButton}
+        onClick={onOpenCapabilities}
+      >
         Capabilities
-      </button>
+      </Button>
 
-      <div className={styles.inputWrapper}>
+      <Box className={styles.inputWrapper}>
         <input
           type="text"
           placeholder="Ask any question ..."
@@ -43,21 +46,25 @@ const AdvisorFooter: React.FC<AdvisorFooterProps> = ({ question, setQuestion, ha
           className={styles.advisorFooterInput} 
           disabled={isLoading}
         />
-        <button className={styles.sendButton} onClick={handleSendClick} disabled={isLoading}>
-        {isLoading ? <CircularProgress size={24} style={{ color: 'black' }} /> : <SendIcon style={{ color: 'black' }}/>}
-        </button>
-      </div>
+        <IconButton onClick={handleSendClick} className={styles.sendButton} disabled={isLoading}>
+          {isLoading ? <CircularProgress size={24} /> : <SendIcon />}
+        </IconButton>
+      </Box>
 
-      <button className={styles.feedbackButton} onClick={handleOpenFeedback}>
+      <Button 
+        variant="outlined" 
+        className={styles.feedbackButton}
+        onClick={handleOpenFeedback}
+      >
         Feedback
-      </button>
+      </Button>
 
       <FeedbackPopup
         open={isFeedbackPopupOpen}
         onClose={handleCloseFeedback}
         onSubmitFeedback={handleSubmitFeedback}
       />
-    </div>
+    </Box>
   );
 };
 

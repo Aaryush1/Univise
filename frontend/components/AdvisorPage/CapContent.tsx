@@ -1,23 +1,24 @@
 import React from 'react';
+import { Box, Typography } from '@mui/material';
 import content from '../../data/capabilitiesContent.json';
 import styles from '../../styles/Capabilities.module.css'; // Import the CSS Module
 
 const CapabilitiesContent: React.FC = () => {
   return (
-    <div className={styles.capabilitiesContainer}>
-      <h2 className={styles.contentTitle}>
+    <Box className={styles.capabilitiesContainer}> {/* Updated class name */}
+      <Typography variant="h5" className={styles.contentTitle}> {/* Updated class name */}
         Capabilities
-      </h2>
+      </Typography>
 
       {content.capabilities.map((capability, index) => (
-        <div key={index} className={styles.capabilityItem}>
-          <h6 className={styles.itemTitle}>
+        <Box key={index} className={styles.capabilityItem}> {/* Updated class name */}
+          <Typography variant="subtitle1" className={styles.itemTitle}> {/* Updated class name */}
             {capability.title}
-          </h6>
-          <p>{capability.description}</p>
-        </div>
+          </Typography>
+          <Typography>{capability.description}</Typography>
+        </Box>
       ))}
-    </div>
+    </Box>
   );
 };
 

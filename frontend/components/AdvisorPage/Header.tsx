@@ -13,8 +13,8 @@ const Header: React.FC<HeaderProps> = () => {
   return (
     <Box className={styles.advisorHeader}>
       <Link href="/about" passHref>
-        <IconButton className={styles.homeIcon}>
-          <InfoIcon style={{ color: 'black' }}/> 
+        <IconButton className={styles.infoIcon}>
+          <InfoIcon /> 
         </IconButton>
       </Link>
 
@@ -23,7 +23,7 @@ const Header: React.FC<HeaderProps> = () => {
       </Typography>
 
       <IconButton className={styles.profileIcon}>
-        <AccountCircleIcon style={{ color: 'black' }} /> 
+        <AccountCircleIcon /> {/* Profile icon */}
       </IconButton>
     </Box>
   );

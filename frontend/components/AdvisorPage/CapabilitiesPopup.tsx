@@ -1,7 +1,8 @@
 import React from 'react';
+import { Box, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import CapabilitiesContent from './CapContent';
-import styles from '../../styles/Capabilities.module.css'; // Import the CSS Module
+import styles from '../../styles/AdvisorPage.module.css'; // Import the CSS Module
 
 type CapabilitiesPopupProps = {
   open: boolean;
@@ -13,14 +14,16 @@ const CapabilitiesPopup: React.FC<CapabilitiesPopupProps> = ({ open, onClose }) 
 
   return (
     <>
-      <div className={styles.capabilitiesOverlay}></div>
+      {/* Overlay */}
+      <Box className={styles.capabilitiesOverlay} /> {/* Updated class name */}
 
-      <div className={styles.capabilitiesPopup}>
-        <button onClick={onClose} className={styles.closeIcon}>
+      {/* Pop-up */}
+      <Box className={styles.capabilitiesPopup}> {/* Updated class name */}
+        <IconButton onClick={onClose} className={styles.closeIcon}> {/* Updated class name */}
           <CloseIcon />
-        </button>
+        </IconButton>
         <CapabilitiesContent />
-      </div>
+      </Box>
     </>
   );
 };
