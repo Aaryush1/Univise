@@ -4,7 +4,7 @@ import time
 url = "https://api.univise.org"
 local_server = "http://localhost:5000"
 
-print(requests.post(f"{local_server}/init/s24_clean/gpt-3.5-turbo").json())
+print(requests.post(f"{local_server}/init/s24_clean/gpt-3.5-turbo").json(), end="\n\n")
 
 time.sleep(2)
 
@@ -27,7 +27,7 @@ print(
     requests.get(
         f"{local_server}/get_response",
         params={
-            "query": "I just took CS540, what class should I take next if I'm interested in AI?"
+            "query": "I just dropped CS 577 what classes can i take instead? I'm a CS major and in my junior year."
         },
     ).text
 )
