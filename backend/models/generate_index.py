@@ -13,6 +13,7 @@ from llama_index import (
 from llama_index.node_parser import SimpleNodeParser
 
 
+#TODO: Add Pinecone integration
 def create_index(dataset):
     documents = [
         Document(text=str(course))
