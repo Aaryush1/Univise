@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Box } from '@mui/material';
 import ChatState from '@/components/AdvisorPage/ChatState';
-import { getResponse } from "../../services/apiService";
+import { getResponse } from "../services/apiService";
 
 interface ChatMessage {
   type: 'question' | 'response';
@@ -18,7 +18,7 @@ export default function AdvisorPage() {
         const response = await fetch(`https://aaryush.pythonanywhere.com/init/${modelName}/gpt-3.5-turbo`, {
           method: 'POST',
         });
-        
+
         if (!response.ok) {
           throw new Error('Failed to initialize model');
         }
@@ -32,7 +32,7 @@ export default function AdvisorPage() {
 
     initModel();
   }, []);
-  
+
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState('');
 
@@ -42,9 +42,9 @@ export default function AdvisorPage() {
       type: 'question',
       text: currentQuestion
     };
-  
+
     setChatHistory(prevHistory => [...prevHistory, questionMessage]);
-  
+
     // Fetch the response from the API
     const apiResponse = await getResponse(currentQuestion);
     console.log(apiResponse)
@@ -53,19 +53,23 @@ export default function AdvisorPage() {
       type: 'response',
       text: apiResponse || "We're currently working on this feature."
     };
-  
+
     setChatHistory(prevHistory => [...prevHistory, responseMessage]);
-  
+
     setCurrentQuestion(''); // Reset current question
   };
 
   return (
-    <Box sx={{ padding: 0, margin: 0, width: '100%', boxSizing: 'border-box' }}>
-      <ChatState
-        chatHistory={chatHistory}
-        currentQuestion={currentQuestion}
-        setCurrentQuestion={setCurrentQuestion}
-      />
-    </Box>
+    <>
+      <title>Univise Advisor</title>
+
+      <Box sx={{ padding: 0, margin: 0, width: '100%', boxSizing: 'border-box' }}>
+        <ChatState
+          chatHistory={chatHistory}
+          currentQuestion={currentQuestion}
+          setCurrentQuestion={setCurrentQuestion}
+        />
+      </Box>
+    </>
   );
 }

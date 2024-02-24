@@ -1,9 +1,9 @@
 import React from 'react';
 import { Box, Typography, IconButton } from '@mui/material';
-import HomeIcon from '@mui/icons-material/Home'; // Home icon
+import InfoIcon from '@mui/icons-material/Info'; // Home icon
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'; // Profile icon
 import Link from 'next/link';
-import '../../styles/AdvisorPage.css'; // Import the stylesheet
+import styles from '../../styles/AdvisorPage.module.css'; // Import the CSS Module
 
 type HeaderProps = {
   // No longer needs onOpenCapabilities
@@ -11,19 +11,19 @@ type HeaderProps = {
 
 const Header: React.FC<HeaderProps> = () => {
   return (
-    <Box className="advisor-header">
-      <Link href="/" passHref>
-        <IconButton className="home-icon">
-          <HomeIcon /> {/* Home icon */}
+    <Box className={styles.advisorHeader}>
+      <Link href="/about" passHref>
+        <IconButton className={styles.homeIcon}>
+          <InfoIcon style={{ color: 'black' }}/> 
         </IconButton>
       </Link>
 
-      <Typography variant="h4" className="header-title">
-        Univise-0.1.1
+      <Typography variant="h4" className={styles.headerTitle}>
+        Univise-0.1.5
       </Typography>
 
-      <IconButton className="profile-icon">
-        <AccountCircleIcon /> {/* Profile icon */}
+      <IconButton className={styles.profileIcon}>
+        <AccountCircleIcon style={{ color: 'black' }} /> 
       </IconButton>
     </Box>
   );
