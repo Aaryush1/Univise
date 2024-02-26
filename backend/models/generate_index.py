@@ -1,6 +1,7 @@
 import os
 import json
 from pinecone import Pinecone, ServerlessSpec
+from openai import OpenAI
 
 openAI_API_KEY = ""
 with open("./OPENAI_API_KEY.txt", "r") as f:
@@ -18,11 +19,23 @@ from llama_index import (
 )
 from llama_index.node_parser import SimpleNodeParser
 
+client = OpenAI()
+
 
 def create_embeddings(dataset):
-    # TODO: Create embeddings for the dataset with text-embedding-3-small
-    # TODO: ID: course_name, values: embedding
-    pass
+    # TODO: TESTING
+    embedded_data = []
+    for data in enumerate(dataset):
+        embedding = client.embeddings.create(
+            model="text-embedding-3-small", input=[str(data)]
+        )
+        embedded_data.append(
+            {
+                "id": list(data.keys())[0],
+                "embedding": embedding,
+            }
+        )
+    return embedded_data  # Format should be {id: abc, embedding: [1,2,3...,14,15,16]}
 
 
 def create_index(dataset, pinecone):
@@ -30,7 +43,7 @@ def create_index(dataset, pinecone):
         data = create_embeddings(dataset)
         pc.create_index(
             name={dataset},
-            dimension=1536,  # Replace with your model dimensions
+            dimension=1536,
             metric="euclidean",
             spec=ServerlessSpec(cloud="aws", region="us-west-2"),
         )
