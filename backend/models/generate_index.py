@@ -35,7 +35,7 @@ def create_embeddings(dataset):
                 "embedding": embedding,
             }
         )
-    return embedded_data  # Format should be {id: abc, embedding: [1,2,3...,14,15,16]}
+    return embedded_data
 
 
 def create_index(dataset, pinecone):
