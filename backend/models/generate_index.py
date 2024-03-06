@@ -41,7 +41,8 @@ def create_embeddings(dataset):
 
 def create_index(dataset, pinecone):
     if pinecone:
-        data = create_embeddings(dataset)
+        data = json.load(open(f"./data/{dataset}.json", "r"))
+        embedded_data = create_embeddings(data)
         pc.create_index(
             name={dataset},
             dimension=1536,
@@ -49,7 +50,7 @@ def create_index(dataset, pinecone):
             spec=ServerlessSpec(cloud="aws", region="us-west-2"),
         )
         index = pc.index(name=dataset)
-        index.upsert(items=data)
+        index.upsert(items=embedded_data)
     else:
         documents = [
             Document(text=str(course))
