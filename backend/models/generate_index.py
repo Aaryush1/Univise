@@ -1,5 +1,6 @@
 import os
 import json
+import sys
 from pinecone import Pinecone, ServerlessSpec
 from openai import OpenAI
 
@@ -60,4 +61,8 @@ def create_index(dataset, pinecone):
         index.storage_context.persist(persist_dir=f"./models/{dataset}_persist")
 
 
-create_index("s24_clean", True)
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Usage: python generate_index.py <dataset>")
+        sys.exit(1)
+    create_index(sys.argv[1], False)
