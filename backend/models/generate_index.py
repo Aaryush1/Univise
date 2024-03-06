@@ -41,6 +41,7 @@ def create_embeddings(dataset):
 
 def create_index(dataset, pinecone):
     if pinecone:
+        # TODO: Add metadata
         data = json.load(open(f"./data/{dataset}.json", "r"))
         embedded_data = create_embeddings(data)
         pc.create_index(
