@@ -25,7 +25,7 @@ client = OpenAI()
 def create_embeddings(dataset):
     # TODO: TESTING
     embedded_data = []
-    for data in enumerate(dataset):
+    for data in dataset:
         embedding = client.embeddings.create(
             model="text-embedding-3-small", input=[str(data)]
         )
