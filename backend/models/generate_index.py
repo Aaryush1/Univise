@@ -36,6 +36,7 @@ def create_embeddings(dataset):
                 "embedding": embedding,
             }
         )
+        break
     return embedded_data
 
 
@@ -44,8 +45,9 @@ def create_index(dataset, pinecone):
         # TODO: Add metadata
         data = json.load(open(f"./data/{dataset}.json", "r"))
         embedded_data = create_embeddings(data)
+        pc.delete_index(name=dataset)
         pc.create_index(
-            name={dataset},
+            name=dataset,
             dimension=1536,
             metric="euclidean",
             spec=ServerlessSpec(cloud="aws", region="us-west-2"),
@@ -64,7 +66,9 @@ def create_index(dataset, pinecone):
 
 
 if __name__ == "__main__":
+    """
     if len(sys.argv) < 2:
         print("Usage: python generate_index.py <dataset>")
         sys.exit(1)
-    create_index(sys.argv[1], False)
+    """
+    create_index("s24_clean", False)
