@@ -2,4 +2,4 @@
 *.pyc
 .vercel
 *.yaml
-vector_store.json
+*.json

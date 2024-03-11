@@ -23,7 +23,7 @@ with open("./PINECONE_API_KEY.txt", "r") as f:
 
 os.environ["PINECONE_API_KEY"] = k
 
-pinecone.init(api_key=os.environ["PINECONE_API_KEY"], environment="us-west1-gcp")
+pinecone.init(api_key=os.environ["PINECONE_API_KEY"], environment="us-west2-aws")
 
 
 @app.route("/")
@@ -43,8 +43,7 @@ def init_model(model_name, GPT_model):
     service_context = ServiceContext.from_defaults(llm=llm)
     set_global_service_context(service_context)
     memory = ChatMemoryBuffer.from_defaults(token_limit=4096)
-
-    index = pinecone.Index(model_name)
+    index = pinecone.Index(model_name.lower().replace("_", "-"))
     vector_store = PineconeVectorStore(index)
     chat_engine = VectorStoreIndex(vector_store).as_chat_engine(
         chat_mode="context",
