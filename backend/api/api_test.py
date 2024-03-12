@@ -23,14 +23,15 @@ def get_stream():
 
 
 # Get Response Example
-print(
-    requests.get(
-        f"{local_server}/get_response",
-        params={
-            "query": "What classes can I take as a freshman in CS? I want to learn about AI."
-        },
-    ).text
-)
+query = input("Enter a query:")
+while query != "exit":
+    print(
+        requests.get(
+            f"{local_server}/get_response",
+            params={"query": query},
+        ).text
+    )
+    query = input("Enter a query:")
 
 # time.sleep(2)
 
