@@ -14,17 +14,14 @@ with open("./PINECONE_API_KEY.txt", "r") as f:
     pinecone_API_KEY = f.read()
 pc = Pinecone(api_key=pinecone_API_KEY)
 
-from llama_index import (
-    Document,
-    VectorStoreIndex,
-)
-from llama_index.node_parser import SimpleNodeParser
+from llama_index.core import VectorStoreIndex, Document
+from llama_index.core import StorageContext
+from llama_index.vector_stores.pinecone import PineconeVectorStore
 
 client = OpenAI()
 
 
 def create_embeddings(data, dataset):
-    # TODO: TESTING
     embedded_data = []
     for item in data:
         print(f"Embedding: {list(item.keys())[0]}")
@@ -42,42 +39,35 @@ def create_embeddings(data, dataset):
     return embedded_data
 
 
-def create_index(dataset, pinecone):
-    if pinecone:
-        # TODO: Add metadata
-        index_name = dataset.lower().replace("_", "-")
-        data = json.load(open(f"./data/{dataset}.json", "r"))
-        if not os.path.exists(f"./models/embeddings/{dataset}_embeddings.json"):
-            print("Creating embeddings...")
-            embedded_data = create_embeddings(data, dataset)
-        embedded_data = json.load(
-            open(f"./models/embeddings/{dataset}_embeddings.json", "r")
-        )
-        pc.delete_index(index_name)
-        pc.create_index(
-            name=index_name,
-            dimension=1536,
-            metric="euclidean",
-            spec=ServerlessSpec(cloud="aws", region="us-west-2"),
-        )
-        index = pc.Index(name=index_name)
-        for i in range(0, len(embedded_data), 200):
-            print(
-                f"Upserting {i} to {min(i+200, len(embedded_data) - 1)}, Start: {embedded_data[i]['id']} End:{embedded_data[min(i+200, len(embedded_data) - 1)]['id']}"
-            )
-            index.upsert(
-                vectors=embedded_data[i : min(i + 200, len(embedded_data)) - 1]
-            )
+def create_index(dataset):
+    # TODO: Add metadata
+    # TODO: Update to embedding-3-small
+    index_name = dataset.lower().replace("_", "-")
 
-    else:
-        documents = [
-            Document(text=str(course))
-            for course in json.load(open(f"./data/{dataset}.json", "r"))
-        ]
-        parser = SimpleNodeParser.from_defaults()
-        nodes = parser.get_nodes_from_documents(documents)
-        index = VectorStoreIndex(nodes, show_progress=True)
-        index.storage_context.persist(persist_dir=f"./models/{dataset}_persist")
+    documents = [
+        Document(
+            text=str(course),
+            metadata={
+                "course": list(course.keys())[0],
+                "school": course[list(course.keys())[0]]["school"],
+                "credits": course[list(course.keys())[0]]["credits"],
+            },
+        )
+        for course in json.load(open(f"./data/{dataset}.json", "r"))
+    ]
+    pc.delete_index(index_name)
+    pc.create_index(
+        name=index_name,
+        dimension=1536,
+        metric="euclidean",
+        spec=ServerlessSpec(cloud="aws", region="us-west-2"),
+    )
+    pc_index = pc.Index(name=index_name)
+    vector_store = PineconeVectorStore(pc_index)
+    storage_context = StorageContext.from_defaults(vector_store=vector_store)
+    index = VectorStoreIndex.from_documents(
+        documents, storage_context=storage_context, show_progress=True
+    )
 
 
 if __name__ == "__main__":
@@ -87,4 +77,4 @@ if __name__ == "__main__":
         sys.exit(1)
     create_index(sys.argv[1], True)
     """
-    create_index("s24_clean", True)
+    create_index("s24_clean")

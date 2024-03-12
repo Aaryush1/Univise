@@ -1,15 +1,20 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import os
-from llama_index import (
-    ServiceContext,
-    set_global_service_context,
-    VectorStoreIndex,
-)
-from llama_index.llms import OpenAI
-from llama_index.memory import ChatMemoryBuffer
-from llama_index.vector_stores import PineconeVectorStore
-import pinecone
+
+with open("./PINECONE_API_KEY.txt", "r") as f:
+    k = f.read()
+os.environ["PINECONE_API_KEY"] = k
+
+with open("./OPENAI_API_KEY.txt", "r") as f:
+    k = f.read()
+os.environ["OPENAI_API_KEY"] = k
+
+from llama_index.core import Settings, VectorStoreIndex
+from llama_index.core.memory import ChatMemoryBuffer
+from llama_index.llms.openai import OpenAI
+from llama_index.vector_stores.pinecone import PineconeVectorStore
+from pinecone import Pinecone
 import json
 
 app = Flask(__name__)
@@ -18,12 +23,8 @@ chat_engine = None
 existing_models = ["model_150", "s24_clean"]
 gpt_options = ["gpt-3.5-turbo", "gpt-3.5-turbo-1106", "gpt-4", "gpt-4-1106-preview"]
 
-with open("./PINECONE_API_KEY.txt", "r") as f:
-    k = f.read()
 
-os.environ["PINECONE_API_KEY"] = k
-
-pinecone.init(api_key=os.environ["PINECONE_API_KEY"], environment="us-west2-aws")
+pc = Pinecone(os.environ["PINECONE_API_KEY"])
 
 
 @app.route("/")
@@ -40,12 +41,13 @@ def init_model(model_name, GPT_model):
         return jsonify({"success": False, "error": "GPT model not found"})
 
     llm = OpenAI(model=GPT_model, temperature=0, max_tokens=2048)
-    service_context = ServiceContext.from_defaults(llm=llm)
-    set_global_service_context(service_context)
+    Settings.llm = llm
+
+    index_name = pc.Index(model_name.lower().replace("_", "-"))
+    vector_store = PineconeVectorStore(index_name)
     memory = ChatMemoryBuffer.from_defaults(token_limit=4096)
-    index = pinecone.Index(model_name.lower().replace("_", "-"))
-    vector_store = PineconeVectorStore(index)
-    chat_engine = VectorStoreIndex(vector_store).as_chat_engine(
+
+    chat_engine = VectorStoreIndex.from_vector_store(vector_store).as_chat_engine(
         chat_mode="context",
         memory=memory,
         system_prompt="You are an academic advisor for students at UW-Madison, understanding their needs and interests and recommending courses for them to take. Understand the student's query based on the data you have available and answer their questions. Be sure to format your response using Markdown.",
@@ -81,8 +83,8 @@ def get_response_stream():
 def get_response():
     global chat_engine
     query = request.args.get("query")
-    response = str(chat_engine.chat(query))
-    return response
+    response = chat_engine.chat(query)
+    return jsonify({"response": str(response)})
 
 
 if __name__ == "__main__":

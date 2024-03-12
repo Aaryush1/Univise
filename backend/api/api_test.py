@@ -27,7 +27,7 @@ print(
     requests.get(
         f"{local_server}/get_response",
         params={
-            "query": "I just dropped CS 577 what classes can i take instead? I'm a CS major and in my junior year."
+            "query": "What classes can I take as a freshman in CS? I want to learn about AI."
         },
     ).text
 )
