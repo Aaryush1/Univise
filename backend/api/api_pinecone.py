@@ -23,7 +23,10 @@ app = Flask(__name__)
 CORS(app)
 chat_engine = None
 existing_models = ["model_150", "s24_clean"]
-gpt_options = ["gpt-3.5-turbo", "gpt-3.5-turbo-1106", "gpt-4", "gpt-4-1106-preview"]
+gpt_options = [
+    "gpt-3.5-turbo",
+    "gpt-4-turbo-preview",
+]
 
 
 pc = Pinecone(os.environ["PINECONE_API_KEY"])
