@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SendIcon from '@mui/icons-material/Send';
 import CircularProgress from '@mui/material/CircularProgress';
-import styles from '../../styles/AdvisorFooter.module.css'; // Import the CSS Module
+import styles from '@/styles/AdvisorFooter.module.css'; // Import the CSS Module
 
 type AdvisorFooterProps = {
   question: string;
@@ -10,6 +10,8 @@ type AdvisorFooterProps = {
   onOpenCapabilities: () => void;
   isLoading: boolean;
 };
+
+
 
 const AdvisorFooter: React.FC<AdvisorFooterProps> = ({
   question,
@@ -33,6 +35,12 @@ const AdvisorFooter: React.FC<AdvisorFooterProps> = ({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const handleEnterClick = async (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleSendClick();
+    }
+  }
+
   const isMobileView = windowWidth < 700;
 
   if (isMobileView) {
@@ -47,6 +55,7 @@ const AdvisorFooter: React.FC<AdvisorFooterProps> = ({
             onChange={(e) => setQuestion(e.target.value)}
             className={styles.advisorFooterInput}
             disabled={isLoading}
+            onKeyDown={(e) => handleEnterClick(e)}
           />
           <button className={styles.sendButton} onClick={handleSendClick} disabled={isLoading}>
             {isLoading ? <CircularProgress size={24} style={{ color: 'black' }} /> : <SendIcon style={{ color: 'black' }} />}
@@ -96,7 +105,7 @@ const AdvisorFooter: React.FC<AdvisorFooterProps> = ({
           onClick={() => window.open(googleFormUrl, '_blank')}
         >
           Feedback
-          </button>
+        </button>
       </div>
     );
   }

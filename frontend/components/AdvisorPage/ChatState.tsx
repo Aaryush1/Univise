@@ -47,11 +47,13 @@ const ChatState: React.FC<ChatStateProps> = ({ chatHistory, currentQuestion, set
     setIsLoading(false);
   };
 
+
+
   const handleSamplePrompt = async (prompt: string) => {
     setIsLoading(true);
     const updatedChatHistory = [...localChatHistory, { type: 'question', text: prompt }];
     setLocalChatHistory(updatedChatHistory);
-  
+
     try {
       const response = await getResponse(prompt);
       if (response) {
@@ -63,7 +65,7 @@ const ChatState: React.FC<ChatStateProps> = ({ chatHistory, currentQuestion, set
       console.error('Error fetching response:', error);
       updatedChatHistory.push({ type: 'response', text: 'Error fetching response.' });
     }
-  
+
     setLocalChatHistory(updatedChatHistory);
     setIsLoading(false);
   };
@@ -71,7 +73,6 @@ const ChatState: React.FC<ChatStateProps> = ({ chatHistory, currentQuestion, set
 
   return (
     <>
-      <Header />
       <ChatContainer chatHistory={localChatHistory} onSamplePrompt={handleSamplePrompt} />
       <AdvisorFooter
         question={currentQuestion}

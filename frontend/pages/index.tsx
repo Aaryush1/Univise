@@ -1,36 +1,23 @@
 'use client';
 // advisor/page.tsx
 import { useState, useEffect } from 'react';
+import { initModel } from '@/services/apiService';
 import { Box } from '@mui/material';
 import ChatState from '@/components/AdvisorPage/ChatState';
-import { getResponse } from "../services/apiService";
+import { getResponse } from "@/services/apiService";
+import Header from '@/components/AdvisorPage/Header';
 
 interface ChatMessage {
   type: 'question' | 'response';
   text: string;
 }
 
+// "gpt-3.5-turbo",
+// "gpt-4-turbo-preview"
+
 export default function AdvisorPage() {
   useEffect(() => {
-    const initModel = async () => {
-      try {
-        const modelName = 's24_clean'; // Replace with your actual model name
-        const response = await fetch(`http://localhost:5000/init/${modelName}/gpt-3.5-turbo`, {
-          method: 'POST',
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to initialize model');
-        }
-
-        const data = await response.json();
-        console.log(data); // Log the response from initialization
-      } catch (error) {
-        console.error('Error during model initialization:', error);
-      }
-    };
-
-    initModel();
+    initModel("s24_clean", "gpt-4-turbo-preview");
   }, []);
 
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
@@ -62,7 +49,7 @@ export default function AdvisorPage() {
   return (
     <>
       <title>Univise Advisor</title>
-
+      <Header version={"v0.5.0"} />
       <Box sx={{ padding: 0, margin: 0, width: '100%', boxSizing: 'border-box' }}>
         <ChatState
           chatHistory={chatHistory}
