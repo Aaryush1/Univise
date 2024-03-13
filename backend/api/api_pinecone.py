@@ -66,11 +66,11 @@ PROMPT_TMPL_MSGS = [
     SYSTEM_PROMPT,
     ChatMessage(
         content=(
-            "Context information from the database:\n"
+            "Context information from the course database:\n"
             "---------------------\n"
             "{context_str}\n"
             "---------------------\n"
-            "Given the context information and the student's preferences and interests, provide a personalized answer to the query.\n"
+            "Given this and prior context information and the student's preferences and interests, provide a personalized answer to the query.\n"
             "If you don't have enough information to answer the query completely, explain what additional information would be helpful.\n"
             "Query: {query_str}\n"
             "Answer: "
