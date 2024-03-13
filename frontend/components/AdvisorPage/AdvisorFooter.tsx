@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SendIcon from '@mui/icons-material/Send';
-import FeedbackPopup from './FeedbackPopup';
-import styles from '../../styles/AdvisorFooter.module.css'; // Import the CSS Module
 import CircularProgress from '@mui/material/CircularProgress';
-
+import styles from '../../styles/AdvisorFooter.module.css'; // Import the CSS Module
 
 type AdvisorFooterProps = {
   question: string;
@@ -13,52 +11,95 @@ type AdvisorFooterProps = {
   isLoading: boolean;
 };
 
-const AdvisorFooter: React.FC<AdvisorFooterProps> = ({ question, setQuestion, handleSendClick, onOpenCapabilities, isLoading }) => {
-  const [isFeedbackPopupOpen, setIsFeedbackPopupOpen] = useState(false);
+const AdvisorFooter: React.FC<AdvisorFooterProps> = ({
+  question,
+  setQuestion,
+  handleSendClick,
+  onOpenCapabilities,
+  isLoading,
+}) => {
+  const googleFormUrl = 'https://forms.gle/3Rmtpv7u4AFHpwi7A';
+  const [windowWidth, setWindowWidth] = useState(0);
 
-  const handleOpenFeedback = () => {
-    setIsFeedbackPopupOpen(true);
-  };
+  useEffect(() => {
+    // Set the initial value once the component is mounted
+    setWindowWidth(window.innerWidth);
 
-  const handleCloseFeedback = () => {
-    setIsFeedbackPopupOpen(false);
-  };
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
 
-  const handleSubmitFeedback = (feedback: string) => {
-    console.log('Submitted Feedback:', feedback);
-  };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
-  return (
-    <div className={styles.advisorFooter}>
-      <button className={styles.capabilitiesButton} onClick={onOpenCapabilities}>
-        Capabilities
-      </button>
+  const isMobileView = windowWidth < 700;
 
-      <div className={styles.inputWrapper}>
-        <input
-          type="text"
-          placeholder="Ask any question ..."
-          value={question}
-          onChange={(e) => setQuestion(e.target.value)}
-          className={styles.advisorFooterInput} 
-          disabled={isLoading}
-        />
-        <button className={styles.sendButton} onClick={handleSendClick} disabled={isLoading}>
-        {isLoading ? <CircularProgress size={24} style={{ color: 'black' }} /> : <SendIcon style={{ color: 'black' }}/>}
-        </button>
+  if (isMobileView) {
+    // Mobile View Layout
+    return (
+      <div className={styles.advisorFooter}>
+        <div className={styles.inputWrapper}>
+          <input
+            type="text"
+            placeholder="Ask any question ..."
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
+            className={styles.advisorFooterInput}
+            disabled={isLoading}
+          />
+          <button className={styles.sendButton} onClick={handleSendClick} disabled={isLoading}>
+            {isLoading ? <CircularProgress size={24} style={{ color: 'black' }} /> : <SendIcon style={{ color: 'black' }} />}
+          </button>
+        </div>
+        <div className={styles.buttonsContainer}>
+          <button
+            className={`${styles.button} ${styles.capabilitiesButton}`}
+            onClick={onOpenCapabilities}
+          >
+            Capabilities
+          </button>
+          <button
+            className={`${styles.button} ${styles.feedbackButton}`}
+            onClick={() => window.open(googleFormUrl, '_blank')}
+          >
+            Feedback
+          </button>
+        </div>
       </div>
-
-      <button className={styles.feedbackButton} onClick={handleOpenFeedback}>
-        Feedback
-      </button>
-
-      <FeedbackPopup
-        open={isFeedbackPopupOpen}
-        onClose={handleCloseFeedback}
-        onSubmitFeedback={handleSubmitFeedback}
-      />
-    </div>
-  );
+    );
+  } else {
+    // Normal (Wider Screen) View Layout
+    return (
+      <div className={styles.advisorFooter}>
+        <button
+          className={`${styles.button} ${styles.capabilitiesButton}`}
+          onClick={onOpenCapabilities}
+        >
+          Capabilities
+        </button>
+        <div className={styles.inputWrapper}>
+          <input
+            type="text"
+            placeholder="Ask any question ..."
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
+            className={styles.advisorFooterInput}
+            disabled={isLoading}
+          />
+          <button className={styles.sendButton} onClick={handleSendClick} disabled={isLoading}>
+            {isLoading ? <CircularProgress size={24} style={{ color: 'black' }} /> : <SendIcon style={{ color: 'black' }} />}
+          </button>
+        </div>
+        <button
+          className={`${styles.button} ${styles.feedbackButton}`}
+          onClick={() => window.open(googleFormUrl, '_blank')}
+        >
+          Feedback
+          </button>
+      </div>
+    );
+  }
 };
 
 export default AdvisorFooter;
