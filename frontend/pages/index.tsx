@@ -14,8 +14,8 @@ export default function AdvisorPage() {
   useEffect(() => {
     const initModel = async () => {
       try {
-        const modelName = 'model_150'; // Replace with your actual model name
-        const response = await fetch(`https://aaryush.pythonanywhere.com/init/${modelName}/gpt-3.5-turbo`, {
+        const modelName = 's24_clean'; // Replace with your actual model name
+        const response = await fetch(`http://localhost:5000/init/${modelName}/gpt-3.5-turbo`, {
           method: 'POST',
         });
 
