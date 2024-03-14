@@ -11,8 +11,6 @@ type AdvisorFooterProps = {
   isLoading: boolean;
 };
 
-
-
 const AdvisorFooter: React.FC<AdvisorFooterProps> = ({
   question,
   setQuestion,
@@ -35,11 +33,12 @@ const AdvisorFooter: React.FC<AdvisorFooterProps> = ({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const handleEnterClick = async (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
+      event.preventDefault();
       handleSendClick();
     }
-  }
+  };
 
   const isMobileView = windowWidth < 700;
 
@@ -55,7 +54,7 @@ const AdvisorFooter: React.FC<AdvisorFooterProps> = ({
             onChange={(e) => setQuestion(e.target.value)}
             className={styles.advisorFooterInput}
             disabled={isLoading}
-            onKeyDown={(e) => handleEnterClick(e)}
+            onKeyDown={handleKeyDown}
           />
           <button className={styles.sendButton} onClick={handleSendClick} disabled={isLoading}>
             {isLoading ? <CircularProgress size={24} style={{ color: 'black' }} /> : <SendIcon style={{ color: 'black' }} />}
@@ -95,6 +94,7 @@ const AdvisorFooter: React.FC<AdvisorFooterProps> = ({
             onChange={(e) => setQuestion(e.target.value)}
             className={styles.advisorFooterInput}
             disabled={isLoading}
+            onKeyDown={handleKeyDown}
           />
           <button className={styles.sendButton} onClick={handleSendClick} disabled={isLoading}>
             {isLoading ? <CircularProgress size={24} style={{ color: 'black' }} /> : <SendIcon style={{ color: 'black' }} />}
