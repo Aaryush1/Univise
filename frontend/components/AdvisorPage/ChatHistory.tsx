@@ -2,7 +2,8 @@ import React from 'react';
 import { Box, Typography, List, ListItem } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import ComputerIcon from '@mui/icons-material/Memory';
-import styles from '../../styles/ChatState.module.css'; // Import the CSS Module
+import ReactMarkdown from 'react-markdown';
+import styles from '../../styles/ChatState.module.css';
 
 interface ChatMessage {
   type: string;
@@ -25,9 +26,9 @@ const ChatHistory: React.FC<ChatHistoryProps> = ({ chatHistory }) => {
             <Typography className={styles.messageTitle}>
               {message.type === 'response' ? 'ADVISOR' : 'YOU'}
             </Typography>
-            <Typography className={styles.messageContent}>
+            <ReactMarkdown className={styles.messageContent}>
               {message.text}
-            </Typography>
+            </ReactMarkdown>
           </Box>
         </ListItem>
       ))}
