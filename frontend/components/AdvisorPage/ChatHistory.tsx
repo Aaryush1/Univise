@@ -25,7 +25,9 @@ const ChatHistory: React.FC<ChatHistoryProps> = ({ chatHistory }) => {
             <Typography className={styles.messageTitle}>
               {message.type === 'response' ? 'ADVISOR' : 'YOU'}
             </Typography>
-            <Typography className={styles.messageContent}>{message.text}</Typography>
+            <Typography className={styles.messageContent}>
+              {message.text}
+            </Typography>
           </Box>
         </ListItem>
       ))}
