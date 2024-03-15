@@ -10,6 +10,7 @@ def filter_json(data):
         filtered_data.append(
             {
                 item["fullCourseDesignation"]: {
+                    # TODO: Course Code
                     "courseName": item["courseDesignation"],
                     "title": item["title"],
                     "description": item["description"],
@@ -55,7 +56,7 @@ def get_data(term="1244"):
                             "must": [
                                 {
                                     "match": {
-                                        "packageEnrollmentStatus.status": "OPEN WAITLISTED",
+                                        "packageEnrollmentStatus.status": "OPEN WAITLISTED CLOSED",
                                     },
                                 },
                                 {
@@ -80,9 +81,14 @@ def get_data(term="1244"):
     )
     return response
 
-#TODO: Make lecture API calls for each course code and append to data
+
+# TODO: Call timing API with course code; append to filterjson
 def get_timings(courses_list):
+    response = get_data()
+    subjects, courses = filter_json(response.json()["hits"])
+    # TODO: Update courses
     pass
+
 
 def save_data(path):
     response = get_data()
