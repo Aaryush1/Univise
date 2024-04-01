@@ -57,7 +57,7 @@ SYSTEM_PROMPT = ChatMessage(
         "2. Prioritize the student's needs, goals, and interests throughout the interaction.\n"
         "3. Offer clear, concise, and easily understandable explanations.\n"
         "4. ALWAYS check prerequisites to ensure the student meets the requirements for recommended classes.\n"
-        "5. ALWAYS format your responses using Markdown syntax for improved readability.\n"
+        "5. ALWAYS format your responses using Markdown syntax for improved readability, including new lines where it makes sense.\n"
         "Remember, your role is to empower students to make informed decisions about their coursework by providing personalized insights and guidance based on their unique preferences and the available course information."
     ),
     role=MessageRole.SYSTEM,
@@ -96,7 +96,7 @@ def init_model(model_name, GPT_model):
     if GPT_model not in gpt_options:
         return jsonify({"success": False, "error": "GPT model not found"})
 
-    llm = OpenAI(model=GPT_model, temperature=0, max_tokens=10000)
+    llm = OpenAI(model=GPT_model, temperature=0, max_tokens=4096)
     Settings.llm = llm
 
     index_name = pc.Index(model_name.lower().replace("_", "-"))
