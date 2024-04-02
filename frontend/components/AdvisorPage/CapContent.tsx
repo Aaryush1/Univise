@@ -1,6 +1,7 @@
 import React from 'react';
+import ReactMarkdown from 'react-markdown'
 import content from '../../data/capabilitiesContent.json';
-import styles from '../../styles/Capabilities.module.css'; // Import the CSS Module
+import styles from '@/styles/Capabilities.module.css'; // Import the CSS Module
 
 const CapabilitiesContent: React.FC = () => {
   return (
@@ -14,10 +15,13 @@ const CapabilitiesContent: React.FC = () => {
           <h6 className={styles.itemTitle}>
             {capability.title}
           </h6>
-          <p>{capability.description}</p>
+          <ReactMarkdown>
+            {capability.description}
+          </ReactMarkdown>
         </div>
-      ))}
-    </div>
+      ))
+      }
+    </div >
   );
 };
 

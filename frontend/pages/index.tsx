@@ -17,7 +17,7 @@ interface ChatMessage {
 
 export default function AdvisorPage() {
   useEffect(() => {
-    initModel("s24_clean", "gpt-4-turbo-preview");
+    initModel("s25_clean", "gpt-4-turbo-preview");
   }, []);
 
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
