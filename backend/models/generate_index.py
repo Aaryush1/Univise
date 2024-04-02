@@ -55,7 +55,7 @@ def create_index(dataset):
         )
         for course in json.load(open(f"./data/{dataset}.json", "r"))
     ]
-    pc.delete_index(index_name)
+    # pc.delete_index(index_name)
     pc.create_index(
         name=index_name,
         dimension=1536,
@@ -77,4 +77,4 @@ if __name__ == "__main__":
         sys.exit(1)
     create_index(sys.argv[1], True)
     """
-    create_index("s24_clean")
+    create_index("s25_clean")
