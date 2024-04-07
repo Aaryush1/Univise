@@ -65,7 +65,7 @@ const AdvisorFooter: React.FC<AdvisorFooterProps> = ({
             className={`${styles.button} ${styles.capabilitiesButton}`}
             onClick={onOpenCapabilities}
           >
-            Capabilities
+            User Guide
           </button>
           <button
             className={`${styles.button} ${styles.feedbackButton}`}
@@ -84,7 +84,7 @@ const AdvisorFooter: React.FC<AdvisorFooterProps> = ({
           className={`${styles.button} ${styles.capabilitiesButton}`}
           onClick={onOpenCapabilities}
         >
-          Capabilities
+          User Guide
         </button>
         <div className={styles.inputWrapper}>
           <input

@@ -1,8 +1,12 @@
 {
   "capabilities": [
     {
-      "title": "User Guide",
-      "description": "Welcome to the AI-Powered Course Discovery Assistant, designed to help UW-Madison students find the most suitable courses based on their interests and goals. This guide will help you effectively use the assistant and craft prompts for personalized course recommendations.\nHow it works:\nThe AI-Powered Course Discovery Assistant uses advanced AI to analyze your inputs and provide tailored course suggestions. The more specific and detailed information you provide, the more accurate the recommendations will be."
+      "title": "",
+      "description": "Welcome to the AI-Powered Course Discovery Assistant, designed to help UW-Madison students find the most suitable courses based on their interests and goals. This guide will help you effectively use the assistant and craft prompts for personalized course recommendations."
+    },
+    {
+      "title": "How It Works",
+      "description": "The AI-Powered Course Discovery Assistant uses advanced AI to analyze your inputs and provide tailored course suggestions. The more specific and detailed information you provide, the more accurate the recommendations will be."
     },
     {
       "title": "Getting Started",

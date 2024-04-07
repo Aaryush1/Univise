@@ -7,7 +7,7 @@ const CapabilitiesContent: React.FC = () => {
   return (
     <div className={styles.capabilitiesContainer}>
       <h2 className={styles.contentTitle}>
-        Capabilities
+        User Guide
       </h2>
 
       {content.capabilities.map((capability, index) => (

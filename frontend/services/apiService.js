@@ -1,7 +1,12 @@
 // apiService.js
+
+// https://api.univise.com
+// http://localhost:5000
+const base_url = 'https://aaryush.pythonanywhere.com';
+
 export const initModel = async (modelName, GPT_name) => {
   try {
-    const response = await fetch(`http://localhost:5000/init/${modelName}/${GPT_name}`, {
+    const response = await fetch(`${base_url}/init/${modelName}/${GPT_name}`, {
       method: 'POST',
     });
 
@@ -10,7 +15,6 @@ export const initModel = async (modelName, GPT_name) => {
     }
 
     const data = await response.json();
-    console.log(data); // Log the response from initialization
   } catch (error) {
     console.error('Error during model initialization:', error);
   }
@@ -18,19 +22,16 @@ export const initModel = async (modelName, GPT_name) => {
 
 export const getResponse = async (query) => {
   try {
-    const url = new URL(`http://localhost:5000/get_response`);
+    const url = new URL(`${base_url}/get_response`);
     url.search = new URLSearchParams({ query }).toString();
 
-    const response = await fetch(url);
+    const response = await fetch(url, { method: 'GET' });
 
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
 
     const responseText = JSON.parse(await response.text());
-
-    // Log the response text for debugging
-    console.log("Response from API:", responseText);
 
     return responseText.response;
   } catch (error) {
