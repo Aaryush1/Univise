@@ -10,6 +10,7 @@ def filter_json(data):
         filtered_data.append(
             {
                 item["fullCourseDesignation"]: {
+                    # TODO: Course Code
                     "courseName": item["courseDesignation"],
                     "title": item["title"],
                     "description": item["description"],
@@ -42,7 +43,7 @@ def filter_json(data):
     return subjects, filtered_data
 
 
-def get_data(term="1244"):
+def get_data(term):
     json_data = {
         "selectedTerm": term,
         "queryString": "*",
@@ -70,7 +71,7 @@ def get_data(term="1244"):
             },
         ],
         "page": 1,
-        "pageSize": 5443,
+        "pageSize": 6000,
         "sortOrder": "SCORE",
     }
 
@@ -81,11 +82,19 @@ def get_data(term="1244"):
     return response
 
 
-def save_data(path):
+# TODO: Call timing API with course code; append to filterjson
+def get_timings(courses_list):
     response = get_data()
+    subjects, courses = filter_json(response.json()["hits"])
+    # TODO: Update courses
+    pass
+
+
+def save_data(path, term="1244"):
+    response = get_data(term)
     subjects, courses = filter_json(response.json()["hits"])
     json.dump(courses, open(f"{path}.json", "w"), indent=4)
     json.dump(list(subjects), open(f"./{path}_subjects.json", "w"), indent=4)
 
 
-save_data("data/s24_clean")
+save_data("data/s25_clean", "1252")

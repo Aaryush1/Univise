@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SendIcon from '@mui/icons-material/Send';
 import CircularProgress from '@mui/material/CircularProgress';
-import styles from '../../styles/AdvisorFooter.module.css'; // Import the CSS Module
+import styles from '@/styles/AdvisorFooter.module.css'; // Import the CSS Module
 
 type AdvisorFooterProps = {
   question: string;
@@ -33,6 +33,13 @@ const AdvisorFooter: React.FC<AdvisorFooterProps> = ({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      handleSendClick();
+    }
+  };
+
   const isMobileView = windowWidth < 700;
 
   if (isMobileView) {
@@ -47,6 +54,7 @@ const AdvisorFooter: React.FC<AdvisorFooterProps> = ({
             onChange={(e) => setQuestion(e.target.value)}
             className={styles.advisorFooterInput}
             disabled={isLoading}
+            onKeyDown={handleKeyDown}
           />
           <button className={styles.sendButton} onClick={handleSendClick} disabled={isLoading}>
             {isLoading ? <CircularProgress size={24} style={{ color: 'black' }} /> : <SendIcon style={{ color: 'black' }} />}
@@ -57,7 +65,7 @@ const AdvisorFooter: React.FC<AdvisorFooterProps> = ({
             className={`${styles.button} ${styles.capabilitiesButton}`}
             onClick={onOpenCapabilities}
           >
-            Capabilities
+            User Guide
           </button>
           <button
             className={`${styles.button} ${styles.feedbackButton}`}
@@ -76,7 +84,7 @@ const AdvisorFooter: React.FC<AdvisorFooterProps> = ({
           className={`${styles.button} ${styles.capabilitiesButton}`}
           onClick={onOpenCapabilities}
         >
-          Capabilities
+          User Guide
         </button>
         <div className={styles.inputWrapper}>
           <input
@@ -86,6 +94,7 @@ const AdvisorFooter: React.FC<AdvisorFooterProps> = ({
             onChange={(e) => setQuestion(e.target.value)}
             className={styles.advisorFooterInput}
             disabled={isLoading}
+            onKeyDown={handleKeyDown}
           />
           <button className={styles.sendButton} onClick={handleSendClick} disabled={isLoading}>
             {isLoading ? <CircularProgress size={24} style={{ color: 'black' }} /> : <SendIcon style={{ color: 'black' }} />}
@@ -96,7 +105,7 @@ const AdvisorFooter: React.FC<AdvisorFooterProps> = ({
           onClick={() => window.open(googleFormUrl, '_blank')}
         >
           Feedback
-          </button>
+        </button>
       </div>
     );
   }

@@ -1,16 +1,24 @@
 {
-    "capabilities": [
-      {
-        "title": "Training Set",
-        "description": "This chatbot is trained on 164 classes from the Spring 2024 semester."
-      },
-      {
-        "title": "Abilities",
-        "description": "This chatbot can answer general questions, help you discover new classes, and help you prepare for graduation."
-      },
-      {
-        "title": "Information",
-        "description": "This chatbot is a preliminary beta version, used solely for test purposes."
-      }
-    ]
+  "capabilities": [
+    {
+      "title": "",
+      "description": "Welcome to the AI-Powered Course Discovery Assistant, designed to help UW-Madison students find the most suitable courses based on their interests and goals. This guide will help you effectively use the assistant and craft prompts for personalized course recommendations."
+    },
+    {
+      "title": "How It Works",
+      "description": "The AI-Powered Course Discovery Assistant uses advanced AI to analyze your inputs and provide tailored course suggestions. The more specific and detailed information you provide, the more accurate the recommendations will be."
+    },
+    {
+      "title": "Getting Started",
+      "description": "Type your message or question into the chat interface.\nExpress your interests, preferred subjects, academic goals, and any other relevant information."
+    },
+    {
+      "title": "Crafting Effective Prompts",
+      "description": "Be specific and detailed:\nState your major, interests, current year, desired skills, and goals.\nIndicate preferred course formats (lectures, seminars, labs).\nUse clear and concise language.\nInclude relevant background information.\nShare your academic background, completed courses, and prerequisites.\nState your short-term and long-term academic or career goals.\nAsk specific questions about courses, such as workload or content."
+    },
+    {
+      "title": "Making the Most of the Assistant",
+      "description": "Engage in conversation and provide additional context based on the AI's responses.\nBe open to exploring new subjects and courses.\nCombine AI insights with guidance from your academic advisor."
+    }
+  ]
 }
