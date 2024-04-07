@@ -19,7 +19,7 @@ const Header: React.FC<HeaderProps> = () => {
       </Link>
 
       <Typography variant="h4" className={styles.headerTitle}>
-        Univise-0.1.4
+        Univise-0.1.5
       </Typography>
 
       <IconButton className={styles.profileIcon}>
