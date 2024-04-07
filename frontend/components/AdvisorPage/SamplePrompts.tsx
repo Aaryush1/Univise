@@ -11,7 +11,7 @@ const SamplePrompts: React.FC<SamplePromptsProps> = ({ onSamplePrompt }) => {
       <Button style={{ width: '400px', borderRadius: '50px', padding: '8px 16px', textAlign: 'center', backgroundColor: 'white', border: '2px solid black', color: 'black', cursor: 'pointer', textTransform: 'capitalize' }} onClick={() => onSamplePrompt("What are some good literature electives I can take? I want them to be super easy.")}>
         Easy literature electives?
       </Button>
-      <Button style={{ width: '400px', borderRadius: '50px', padding: '8px 16px', textAlign: 'center', backgroundColor: 'white', border: '2px solid black', color: 'black', cursor: 'pointer', textTransform: 'capitalize' }} onClick={() => onSamplePrompt("Help me find good classes for Computer Science. I'm a freshman that wants to take classes that will help me with my CS degree.")}>
+      <Button style={{ width: '400px', borderRadius: '50px', padding: '8px 16px', textAlign: 'center', backgroundColor: 'white', border: '2px solid black', color: 'black', cursor: 'pointer', textTransform: 'capitalize' }} onClick={() => onSamplePrompt("I am a freshman in computer science and want an introductory course to teach me the fundamental computer science topics. What are my options?")}>
         Freshman CS Classes?
       </Button>
     </Box>
