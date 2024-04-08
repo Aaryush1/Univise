@@ -1,12 +1,12 @@
 {
   "capabilities": [
     {
-      "title": "",
-      "description": "Welcome to the AI-Powered Course Discovery Assistant, designed to help UW-Madison students find the most suitable courses based on their interests and goals. This guide will help you effectively use the assistant and craft prompts for personalized course recommendations."
+      "title": "Univise",
+      "description": "Welcome to Univise - the AI-Powered Course Discovery Assistant designed to help UW-Madison students find the most suitable courses based on their interests and goals. This guide will help you effectively use the assistant and craft prompts for personalized course recommendations."
     },
     {
-      "title": "How It Works",
-      "description": "The AI-Powered Course Discovery Assistant uses advanced AI to analyze your inputs and provide tailored course suggestions. The more specific and detailed information you provide, the more accurate the recommendations will be."
+      "title": "",
+      "description": "*This is a beta version; things may not always function as expected, but we are working on making it better. Please provide feedback to help us improve the assistant using the feedback button on the bottom right.*"
     },
     {
       "title": "Getting Started",
@@ -14,11 +14,11 @@
     },
     {
       "title": "Crafting Effective Prompts",
-      "description": "Be specific and detailed:\nState your major, interests, current year, desired skills, and goals.\nIndicate preferred course formats (lectures, seminars, labs).\nUse clear and concise language.\nInclude relevant background information.\nShare your academic background, completed courses, and prerequisites.\nState your short-term and long-term academic or career goals.\nAsk specific questions about courses, such as workload or content."
+      "description": "Be specific and detailed: state your major, interests, current year, desired skills, and goals. Indicate preferred course formats (lectures, seminars, labs).\nUse clear and concise language.\nInclude relevant background information.\nShare your academic background, completed courses, and prerequisites.\nState your short-term and long-term academic or career goals.\nAsk specific questions about courses, such as workload or content."
     },
     {
-      "title": "Making the Most of the Assistant",
-      "description": "Engage in conversation and provide additional context based on the AI's responses.\nBe open to exploring new subjects and courses.\nCombine AI insights with guidance from your academic advisor."
+      "title": "Limitations",
+      "description": "Univise is currently best at helping you find and understand courses based on your interests. It is not yet able to provide real-time course availability or enrollment information, but we are working hard to add this into future updates."
     }
   ]
 }

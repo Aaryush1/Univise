@@ -49,7 +49,7 @@ export default function AdvisorPage() {
   return (
     <>
       <title>Univise Advisor</title>
-      <Header version={"v0.5.0"} />
+      <Header version={"v0.5.0 (Beta)"} />
       <Box sx={{ padding: 0, margin: 0, width: '100%', boxSizing: 'border-box' }}>
         <ChatState
           chatHistory={chatHistory}
