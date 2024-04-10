@@ -6,6 +6,7 @@ import { Box } from '@mui/material';
 import ChatState from '@/components/AdvisorPage/ChatState';
 import { getResponse } from "@/services/apiService";
 import Header from '@/components/AdvisorPage/Header';
+import { track } from '@vercel/analytics';
 
 interface ChatMessage {
   type: 'question' | 'response';
@@ -29,13 +30,11 @@ export default function AdvisorPage() {
       type: 'question',
       text: currentQuestion
     };
-
+    //track('Advisor Query', { question: currentQuestion })
     setChatHistory(prevHistory => [...prevHistory, questionMessage]);
 
-    // Fetch the response from the API
     const apiResponse = await getResponse(currentQuestion);
     console.log(apiResponse)
-    // Add the API response to the chat history
     const responseMessage: ChatMessage = {
       type: 'response',
       text: apiResponse || "We're currently working on this feature."
@@ -43,7 +42,7 @@ export default function AdvisorPage() {
 
     setChatHistory(prevHistory => [...prevHistory, responseMessage]);
 
-    setCurrentQuestion(''); // Reset current question
+    setCurrentQuestion('');
   };
 
   return (
