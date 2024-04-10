@@ -1,9 +1,16 @@
 import React from 'react';
-import '@/styles/globals.css'; // Import global styles here
-import type { AppProps } from 'next/app'; // Import the type for AppProps
+import '@/styles/globals.css';
+import type { AppProps } from 'next/app';
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
-function MyApp({ Component, pageProps }: AppProps) { // Use the AppProps type
-  return <Component {...pageProps} />;
+function MyApp({ Component, pageProps }: AppProps) {
+  return (
+    <>
+      <Component {...pageProps} />
+      <Analytics />
+      <SpeedInsights />
+    </>);
 }
 
 export default MyApp;
