@@ -14,11 +14,11 @@ interface ChatMessage {
 }
 
 // "gpt-3.5-turbo",
-// "gpt-4-turbo-preview"
+// "gpt-4-turbo"
 
 export default function AdvisorPage() {
   useEffect(() => {
-    initModel("s25_clean", "gpt-4-turbo-preview");
+    initModel("s25_clean", "gpt-4-turbo");
   }, []);
 
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);

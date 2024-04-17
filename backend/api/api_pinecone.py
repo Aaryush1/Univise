@@ -25,7 +25,7 @@ chat_engine = None
 existing_models = ["model_150", "s24_clean", "s25_clean"]
 gpt_options = [
     "gpt-3.5-turbo",
-    "gpt-4-turbo-preview",
+    "gpt-4-turbo",
 ]
 
 
