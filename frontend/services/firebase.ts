@@ -26,6 +26,23 @@ if (!firebase.apps.length) {
 
 export const auth = firebase.auth();
 
+// Sign in with email and password
+export const signInWithEmailAndPassword = async (email: string, password: string) => {
+  try {
+    // Check if the email ends with ".edu"
+    if (!email.endsWith('.edu')) {
+      throw new Error('Only .edu email addresses are allowed');
+    }
+
+    const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
+    return userCredential.user;
+  } catch (error) {
+    console.error('Error signing in with email and password', error);
+    throw error;
+  }
+};
+
+// Sign in with Google
 export const signInWithGoogle = async () => {
   const provider = new firebase.auth.GoogleAuthProvider();
   try {
