@@ -18,44 +18,51 @@ const firebaseConfig = {
   measurementId: "G-QRK1Y8Y98Z"
 };
 
-
-// Initialize Firebase
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
-
 export const auth = firebase.auth();
-
-// Sign in with email and password
-export const signInWithEmailAndPassword = async (email: string, password: string) => {
-  try {
-    // Check if the email ends with ".edu"
-    if (!email.endsWith('.edu')) {
-      throw new Error('Only .edu email addresses are allowed');
-    }
-
-    const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
-    return userCredential.user;
-  } catch (error) {
-    console.error('Error signing in with email and password', error);
-    throw error;
-  }
-};
 
 // Sign in with Google
 export const signInWithGoogle = async () => {
   const provider = new firebase.auth.GoogleAuthProvider();
+  provider.setCustomParameters({
+    hd: 'example.edu' // Replace with your allowed domain
+  });
+
   try {
-    await firebase.auth().signInWithPopup(provider);
-  } catch (error) {
-    console.error("Error signing in with Google", error);
+    const userCredential = await firebase.auth().signInWithPopup(provider);
+    const user = userCredential.user;
+
+    // Check if the user object is not null
+    if (user) {
+      // Check if the user's email ends with the allowed domain
+      if (user.email && user.email.endsWith('.edu')) {
+        console.log('Sign-in with Google successful');
+        // Proceed with the desired logic (e.g., redirect to another page)
+        return user;
+      } else {
+        console.error('Only .edu email addresses are allowed');
+        // Display an error message or take appropriate action
+        throw new Error('Only .edu email addresses are allowed');
+      }
+    } else {
+      console.error('Sign-in with Google failed');
+      // Display an error message or take appropriate action
+      throw new Error('Sign-in with Google failed');
+    }
+  } catch (error: any) { // or catch (error: Error)
+    if (error.code === 'auth/popup-closed-by-user') {
+      console.log('Sign-in with Google canceled by user');
+    } else {
+      console.error('Error signing in with Google', error);
+      throw error;
+    }
   }
 };
-  
-  export const signOut = async () => {
-    try {
-      await firebase.auth().signOut();
-    } catch (error) {
-      console.error("Error signing out", error);
-    }
-  };
+
+export const signOut = async () => {
+  try {
+    await firebase.auth().signOut();
+  } catch (error: any) { // or catch (error: Error)
+    console.error('Error signing out', error);
+    throw error;
+  }
+};
