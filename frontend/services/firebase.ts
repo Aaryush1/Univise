@@ -3,6 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import "firebase/compat/auth";
 import firebase from "firebase/compat/app";
+import 'firebase/auth';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -17,6 +18,13 @@ const firebaseConfig = {
   appId: "1:148953214507:web:3c1204a8a58f9509e6c46e",
   measurementId: "G-QRK1Y8Y98Z"
 };
+
+// Initialize Firebase
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+} else {
+  firebase.app();
+}
 
 export const auth = firebase.auth();
 
@@ -66,3 +74,5 @@ export const signOut = async () => {
     throw error;
   }
 };
+
+export default firebaseConfig;

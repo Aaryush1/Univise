@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { useRouter } from "next/router";
-import { Button, Typography } from "@mui/material";
-import { signInWithGoogle } from "@/services/firebase";
+import { useRouter } from 'next/router';
+import { Button, Typography } from '@mui/material';
+import { signInWithGoogle } from '@/services/firebase';
 
 const LoginPage: React.FC = () => {
   const router = useRouter();
@@ -10,8 +10,8 @@ const LoginPage: React.FC = () => {
   const handleLoginClick = async () => {
     try {
       await signInWithGoogle();
-      router.push("/advisor");
-    } catch (error: any) { // or catch (error: Error)
+      router.push('/advisor');
+    } catch (error: any) {
       if (error.message === 'Only .edu email addresses are allowed') {
         setErrorMessage('Only .edu email addresses are allowed');
       } else {
