@@ -15,7 +15,7 @@ const LoginPage: React.FC = () => {
       if (error.message === 'Only .edu email addresses are allowed') {
         setErrorMessage('Only .edu email addresses are allowed');
       } else {
-        setErrorMessage('Error signing in with Google');
+        setErrorMessage(error.message || 'Error signing in with Google');
       }
     }
   };
