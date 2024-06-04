@@ -32,7 +32,7 @@ export const auth = firebase.auth();
 export const signInWithGoogle = async () => {
   const provider = new firebase.auth.GoogleAuthProvider();
   provider.setCustomParameters({
-    hd: 'example.edu' // Replace with your allowed domain
+    hd: 'wisc.edu' // Replace with your allowed domain
   });
 
   try {
