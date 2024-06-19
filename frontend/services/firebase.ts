@@ -1,9 +1,10 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import "firebase/compat/auth";
 import firebase from "firebase/compat/app";
 import 'firebase/auth';
+import { getFirestore, doc, setDoc } from "firebase/firestore";
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -26,6 +27,9 @@ if (!firebase.apps.length) {
   firebase.app();
 }
 
+// Initialize Firestore
+const db = getFirestore();
+
 export const auth = firebase.auth();
 
 // Sign in with Google
@@ -39,24 +43,34 @@ export const signInWithGoogle = async () => {
     const userCredential = await firebase.auth().signInWithPopup(provider);
     const user = userCredential.user;
 
-    // Check if the user object is not null
     if (user) {
-      // Check if the user's email ends with the allowed domain
+      const displayName = user.displayName;
+      const email = user.email;
+      const uid = user.uid;
+
       if (user.email && user.email.endsWith('.edu')) {
         console.log('Sign-in with Google successful');
-        // Proceed with the desired logic (e.g., redirect to another page)
+
+        // Extract the university name from the email
+        const universityName = user.email.split('@')[1].split('.edu')[0];
+
+        // Save user data to Firestore
+        await setDoc(doc(db, "users", uid), {
+          displayName,
+          email,
+          universityName,
+        });
+
         return user;
       } else {
         console.error('Only .edu email addresses are allowed');
-        // Display an error message or take appropriate action
         throw new Error('Only .edu email addresses are allowed');
       }
     } else {
       console.error('Sign-in with Google failed');
-      // Display an error message or take appropriate action
       throw new Error('Sign-in with Google failed');
     }
-  } catch (error: any) { // or catch (error: Error)
+  } catch (error: any) {
     if (error.code === 'auth/popup-closed-by-user') {
       console.log('Sign-in with Google canceled by user');
     } else {
@@ -69,7 +83,7 @@ export const signInWithGoogle = async () => {
 export const signOut = async () => {
   try {
     await firebase.auth().signOut();
-  } catch (error: any) { // or catch (error: Error)
+  } catch (error: any) {
     console.error('Error signing out', error);
     throw error;
   }

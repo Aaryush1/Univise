@@ -9,9 +9,12 @@ const LoginPage: React.FC = () => {
 
   const handleLoginClick = async () => {
     try {
-      await signInWithGoogle();
+      console.log('Signing in with Google...');
+      const user = await signInWithGoogle();
+      console.log('User signed in:', user);
       router.push('/advisor');
     } catch (error: any) {
+      console.error('Error signing in:', error);
       if (error.message === 'Only .edu email addresses are allowed') {
         setErrorMessage('Only .edu email addresses are allowed');
       } else {
@@ -19,6 +22,8 @@ const LoginPage: React.FC = () => {
       }
     }
   };
+
+  console.log('Rendering LoginPage component');
 
   return (
     <div>
