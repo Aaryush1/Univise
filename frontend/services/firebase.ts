@@ -1,92 +1,75 @@
-import { initializeApp } from "firebase/app";
+import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import "firebase/compat/auth";
-import firebase from "firebase/compat/app";
-import 'firebase/auth';
+import { getAuth, GoogleAuthProvider, signInWithPopup, User } from "firebase/auth";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAwQ9VgdIi43iVWE5YNGX0dLs2bw5elUWg",
-  authDomain: "univise-88ac3.firebaseapp.com",
-  projectId: "univise-88ac3",
-  storageBucket: "univise-88ac3.appspot.com",
-  messagingSenderId: "148953214507",
-  appId: "1:148953214507:web:3c1204a8a58f9509e6c46e",
-  measurementId: "G-QRK1Y8Y98Z"
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
 // Initialize Firebase
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-} else {
-  firebase.app();
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+const auth = getAuth(app);
+const db = getFirestore(app);
+let analytics;
+if (typeof window !== 'undefined') {
+  analytics = getAnalytics(app);
 }
 
-// Initialize Firestore
-const db = getFirestore();
-
-export const auth = firebase.auth();
-
 // Sign in with Google
-export const signInWithGoogle = async () => {
-  const provider = new firebase.auth.GoogleAuthProvider();
+export const signInWithGoogle = async (): Promise<User | null> => {
+  const provider = new GoogleAuthProvider();
   provider.setCustomParameters({
-    hd: 'wisc.edu' // Replace with your allowed domain
+    hd: 'wisc.edu',
   });
 
   try {
-    const userCredential = await firebase.auth().signInWithPopup(provider);
-    const user = userCredential.user;
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
 
-    if (user) {
-      const displayName = user.displayName;
-      const email = user.email;
-      const uid = user.uid;
+    if (user && user.email?.endsWith('.edu')) {
+      console.log('Sign-in with Google successful');
 
-      if (user.email && user.email.endsWith('.edu')) {
-        console.log('Sign-in with Google successful');
+      // Extract the university name from the email
+      const universityName = user.email.split('@')[1].split('.edu')[0];
 
-        // Extract the university name from the email
-        const universityName = user.email.split('@')[1].split('.edu')[0];
+      // Save user data to Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        displayName: user.displayName,
+        email: user.email,
+        universityName,
+      });
 
-        // Save user data to Firestore
-        await setDoc(doc(db, "users", uid), {
-          displayName,
-          email,
-          universityName,
-        });
-
-        return user;
-      } else {
-        console.error('Only .edu email addresses are allowed');
-        throw new Error('Only .edu email addresses are allowed');
-      }
+      return user;
     } else {
-      console.error('Sign-in with Google failed');
-      throw new Error('Sign-in with Google failed');
+      console.error('Only .edu email addresses are allowed');
+      throw new Error('Only .edu email addresses are allowed');
     }
   } catch (error: any) {
     if (error.code === 'auth/popup-closed-by-user') {
       console.log('Sign-in with Google canceled by user');
     } else {
       console.error('Error signing in with Google', error);
-      throw error;
     }
+    throw error;
   }
 };
 
-export const signOut = async () => {
+// Sign out
+export const signOut = async (): Promise<void> => {
   try {
-    await firebase.auth().signOut();
-  } catch (error: any) {
+    await auth.signOut();
+  } catch (error) {
     console.error('Error signing out', error);
     throw error;
   }
 };
 
-export default firebaseConfig;
+export { auth, db };
