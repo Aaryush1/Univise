@@ -2,17 +2,10 @@
 
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { collection, query, where, orderBy, limit, getDocs, FirestoreError, doc, setDoc } from 'firebase/firestore'
-import { auth, db } from '@/services/firebase'
+import { auth } from '@/services/firebase'
 import { withAuth } from '@/app/components/withAuth'
 import { useRouter } from 'next/navigation'
-
-interface ChatSession {
-  id: string;
-  title: string;
-  lastMessageTimestamp: Date;
-  lastMessage: string;
-}
+import { fetchRecentChatSessions, createNewChat, ChatSession } from '@/utils/firebaseUtils'
 
 function ChatsListPage() {
   const [chatSessions, setChatSessions] = useState<ChatSession[]>([])
@@ -22,63 +15,29 @@ function ChatsListPage() {
   const router = useRouter()
 
   useEffect(() => {
-    fetchRecentChatSessions()
+    const loadChatSessions = async () => {
+      try {
+        const sessions = await fetchRecentChatSessions()
+        setChatSessions(sessions)
+      } catch (error) {
+        console.error("Error fetching chat sessions:", error)
+        if (error instanceof Error && error.message.includes('failed-precondition')) {
+          setIndexBuilding(true)
+        } else {
+          setError(error instanceof Error ? error.message : String(error))
+        }
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadChatSessions()
   }, [])
 
-  const fetchRecentChatSessions = async () => {
-    if (!auth.currentUser) {
-      setError("User not authenticated. Please log in and try again.");
-      setLoading(false);
-      return;
-    }
-
-    const chatSessionsRef = collection(db, 'chatSessions')
-    const q = query(
-      chatSessionsRef,
-      where('userId', '==', auth.currentUser.uid),
-      orderBy('lastMessageTimestamp', 'desc'),
-      limit(10)
-    )
-
+  const handleCreateNewChat = async () => {
     try {
-      const querySnapshot = await getDocs(q)
-      const fetchedSessions: ChatSession[] = querySnapshot.docs.map(doc => {
-        const data = doc.data()
-        return {
-          id: doc.id,
-          title: data.title || 'Untitled Chat',
-          lastMessageTimestamp: data.lastMessageTimestamp?.toDate() || new Date(),
-          lastMessage: data.lastMessage || 'No messages yet'
-        }
-      })
-      setChatSessions(fetchedSessions)
-    } catch (error) {
-      console.error("Error fetching chat sessions:", error);
-      if (error instanceof FirestoreError && error.code === 'failed-precondition') {
-        setIndexBuilding(true);
-      } else {
-        setError(`Unexpected error: ${error instanceof Error ? error.message : String(error)}`);
-      }
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const createNewChat = async () => {
-    if (!auth.currentUser) {
-      setError("User not authenticated. Please log in and try again.");
-      return;
-    }
-
-    try {
-      const newChatRef = doc(collection(db, 'chatSessions'))
-      await setDoc(newChatRef, {
-        userId: auth.currentUser.uid,
-        title: 'New Chat',
-        lastMessageTimestamp: new Date(),
-        lastMessage: ''
-      })
-      router.push(`/chat/${newChatRef.id}`)
+      const newChatId = await createNewChat()
+      router.push(`/chat/${newChatId}`)
     } catch (error) {
       console.error("Error creating new chat:", error)
       setError("Failed to create a new chat. Please try again.")
@@ -112,7 +71,7 @@ function ChatsListPage() {
   return (
     <div>
       <h1>Your Recent Chats</h1>
-      <button onClick={createNewChat}>Start New Chat</button>
+      <button onClick={handleCreateNewChat}>Start New Chat</button>
       {chatSessions.length === 0 ? (
         <p>You have not had any chats yet. Start a new one!</p>
       ) : (
