@@ -3,3 +3,4 @@
 .vercel
 *.yaml
 *.json
+node_modules
