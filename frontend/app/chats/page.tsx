@@ -2,9 +2,10 @@
 
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { collection, query, where, orderBy, limit, getDocs, FirestoreError } from 'firebase/firestore'
+import { collection, query, where, orderBy, limit, getDocs, FirestoreError, doc, setDoc } from 'firebase/firestore'
 import { auth, db } from '@/services/firebase'
 import { withAuth } from '@/app/components/withAuth'
+import { useRouter } from 'next/navigation'
 
 interface ChatSession {
   id: string;
@@ -18,49 +19,71 @@ function ChatsListPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [indexBuilding, setIndexBuilding] = useState(false)
+  const router = useRouter()
 
   useEffect(() => {
-    const fetchRecentChatSessions = async () => {
-      if (!auth.currentUser) {
-        setError("User not authenticated. Please log in and try again.");
-        setLoading(false);
-        return;
-      }
-
-      const chatSessionsRef = collection(db, 'chatSessions')
-      const q = query(
-        chatSessionsRef,
-        where('userId', '==', auth.currentUser.uid),
-        orderBy('lastMessageTimestamp', 'desc'),
-        limit(10)
-      )
-
-      try {
-        const querySnapshot = await getDocs(q)
-        const fetchedSessions: ChatSession[] = querySnapshot.docs.map(doc => {
-          const data = doc.data()
-          return {
-            id: doc.id,
-            title: data.title || 'Untitled Chat',
-            lastMessageTimestamp: data.lastMessageTimestamp?.toDate() || new Date(),
-            lastMessage: data.lastMessage || 'No messages yet'
-          }
-        })
-        setChatSessions(fetchedSessions)
-      } catch (error) {
-        console.error("Error fetching chat sessions:", error);
-        if (error instanceof FirestoreError && error.code === 'failed-precondition') {
-          setIndexBuilding(true);
-        } else {
-          setError(`Unexpected error: ${error instanceof Error ? error.message : String(error)}`);
-        }
-      } finally {
-        setLoading(false)
-      }
-    }
-
     fetchRecentChatSessions()
   }, [])
+
+  const fetchRecentChatSessions = async () => {
+    if (!auth.currentUser) {
+      setError("User not authenticated. Please log in and try again.");
+      setLoading(false);
+      return;
+    }
+
+    const chatSessionsRef = collection(db, 'chatSessions')
+    const q = query(
+      chatSessionsRef,
+      where('userId', '==', auth.currentUser.uid),
+      orderBy('lastMessageTimestamp', 'desc'),
+      limit(10)
+    )
+
+    try {
+      const querySnapshot = await getDocs(q)
+      const fetchedSessions: ChatSession[] = querySnapshot.docs.map(doc => {
+        const data = doc.data()
+        return {
+          id: doc.id,
+          title: data.title || 'Untitled Chat',
+          lastMessageTimestamp: data.lastMessageTimestamp?.toDate() || new Date(),
+          lastMessage: data.lastMessage || 'No messages yet'
+        }
+      })
+      setChatSessions(fetchedSessions)
+    } catch (error) {
+      console.error("Error fetching chat sessions:", error);
+      if (error instanceof FirestoreError && error.code === 'failed-precondition') {
+        setIndexBuilding(true);
+      } else {
+        setError(`Unexpected error: ${error instanceof Error ? error.message : String(error)}`);
+      }
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const createNewChat = async () => {
+    if (!auth.currentUser) {
+      setError("User not authenticated. Please log in and try again.");
+      return;
+    }
+
+    try {
+      const newChatRef = doc(collection(db, 'chatSessions'))
+      await setDoc(newChatRef, {
+        userId: auth.currentUser.uid,
+        title: 'New Chat',
+        lastMessageTimestamp: new Date(),
+        lastMessage: ''
+      })
+      router.push(`/chat/${newChatRef.id}`)
+    } catch (error) {
+      console.error("Error creating new chat:", error)
+      setError("Failed to create a new chat. Please try again.")
+    }
+  }
 
   if (loading) {
     return <div>Loading your recent chats...</div>
@@ -89,7 +112,7 @@ function ChatsListPage() {
   return (
     <div>
       <h1>Your Recent Chats</h1>
-      <Link href="/chat/new">Start New Chat</Link>
+      <button onClick={createNewChat}>Start New Chat</button>
       {chatSessions.length === 0 ? (
         <p>You have not had any chats yet. Start a new one!</p>
       ) : (

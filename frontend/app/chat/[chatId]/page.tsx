@@ -22,52 +22,34 @@ function ChatSessionPage({ params }: { params: { chatId: string } }) {
 
   useEffect(() => {
     const initializeChat = async () => {
-      console.log("Initializing chat. Chat ID:", params.chatId);
-      
       if (!auth.currentUser) {
-        console.error("No authenticated user")
         setError("Please log in to access chats")
         setLoading(false)
         return
       }
 
-      try {
-        if (params.chatId === 'new') {
-          console.log("Creating new chat session");
-          const newChatRef = doc(collection(db, 'chatSessions'))
-          await setDoc(newChatRef, {
-            userId: auth.currentUser.uid,
-            title: 'New Chat',
-            lastMessageTimestamp: new Date(),
-            lastMessage: ''
-          })
-          console.log("Created new chat session:", newChatRef.id)
-          router.replace(`/chat/${newChatRef.id}`)
-          setLoading(false)
-          return
-        }
+      if (params.chatId === 'new') {
+        // Don't create a new chat here, just set loading to false
+        setLoading(false)
+        return
+      }
 
-        console.log("Fetching existing chat session");
+      try {
         const chatSessionRef = doc(db, 'chatSessions', params.chatId)
         const chatSessionSnap = await getDoc(chatSessionRef)
 
         if (!chatSessionSnap.exists()) {
-          console.error("Chat session does not exist:", params.chatId)
           setError("Chat session not found")
           setLoading(false)
           return
         }
 
-        console.log("Chat session data:", chatSessionSnap.data());
-
         if (chatSessionSnap.data().userId !== auth.currentUser.uid) {
-          console.error("User does not have permission to access this chat")
           setError("You don't have permission to access this chat")
           setLoading(false)
           return
         }
 
-        console.log("Fetching messages");
         const messagesRef = collection(db, 'chatSessions', params.chatId, 'messages')
         const q = query(messagesRef, orderBy('timestamp'))
 
@@ -78,7 +60,6 @@ function ChatSessionPage({ params }: { params: { chatId: string } }) {
           sender: doc.data().sender,
           timestamp: doc.data().timestamp.toDate(),
         }))
-        console.log("Fetched messages:", fetchedMessages.length);
         setMessages(fetchedMessages)
       } catch (error) {
         console.error("Error initializing chat:", error)
@@ -89,7 +70,7 @@ function ChatSessionPage({ params }: { params: { chatId: string } }) {
     }
 
     initializeChat()
-  }, [params.chatId, router])
+  }, [params.chatId])
 
   const sendMessage = async () => {
     if (!newMessage.trim() || !auth.currentUser) return
