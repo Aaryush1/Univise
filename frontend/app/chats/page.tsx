@@ -5,6 +5,18 @@ import Link from 'next/link'
 import { withAuth } from '@/components/withAuth'
 import { useRouter } from 'next/navigation'
 import { useChatListHandlers } from '@/handlers/chatListHandlers'
+import { 
+  Box, 
+  Typography, 
+  Button, 
+  Card, 
+  CardContent, 
+  List, 
+  ListItem, 
+  CircularProgress,
+  Alert
+} from '@mui/material'
+import AddIcon from '@mui/icons-material/Add'
 
 function ChatsListPage() {
   const {
@@ -30,49 +42,75 @@ function ChatsListPage() {
   };
 
   if (loading) {
-    return <div>Loading your recent chats...</div>
+    return <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+      <CircularProgress />
+    </Box>
   }
 
   if (indexBuilding) {
     return (
-      <div>
-        <h2>Preparing Your Chats</h2>
-        <p>We are setting up some things to make your chat list load faster. This may take a few minutes.</p>
-        <p>Please try again in a moment.</p>
-      </div>
+      <Box sx={{ maxWidth: 600, margin: 'auto', p: 2 }}>
+        <Typography variant="h5" gutterBottom>Preparing Your Chats</Typography>
+        <Typography variant="body1" paragraph>
+          We are setting up some things to make your chat list load faster. This may take a few minutes.
+        </Typography>
+        <Typography variant="body1">
+          Please try again in a moment.
+        </Typography>
+      </Box>
     )
   }
 
   if (error) {
     return (
-      <div>
-        <h2>Error loading chats</h2>
-        <p>{error}</p>
-        <p>Please try refreshing the page. If the problem persists, contact support.</p>
-      </div>
+      <Box sx={{ maxWidth: 600, margin: 'auto', p: 2 }}>
+        <Alert severity="error">
+          <Typography variant="h5" gutterBottom>Error loading chats</Typography>
+          <Typography variant="body1" paragraph>{error}</Typography>
+          <Typography variant="body1">
+            Please try refreshing the page. If the problem persists, contact support.
+          </Typography>
+        </Alert>
+      </Box>
     )
   }
 
   return (
-    <div>
-      <h1>Your Recent Chats</h1>
-      <button onClick={onCreateNewChat}>Start New Chat</button>
+    <Box sx={{ maxWidth: 800, margin: 'auto', p: 2 }}>
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+        <Typography variant="h4">Your Recent Chats</Typography>
+        <Button 
+          variant="contained" 
+          color="primary" 
+          startIcon={<AddIcon />}
+          onClick={onCreateNewChat}
+        >
+          Start New Chat
+        </Button>
+      </Box>
+      
       {chatSessions.length === 0 ? (
-        <p>You have not had any chats yet. Start a new one!</p>
+        <Typography variant="body1">You have not had any chats yet. Start a new one!</Typography>
       ) : (
-        <ul>
+        <List>
           {chatSessions.map((session) => (
-            <li key={session.id}>
-              <Link href={`/chat/${session.id}`}>
-                <h3>{session.title}</h3>
-                <p>{session.lastMessage}</p>
-                <small>Last updated: {session.lastMessageTimestamp.toLocaleString()}</small>
-              </Link>
-            </li>
+            <ListItem key={session.id} disablePadding>
+              <Card sx={{ width: '100%', mb: 2 }}>
+                <CardContent>
+                  <Link href={`/chat/${session.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <Typography variant="h6" gutterBottom>{session.title}</Typography>
+                    <Typography variant="body2" color="text.secondary" paragraph>{session.lastMessage}</Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      Last updated: {session.lastMessageTimestamp.toLocaleString()}
+                    </Typography>
+                  </Link>
+                </CardContent>
+              </Card>
+            </ListItem>
           ))}
-        </ul>
+        </List>
       )}
-    </div>
+    </Box>
   )
 }
 

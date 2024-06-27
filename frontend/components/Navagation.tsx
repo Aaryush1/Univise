@@ -3,7 +3,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LogoutButton } from './LogoutButton'
+import { AuthButton } from './AuthButton'
 import { auth } from '@/services/firebase'
 import { AppBar, Toolbar, Button, Box, useTheme } from '@mui/material';
 
@@ -69,7 +69,7 @@ export function Navigation(): JSX.Element {
               >
                 New Chat
               </Button>
-              <LogoutButton />
+              <AuthButton />
             </>
           )}
         </Box>
