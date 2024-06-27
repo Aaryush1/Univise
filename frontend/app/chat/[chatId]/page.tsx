@@ -2,64 +2,40 @@
 
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { auth } from '@/services/firebase'
-import { withAuth } from '@/app/components/withAuth'
-import { initializeChat, sendMessage, Message, changeTitle } from '@/utils/firebaseUtils'
+import { withAuth } from '@/components/withAuth'
+import { useChatSessionHandlers } from '@/handlers/chatSessionHandlers'
 
 function ChatSessionPage({ params }: { params: { chatId: string } }) {
-  const [messages, setMessages] = useState<Message[]>([])
-  const [newMessage, setNewMessage] = useState('')
-  const [title, setTitle] = useState('Chat Session')
-  const [isEditingTitle, setIsEditingTitle] = useState(false)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const router = useRouter()
+  const {
+    messages,
+    title,
+    loading,
+    error,
+    loadChat,
+    handleSendMessage,
+    handleTitleChange,
+  } = useChatSessionHandlers(params.chatId);
+
+  const [newMessage, setNewMessage] = useState('');
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
 
   useEffect(() => {
-    const loadChat = async () => {
-      try {
-        const { messages, title } = await initializeChat(params.chatId)
-        setMessages(messages)
-        setTitle(title || 'Chat Session')
-      } catch (error) {
-        console.error("Error initializing chat:", error)
-        setError(error instanceof Error ? error.message : "An error occurred while loading the chat")
-      } finally {
-        setLoading(false)
-      }
+    loadChat();
+  }, [params.chatId]);
+
+  const onSendMessage = async () => {
+    const success = await handleSendMessage(newMessage);
+    if (success) {
+      setNewMessage('');
     }
+  };
 
-    loadChat()
-  }, [params.chatId])
-
-  const handleSendMessage = async () => {
-    if (!newMessage.trim() || !auth.currentUser) return
-
-    try {
-      const updatedMessages = await sendMessage(params.chatId, newMessage)
-      if (updatedMessages) {
-        setMessages(updatedMessages)
-        setNewMessage('')
-      } else {
-        throw new Error("Failed to update messages")
-      }
-    } catch (error) {
-      console.error("Error sending message: ", error)
-      setError(error instanceof Error ? error.message : "An error occurred while sending the message")
+  const onTitleChange = async () => {
+    const success = await handleTitleChange(title);
+    if (success) {
+      setIsEditingTitle(false);
     }
-  }
-
-  const handleTitleChange = async () => {
-    if (!auth.currentUser) return
-
-    try {
-      await changeTitle(params.chatId, title)
-      setIsEditingTitle(false)
-    } catch (error) {
-      console.error("Error changing title: ", error)
-      setError(error instanceof Error ? error.message : "An error occurred while changing the title")
-    }
-  }
+  };
 
   if (loading) {
     return <div>Loading chat session...</div>
@@ -76,10 +52,10 @@ function ChatSessionPage({ params }: { params: { chatId: string } }) {
           <input
             type="text"
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => handleTitleChange(e.target.value)}
             placeholder="Enter chat title"
           />
-          <button onClick={handleTitleChange}>Save</button>
+          <button onClick={onTitleChange}>Save</button>
         </div>
       ) : (
         <h1 onClick={() => setIsEditingTitle(true)}>{title}</h1>
@@ -99,7 +75,7 @@ function ChatSessionPage({ params }: { params: { chatId: string } }) {
           onChange={(e) => setNewMessage(e.target.value)}
           placeholder="Type your message..."
         />
-        <button onClick={handleSendMessage}>Send</button>
+        <button onClick={onSendMessage}>Send</button>
       </div>
     </div>
   )

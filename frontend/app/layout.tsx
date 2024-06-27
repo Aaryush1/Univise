@@ -1,5 +1,5 @@
 import React from 'react'
-import { Navigation } from './components/Navagation'
+import { Navigation } from '../components/Navagation'
 
 export default function RootLayout({
   children,

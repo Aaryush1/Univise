@@ -1,48 +1,33 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import Link from 'next/link'
-import { auth } from '@/services/firebase'
-import { withAuth } from '@/app/components/withAuth'
+import { withAuth } from '@/components/withAuth'
 import { useRouter } from 'next/navigation'
-import { fetchRecentChatSessions, createNewChat, ChatSession } from '@/utils/firebaseUtils'
+import { useChatListHandlers } from '@/handlers/chatListHandlers'
 
 function ChatsListPage() {
-  const [chatSessions, setChatSessions] = useState<ChatSession[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [indexBuilding, setIndexBuilding] = useState(false)
-  const router = useRouter()
+  const {
+    chatSessions,
+    loading,
+    error,
+    indexBuilding,
+    loadChatSessions,
+    handleCreateNewChat,
+  } = useChatListHandlers();
+
+  const router = useRouter();
 
   useEffect(() => {
-    const loadChatSessions = async () => {
-      try {
-        const sessions = await fetchRecentChatSessions()
-        setChatSessions(sessions)
-      } catch (error) {
-        console.error("Error fetching chat sessions:", error)
-        if (error instanceof Error && error.message.includes('failed-precondition')) {
-          setIndexBuilding(true)
-        } else {
-          setError(error instanceof Error ? error.message : String(error))
-        }
-      } finally {
-        setLoading(false)
-      }
-    }
+    loadChatSessions();
+  }, []);
 
-    loadChatSessions()
-  }, [])
-
-  const handleCreateNewChat = async () => {
-    try {
-      const newChatId = await createNewChat()
-      router.push(`/chat/${newChatId}`)
-    } catch (error) {
-      console.error("Error creating new chat:", error)
-      setError("Failed to create a new chat. Please try again.")
+  const onCreateNewChat = async () => {
+    const newChatId = await handleCreateNewChat();
+    if (newChatId) {
+      router.push(`/chat/${newChatId}`);
     }
-  }
+  };
 
   if (loading) {
     return <div>Loading your recent chats...</div>
@@ -71,7 +56,7 @@ function ChatsListPage() {
   return (
     <div>
       <h1>Your Recent Chats</h1>
-      <button onClick={handleCreateNewChat}>Start New Chat</button>
+      <button onClick={onCreateNewChat}>Start New Chat</button>
       {chatSessions.length === 0 ? (
         <p>You have not had any chats yet. Start a new one!</p>
       ) : (
