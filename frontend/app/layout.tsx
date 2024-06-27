@@ -1,5 +1,6 @@
 import React from 'react'
 import { Navigation } from '../components/Navagation'
+import { ThemeProvider } from '../components/ThemeProvider'
 
 export default function RootLayout({
   children,
@@ -9,8 +10,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Navigation />
-        <main>{children}</main>
+        <ThemeProvider>
+          <Navigation />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   )

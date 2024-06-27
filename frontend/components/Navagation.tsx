@@ -5,59 +5,75 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { LogoutButton } from './LogoutButton'
 import { auth } from '@/services/firebase'
+import { AppBar, Toolbar, Button, Box, useTheme } from '@mui/material';
 
 export function Navigation(): JSX.Element {
   const pathname: string = usePathname()
+  const theme = useTheme();
+
+  const linkStyle = {
+    color: theme.palette.primary.contrastText,
+    textDecoration: 'none',
+    margin: theme.spacing(0, 1),
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+  };
+
+  const activeLinkStyle = {
+    ...linkStyle,
+    fontWeight: 'bold',
+  };
 
   return (
-    <nav>
-      <ul>
-        <li>
-          <Link className={`link ${pathname === '/' ? 'active' : ''}`} href="/">
+    <AppBar position="static" sx={{ backgroundColor: theme.palette.primary.main }}>
+      <Toolbar>
+        <Box sx={{ flexGrow: 1, display: 'flex' }}>
+          <Button
+            component={Link}
+            href="/"
+            sx={pathname === '/' ? activeLinkStyle : linkStyle}
+          >
             Home
-          </Link>
-        </li>
-        <li>
-          <Link
-            className={`link ${pathname === '/about' ? 'active' : ''}`}
+          </Button>
+          <Button
+            component={Link}
             href="/about"
+            sx={pathname === '/about' ? activeLinkStyle : linkStyle}
           >
             About
-          </Link>
-        </li>
-        <li>
-          <Link
-            className={`link ${pathname === '/chats' ? 'active' : ''}`}
+          </Button>
+          <Button
+            component={Link}
             href="/chats"
+            sx={pathname === '/chats' ? activeLinkStyle : linkStyle}
           >
             Chats List
-          </Link>
-        </li>
-        {!auth.currentUser ? (
-          <li>
-            <Link
-              className={`link ${pathname === '/login' ? 'active' : ''}`}
+          </Button>
+        </Box>
+        <Box>
+          {!auth.currentUser ? (
+            <Button
+              component={Link}
               href="/login"
+              sx={pathname === '/login' ? activeLinkStyle : linkStyle}
             >
               Login
-            </Link>
-          </li>
-        ) : (
-          <>
-            <li>
-              <Link
-                className={`link ${pathname === '/chat/new' ? 'active' : ''}`}
+            </Button>
+          ) : (
+            <>
+              <Button
+                component={Link}
                 href="/chat/new"
+                sx={pathname === '/chat/new' ? activeLinkStyle : linkStyle}
               >
                 New Chat
-              </Link>
-            </li>
-            <li>
+              </Button>
               <LogoutButton />
-            </li>
-          </>
-        )}
-      </ul>
-    </nav>
+            </>
+          )}
+        </Box>
+      </Toolbar>
+    </AppBar>
   )
 }
