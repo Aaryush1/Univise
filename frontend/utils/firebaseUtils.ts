@@ -17,13 +17,13 @@ export interface ChatSession {
   lastMessage: string;
 }
 
-export const initializeChat = async (chatId: string): Promise<{ messages: Message[] }> => {
+export const initializeChat = async (chatId: string): Promise<{ messages: Message[], title: string }> => {
   if (!auth.currentUser) {
     throw new Error("Please log in to access chats")
   }
 
   if (chatId === 'new') {
-    return { messages: [] }
+    return { messages: [], title: 'New Chat' }
   }
 
   const chatSessionRef = doc(db, 'chatSessions', chatId)
@@ -37,6 +37,8 @@ export const initializeChat = async (chatId: string): Promise<{ messages: Messag
     throw new Error("You don't have permission to access this chat")
   }
 
+  const title = chatSessionSnap.data().title || 'Untitled Chat'
+
   const messagesRef = collection(db, 'chatSessions', chatId, 'messages')
   const q = query(messagesRef, orderBy('timestamp'))
 
@@ -48,7 +50,7 @@ export const initializeChat = async (chatId: string): Promise<{ messages: Messag
     timestamp: doc.data().timestamp.toDate(),
   }))
 
-  return { messages: fetchedMessages }
+  return { messages: fetchedMessages, title }
 }
 
 export const sendMessage = async (chatId: string, newMessage: string): Promise<Message[]> => {
@@ -95,6 +97,33 @@ export const sendMessage = async (chatId: string, newMessage: string): Promise<M
     }))
   } catch (error) {
     console.error("Error in sendMessage:", error)
+    throw error // Re-throw the error to be caught in the component
+  }
+}
+
+export const changeTitle = async (chatId: string, newTitle: string): Promise<void> => {
+  if (!auth.currentUser) {
+    throw new Error("User not authenticated. Please log in and try again.")
+  }
+
+  const chatSessionRef = doc(db, 'chatSessions', chatId)
+
+  try {
+    const chatSessionSnap = await getDoc(chatSessionRef)
+
+    if (!chatSessionSnap.exists()) {
+      throw new Error("Chat session not found")
+    }
+
+    if (chatSessionSnap.data().userId !== auth.currentUser.uid) {
+      throw new Error("You don't have permission to modify this chat")
+    }
+
+    await updateDoc(chatSessionRef, {
+      title: newTitle
+    })
+  } catch (error) {
+    console.error("Error in changeTitle:", error)
     throw error // Re-throw the error to be caught in the component
   }
 }
