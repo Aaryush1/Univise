@@ -1,22 +1,24 @@
 "use client"
 
 import React from 'react';
-import { Button as MuiButton, ButtonProps as MuiButtonProps, useTheme } from '@mui/material';
+import { Button as MantineButton, ButtonProps as MantineButtonProps, useMantineTheme } from '@mantine/core';
 
-interface ButtonProps extends MuiButtonProps {
+interface ButtonProps extends Omit<MantineButtonProps, 'sx'> {
   // Add any additional props here
+  sx?: React.CSSProperties;
 }
 
-export const Button: React.FC<ButtonProps> = (props) => {
-  const theme = useTheme();
+export const Button: React.FC<ButtonProps> = ({ sx, ...props }) => {
+  const theme = useMantineTheme();
 
   return (
-    <MuiButton
+    <MantineButton
       {...props}
-      sx={{
-        borderRadius: '9999px',
-        padding: theme.spacing(1, 2),
-        ...props.sx,
+      radius="xl"
+      px={theme.spacing.md}
+      py={theme.spacing.xs}
+      style={{
+        ...sx,
       }}
     />
   );

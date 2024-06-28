@@ -1,7 +1,7 @@
 "use client"
 
 import React from 'react';
-import { Container, Box, useTheme } from '@mui/material';
+import { AppShell, Container, useMantineTheme } from '@mantine/core';
 import { Footer } from './Footer';
 import { Navigation } from './Navagation';
 
@@ -10,20 +10,33 @@ interface LayoutProps {
 }
 
 export const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const theme = useTheme();
+  const theme = useMantineTheme();
 
   return (
-    <Box sx={{ 
-      display: 'flex', 
-      flexDirection: 'column', 
-      minHeight: '100vh',
-      backgroundColor: theme.palette.background.default
-    }}>
-      <Navigation />
-      <Container component="main" sx={{ flexGrow: 1, py: 4 }}>
-        {children}
-      </Container>
-      <Footer />
-    </Box>
+    <AppShell
+      padding="md"
+      header={{ height: 60 }}
+      footer={{ height: 60 }}
+      styles={{
+        main: {
+          backgroundColor: theme.colors.gray[0],
+          minHeight: '100vh',
+        },
+      }}
+    >
+      <AppShell.Header>
+        <Navigation />
+      </AppShell.Header>
+
+      <AppShell.Main>
+        <Container size="lg" py={theme.spacing.xl}>
+          {children}
+        </Container>
+      </AppShell.Main>
+
+      <AppShell.Footer>
+        <Footer />
+      </AppShell.Footer>
+    </AppShell>
   );
 };

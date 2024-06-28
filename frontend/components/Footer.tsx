@@ -1,26 +1,26 @@
 "use client"
 
 import React from 'react';
-import { Box, Container, Typography, Link, useTheme } from '@mui/material';
+import { Box, Container, Text, Anchor, Group, useMantineTheme } from '@mantine/core';
 
 export const Footer: React.FC = () => {
-  const theme = useTheme();
+  const theme = useMantineTheme();
 
   return (
-    <Box component="footer" sx={{ bgcolor: theme.palette.background.paper, py: 6 }}>
-      <Container maxWidth="lg">
-        <Typography variant="body2" color="text.secondary" align="center">
+    <Box component="footer" bg={theme.colors.gray[0]} py={theme.spacing.xl}>
+      <Container size={theme.breakpoints.lg}>
+        <Text c="dimmed" ta="center" size={theme.fontSizes.sm}>
           © {new Date().getFullYear()} Univise.org. All rights reserved.
-        </Typography>
-        <Typography variant="body2" color="text.secondary" align="center">
-          <Link color="inherit" href="/privacy" sx={{ color: theme.palette.primary.main }}>
+        </Text>
+        <Group justify="center" mt={theme.spacing.xs}>
+          <Anchor href="/privacy" c={theme.colors.blue[6]} size={theme.fontSizes.sm}>
             Privacy Policy
-          </Link>
-          {' | '}
-          <Link color="inherit" href="/terms" sx={{ color: theme.palette.primary.main }}>
+          </Anchor>
+          <Text c="dimmed" size={theme.fontSizes.sm}>|</Text>
+          <Anchor href="/terms" c={theme.colors.blue[6]} size={theme.fontSizes.sm}>
             Terms of Service
-          </Link>
-        </Typography>
+          </Anchor>
+        </Group>
       </Container>
     </Box>
   );

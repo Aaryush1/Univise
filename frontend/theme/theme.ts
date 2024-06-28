@@ -1,79 +1,76 @@
-'use client';
+import { createTheme, rem } from '@mantine/core';
 
-import { createTheme, responsiveFontSizes } from '@mui/material/styles';
-import { Roboto } from 'next/font/google';
+export const theme = createTheme({
+  primaryColor: 'blue',
+  colors: {
+    // Custom blue shade
+    blue: [
+      '#E6F0FF', '#CCE0FF', '#99C2FF', '#66A3FF', '#3385FF',
+      '#1E40AF', '#1A38A0', '#162F91', '#132782', '#0F1F73'
+    ],
+    // Custom green shade
+    green: [
+      '#E6FFF7', '#CCFFF0', '#99FFE0', '#66FFD1', '#34D399',
+      '#10B981', '#0EA472', '#0C8F63', '#0A7A54', '#086545'
+    ],
+  },
 
-const roboto = Roboto({
-  weight: ['300', '400', '500', '700'],
-  subsets: ['latin'],
-  display: 'swap',
+  fontFamily: 'Roboto, sans-serif',
+  fontFamilyMonospace: 'Monaco, Courier, monospace',
+
+  headings: {
+    fontFamily: 'Roboto, sans-serif',
+    sizes: {
+      h1: { fontSize: rem(40), fontWeight: '700', lineHeight: '1.2' },
+      h2: { fontSize: rem(32), fontWeight: '600', lineHeight: '1.3' },
+      h3: { fontSize: rem(28), fontWeight: '600', lineHeight: '1.4' },
+      h4: { fontSize: rem(24), fontWeight: '600', lineHeight: '1.4' },
+      h5: { fontSize: rem(20), fontWeight: '600', lineHeight: '1.5' },
+      h6: { fontSize: rem(16), fontWeight: '600', lineHeight: '1.5' },
+    },
+  },
+
+  fontSizes: {
+    xs: rem(12),
+    sm: rem(14),
+    md: rem(16),
+    lg: rem(18),
+    xl: rem(20),
+  },
+
+  radius: {
+    xs: rem(2),
+    sm: rem(4),
+    md: rem(8),
+    lg: rem(16),
+    xl: rem(32),
+  },
+
+  spacing: {
+    xs: rem(4),
+    sm: rem(8),
+    md: rem(16),
+    lg: rem(24),
+    xl: rem(32),
+  },
+
+  breakpoints: {
+    xs: '36em',
+    sm: '48em',
+    md: '62em',
+    lg: '75em',
+    xl: '88em',
+  },
+
+  shadows: {
+    sm: '0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06)',
+    md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+    lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+  },
+
+  other: {
+    transition: {
+      default: 'all 0.3s cubic-bezier(.23,.82,.45,.97)',
+    },
+  },
 });
-
-let theme = createTheme({
-  palette: {
-    primary: {
-      main: '#1E40AF', // deep blue
-      light: '#3B82F6',
-      dark: '#1E3A8A',
-      contrastText: '#FFFFFF',
-    },
-    secondary: {
-      main: '#10B981', // emerald
-      light: '#34D399',
-      dark: '#059669',
-      contrastText: '#FFFFFF',
-    },
-    background: {
-      default: '#FFFFFF',
-      paper: '#F3F4F6',
-    },
-    text: {
-      primary: '#111827',
-      secondary: '#4B5563',
-    },
-  },
-  typography: {
-    fontFamily: roboto.style.fontFamily,
-    h1: {
-      fontSize: '2.5rem',
-      fontWeight: 700,
-    },
-    h2: {
-      fontSize: '2rem',
-      fontWeight: 600,
-    },
-    h3: {
-      fontSize: '1.75rem',
-      fontWeight: 600,
-    },
-    body1: {
-      fontSize: '1rem',
-    },
-    button: {
-      textTransform: 'none',
-    },
-  },
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          borderRadius: '9999px',
-          padding: '0.5rem 1rem',
-        },
-      },
-    },
-    MuiTextField: {
-      styleOverrides: {
-        root: {
-          '& .MuiOutlinedInput-root': {
-            borderRadius: '0.5rem',
-          },
-        },
-      },
-    },
-  },
-});
-
-theme = responsiveFontSizes(theme);
-
-export default theme;

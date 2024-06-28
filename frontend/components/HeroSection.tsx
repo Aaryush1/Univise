@@ -1,32 +1,33 @@
 "use client"
 
 import React from 'react';
-import { Typography, Button, Container, useTheme } from '@mui/material';
+import { Title, Text, Button, Container, Stack, useMantineTheme } from '@mantine/core';
 
 export const HeroSection: React.FC = () => {
-  const theme = useTheme();
+  const theme = useMantineTheme();
 
   return (
-    <Container maxWidth="md" sx={{ textAlign: 'center', py: 8 }}>
-      <Typography variant="h2" component="h1" gutterBottom color="primary">
-        Unlimited Access<br />To Your Own<br />AI Academic Advisor
-      </Typography>
-      <Typography variant="h5" paragraph color="text.secondary">
-        Welcome to Univise.org<br />
-        Ask AI questions & get instant answers.<br />
-        Specific to you & your University/College.
-      </Typography>
-      <Button 
-        variant="contained" 
-        color="primary" 
-        size="large"
-        sx={{ 
-          borderRadius: theme.shape.borderRadius,
-          padding: theme.spacing(1, 3),
-        }}
-      >
-        Coming Soon
-      </Button>
+    <Container size="md" py={`calc(${theme.spacing.xl} * 2)`}>
+      <Stack align="center" gap={theme.spacing.md}>
+        <Title order={1} c={theme.colors.blue[6]} ta="center" style={{ lineHeight: 1.2 }}>
+          Unlimited Access<br />To Your Own<br />AI Academic Advisor
+        </Title>
+        <Text size={theme.fontSizes.xl} c="dimmed" ta="center" mb={theme.spacing.md}>
+          Welcome to Univise.org<br />
+          Ask AI questions & get instant answers.<br />
+          Specific to you & your University/College.
+        </Text>
+        <Button 
+          variant="filled" 
+          color="blue" 
+          size="lg"
+          radius={theme.radius.md}
+          px={theme.spacing.xl}
+          py={theme.spacing.sm}
+        >
+          Coming Soon
+        </Button>
+      </Stack>
     </Container>
   );
 };

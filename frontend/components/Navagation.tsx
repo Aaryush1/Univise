@@ -5,16 +5,15 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { AuthButton } from './AuthButton'
 import { auth } from '@/services/firebase'
-import { AppBar, Toolbar, Button, Box, useTheme } from '@mui/material';
+import { Box, Container, Group, Button, useMantineTheme } from '@mantine/core';
 
 export function Navigation(): JSX.Element {
   const pathname: string = usePathname()
-  const theme = useTheme();
+  const theme = useMantineTheme();
 
   const linkStyle = {
-    color: theme.palette.primary.contrastText,
+    color: theme.white,
     textDecoration: 'none',
-    margin: theme.spacing(0, 1),
     '&:hover': {
       textDecoration: 'underline',
     },
@@ -22,58 +21,75 @@ export function Navigation(): JSX.Element {
 
   const activeLinkStyle = {
     ...linkStyle,
-    fontWeight: 'bold',
+    fontWeight: 700,
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: theme.palette.primary.main }}>
-      <Toolbar>
-        <Box sx={{ flexGrow: 1, display: 'flex' }}>
-          <Button
-            component={Link}
-            href="/"
-            sx={pathname === '/' ? activeLinkStyle : linkStyle}
-          >
-            Home
-          </Button>
-          <Button
-            component={Link}
-            href="/about"
-            sx={pathname === '/about' ? activeLinkStyle : linkStyle}
-          >
-            About
-          </Button>
-          <Button
-            component={Link}
-            href="/chats"
-            sx={pathname === '/chats' ? activeLinkStyle : linkStyle}
-          >
-            Chats List
-          </Button>
-        </Box>
-        <Box>
-          {!auth.currentUser ? (
+    <Box component="header" style={{ backgroundColor: theme.colors.blue[6] }}>
+      <Container size="lg" h={60}>
+        <Group justify="space-between" h="100%">
+          <Group>
             <Button
               component={Link}
-              href="/login"
-              sx={pathname === '/login' ? activeLinkStyle : linkStyle}
+              href="/"
+              variant="subtle"
+              styles={(theme) => ({
+                root: pathname === '/' ? activeLinkStyle : linkStyle,
+              })}
             >
-              Login
+              Home
             </Button>
-          ) : (
-            <>
+            <Button
+              component={Link}
+              href="/about"
+              variant="subtle"
+              styles={(theme) => ({
+                root: pathname === '/about' ? activeLinkStyle : linkStyle,
+              })}
+            >
+              About
+            </Button>
+            <Button
+              component={Link}
+              href="/chats"
+              variant="subtle"
+              styles={(theme) => ({
+                root: pathname === '/chats' ? activeLinkStyle : linkStyle,
+              })}
+            >
+              Chats List
+            </Button>
+          </Group>
+          <Group>
+            {!auth.currentUser ? (
               <Button
                 component={Link}
-                href="/chat/new"
-                sx={pathname === '/chat/new' ? activeLinkStyle : linkStyle}
+                href="/login"
+                variant="subtle"
+                styles={(theme) => ({
+                  root: pathname === '/login' ? activeLinkStyle : linkStyle,
+                })}
               >
-                New Chat
+                Login
               </Button>
-              <AuthButton />
-            </>
-          )}
-        </Box>
-      </Toolbar>
-    </AppBar>
+            ) : (
+              <>
+                <Button
+                  component={Link}
+                  href="/chat/new"
+                  variant="subtle"
+                  styles={(theme) => ({
+                    root: pathname === '/chat/new' ? activeLinkStyle : linkStyle,
+                  })}
+                >
+                  New Chat
+                </Button>
+                <AuthButton />
+              </>
+            )}
+          </Group>
+        </Group>
+      </Container>
+    </Box>
   )
 }
