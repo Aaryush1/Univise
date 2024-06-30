@@ -74,5 +74,6 @@ export const useChatSessionHandlers = (chatId: string | undefined) => {
     error,
     handleSendMessage,
     handleTitleChange,
+    loadChat,  // Expose the loadChat function
   };
 };

@@ -1,3 +1,5 @@
+// app/chat/[chatId]/page.tsx
+
 'use client';
 
 import React from 'react';
@@ -18,7 +20,7 @@ export default function ChatPage() {
     title,
     loading,
     error,
-    handleSendMessage,
+    loadChat,
     handleTitleChange,
   } = useChatSessionHandlers(chatId);
 
@@ -72,7 +74,7 @@ export default function ChatPage() {
               />
             ))}
           </ScrollArea>
-          <ChatInput onSendMessage={handleSendMessage} />
+          <ChatInput chatId={chatId} onMessageSent={loadChat} />
         </Stack>
       </Paper>
     </Container>

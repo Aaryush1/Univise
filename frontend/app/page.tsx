@@ -21,17 +21,10 @@ export default function Home() {
   const [messages, setMessages] = useState<Message[]>([])
   const { user } = useAuth()
 
-  const handleSend = (message: string) => {
-    if (message.trim()) {
-      const newMessage: Message = {
-        text: message,
-        sender: 'user',
-        timestamp: new Date().toLocaleString()
-      }
-      setMessages([...messages, newMessage])
-      // Here you would typically send the message to your AI backend
-      // and then add the response to the messages
-    }
+  const handleMessageSent = () => {
+    // Reload messages or perform any other necessary actions
+    // This is a placeholder function since the actual message sending is now handled in ChatInput
+    console.log('Message sent, update UI if necessary');
   }
 
   return (
@@ -74,7 +67,8 @@ export default function Home() {
                     />
                   ))}
                 </ScrollArea>
-                <ChatInput onSendMessage={handleSend} />
+                {/* Note: You'll need to provide a valid chatId here */}
+                <ChatInput chatId="home-chat" onMessageSent={handleMessageSent} />
               </>
             ) : (
               <Text>Please log in to use the chat.</Text>

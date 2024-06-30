@@ -1,13 +1,17 @@
 // theme/theme.ts
-import { createTheme, rem } from '@mantine/core';
+import { createTheme, rem, rgba } from '@mantine/core';
 
 export const theme = createTheme({
   primaryColor: 'teal',
   colors: {
-    
     teal: [
       '#E6FCF5', '#C3FAE8', '#96F2D7', '#63E6BE', '#38D9A9',
       '#20C997', '#12B886', '#0CA678', '#099268', '#087F5B'
+    ],
+    // Adding a neutral color palette for more design flexibility
+    neutral: [
+      '#F8F9FA', '#F1F3F5', '#E9ECEF', '#DEE2E6', '#CED4DA',
+      '#ADB5BD', '#868E96', '#495057', '#343A40', '#212529'
     ],
   },
 
@@ -68,6 +72,18 @@ export const theme = createTheme({
   other: {
     transition: {
       default: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+      fast: 'all 0.15s cubic-bezier(0.4, 0, 0.2, 1)',
+      slow: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+    },
+    borderWidth: {
+      thin: '1px',
+      medium: '2px',
+      thick: '4px',
+    },
+    boxShadow: {
+      elevation1: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
+      elevation2: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
+      elevation3: '0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)',
     },
   },
 });
