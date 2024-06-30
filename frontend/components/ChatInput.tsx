@@ -1,14 +1,12 @@
-"use client"
-
 import React, { useState } from 'react';
-import { TextInput, ActionIcon, Flex, useMantineTheme } from '@mantine/core';
+import { TextInput, ActionIcon, useMantineTheme } from '@mantine/core';
 import { IconSend } from '@tabler/icons-react';
 
 interface ChatInputProps {
   onSendMessage: (message: string) => void;
 }
 
-export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage }) => {
+export function ChatInput({ onSendMessage }: ChatInputProps) {
   const [message, setMessage] = useState('');
   const theme = useMantineTheme();
 
@@ -22,25 +20,17 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Flex align="center" gap="sm">
-        <TextInput
-          placeholder="Type your message..."
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          style={{ flex: 1 }}
-          radius={theme.radius.md}
-        />
-        <ActionIcon 
-          type="submit" 
-          variant="filled"
-          color="blue"
-          aria-label="Send message"
-          radius={theme.radius.md}
-          size="lg"
-        >
-          <IconSend size={18} />
-        </ActionIcon>
-      </Flex>
+      <TextInput
+        placeholder="Type your message..."
+        value={message}
+        onChange={(e) => setMessage(e.currentTarget.value)}
+        rightSection={
+          <ActionIcon type="submit" size={32} radius="xl" color={theme.primaryColor} variant="filled">
+            <IconSend size="1.1rem" stroke={1.5} />
+          </ActionIcon>
+        }
+        rightSectionWidth={42}
+      />
     </form>
   );
-};
+}

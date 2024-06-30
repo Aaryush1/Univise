@@ -1,4 +1,3 @@
-// app/chats/page.tsx
 'use client'
 
 import React, { useEffect } from 'react'
@@ -16,9 +15,10 @@ import {
   Alert,
   Container
 } from '@mantine/core'
-import { IconPlus } from '@tabler/icons-react'
+import { IconPlus, IconBook, IconBriefcase, IconUser } from '@tabler/icons-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { Navigation } from '@/components/Navagation'
+import { AdvisingTopicSelector } from '@/components/AdvisingTopicSelector'
 
 export default function ChatsListPage() {
   const {
@@ -44,6 +44,17 @@ export default function ChatsListPage() {
     if (newChatId) {
       router.push(`/chat/${newChatId}`);
     }
+  };
+
+  const topics = [
+    { id: 'academic', title: 'Academic Advising', icon: <IconBook size={24} /> },
+    { id: 'career', title: 'Career Guidance', icon: <IconBriefcase size={24} /> },
+    { id: 'personal', title: 'Personal Development', icon: <IconUser size={24} /> },
+  ];
+
+  const handleSelectTopic = (topicId: string) => {
+    console.log(`Selected topic: ${topicId}`);
+    // You might want to call handleCreateNewChat here with the selected topic
   };
 
   if (!user) {
@@ -104,6 +115,8 @@ export default function ChatsListPage() {
           Start New Chat
         </Button>
       </Group>
+      
+      <AdvisingTopicSelector topics={topics} onSelectTopic={handleSelectTopic} />
       
       {chatSessions.length === 0 ? (
         <Text>You have not had any chats yet. Start a new one!</Text>
