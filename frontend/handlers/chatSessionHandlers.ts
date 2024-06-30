@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { auth } from '@/services/firebase';
-import { initializeChat, sendMessage, Message, changeTitle } from '@/utils/firebaseUtils';
+import { initializeChat, sendMessage, Message, changeTitle } from '@/utils/firestoreUtils';
 
 export const useChatSessionHandlers = (chatId: string) => {
   const [messages, setMessages] = useState<Message[]>([]);

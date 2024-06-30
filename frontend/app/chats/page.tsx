@@ -1,24 +1,26 @@
+// app/chats/page.tsx
 'use client'
 
 import React, { useEffect } from 'react'
-import Link from 'next/link'
-import { withAuth } from '@/components/withAuth'
 import { useRouter } from 'next/navigation'
 import { useChatListHandlers } from '@/handlers/chatListHandlers'
 import { 
   Box, 
-  Typography, 
+  Title, 
   Button, 
   Card, 
-  CardContent, 
+  Text, 
   List, 
-  ListItem, 
-  CircularProgress,
-  Alert
-} from '@mui/material'
-import AddIcon from '@mui/icons-material/Add'
+  Group,
+  Loader,
+  Alert,
+  Container
+} from '@mantine/core'
+import { IconPlus } from '@tabler/icons-react'
+import { useAuth } from '@/contexts/AuthContext'
+import { Navigation } from '@/components/Navagation'
 
-function ChatsListPage() {
+export default function ChatsListPage() {
   const {
     chatSessions,
     loading,
@@ -29,10 +31,13 @@ function ChatsListPage() {
   } = useChatListHandlers();
 
   const router = useRouter();
+  const { user } = useAuth();
 
   useEffect(() => {
-    loadChatSessions();
-  }, []);
+    if (user) {
+      loadChatSessions();
+    }
+  }, [user, loadChatSessions]);
 
   const onCreateNewChat = async () => {
     const newChatId = await handleCreateNewChat();
@@ -41,77 +46,89 @@ function ChatsListPage() {
     }
   };
 
+  if (!user) {
+    return (
+      <Container>
+        <Navigation />
+        <Text>Please log in to view your chats.</Text>
+      </Container>
+    );
+  }
+
   if (loading) {
-    return <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
-      <CircularProgress />
-    </Box>
+    return (
+      <Container style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <Loader />
+      </Container>
+    );
   }
 
   if (indexBuilding) {
     return (
-      <Box sx={{ maxWidth: 600, margin: 'auto', p: 2 }}>
-        <Typography variant="h5" gutterBottom>Preparing Your Chats</Typography>
-        <Typography variant="body1" paragraph>
+      <Container size="sm">
+        <Navigation />
+        <Title order={2} mb="md">Preparing Your Chats</Title>
+        <Text mb="md">
           We are setting up some things to make your chat list load faster. This may take a few minutes.
-        </Typography>
-        <Typography variant="body1">
+        </Text>
+        <Text>
           Please try again in a moment.
-        </Typography>
-      </Box>
-    )
+        </Text>
+      </Container>
+    );
   }
 
   if (error) {
     return (
-      <Box sx={{ maxWidth: 600, margin: 'auto', p: 2 }}>
-        <Alert severity="error">
-          <Typography variant="h5" gutterBottom>Error loading chats</Typography>
-          <Typography variant="body1" paragraph>{error}</Typography>
-          <Typography variant="body1">
+      <Container size="sm">
+        <Navigation />
+        <Alert title="Error loading chats" color="red">
+          <Text mb="md">{error}</Text>
+          <Text>
             Please try refreshing the page. If the problem persists, contact support.
-          </Typography>
+          </Text>
         </Alert>
-      </Box>
-    )
+      </Container>
+    );
   }
 
   return (
-    <Box sx={{ maxWidth: 800, margin: 'auto', p: 2 }}>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-        <Typography variant="h4">Your Recent Chats</Typography>
+    <Container size="md">
+      <Navigation />
+      <Group mb="md">
+        <Title order={2}>Your Recent Chats</Title>
         <Button 
-          variant="contained" 
-          color="primary" 
-          startIcon={<AddIcon />}
+          leftSection={<IconPlus size={14} />}
           onClick={onCreateNewChat}
         >
           Start New Chat
         </Button>
-      </Box>
+      </Group>
       
       {chatSessions.length === 0 ? (
-        <Typography variant="body1">You have not had any chats yet. Start a new one!</Typography>
+        <Text>You have not had any chats yet. Start a new one!</Text>
       ) : (
-        <List>
+        <List spacing="md" style={{ listStyleType: 'none' }}>
           {chatSessions.map((session) => (
-            <ListItem key={session.id} disablePadding>
-              <Card sx={{ width: '100%', mb: 2 }}>
-                <CardContent>
-                  <Link href={`/chat/${session.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                    <Typography variant="h6" gutterBottom>{session.title}</Typography>
-                    <Typography variant="body2" color="text.secondary" paragraph>{session.lastMessage}</Typography>
-                    <Typography variant="caption" color="text.secondary">
-                      Last updated: {session.lastMessageTimestamp.toLocaleString()}
-                    </Typography>
-                  </Link>
-                </CardContent>
+            <List.Item key={session.id}>
+              <Card 
+                shadow="sm" 
+                p="lg" 
+                radius="md" 
+                withBorder 
+                onClick={() => router.push(`/chat/${session.id}`)}
+                style={{ cursor: 'pointer' }}
+              >
+                <Title order={4} mb="xs">{session.title}</Title>
+                <Text color="dimmed" size="sm" mb="xs">{session.lastMessage}</Text>
+                <Text size="xs" color="dimmed">
+                  Last updated: {session.lastMessageTimestamp.toLocaleString()}
+                </Text>
               </Card>
-            </ListItem>
+            </List.Item>
           ))}
         </List>
       )}
-    </Box>
-  )
+    </Container>
+  );
 }
-
-export default withAuth(ChatsListPage)

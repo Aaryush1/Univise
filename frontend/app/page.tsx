@@ -1,79 +1,88 @@
-import React from 'react'
-import { Typography, Grid, Box, Container } from '@mui/material'
-import { HeroSection } from '../components/HeroSection'
-import { Button } from '../components/CustomButton'
-import { Card } from '../components/Card'
-import SchoolIcon from '@mui/icons-material/School'
-import ChatIcon from '@mui/icons-material/Chat'
-import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople'
+// app/page.tsx
+'use client'
 
-export default function HomePage() {
+import { useState } from 'react'
+import { AppShell, Burger, Group, Text, Paper, TextInput, Button, Stack, ScrollArea } from '@mantine/core'
+import { useDisclosure } from '@mantine/hooks'
+import { ColorSchemeToggle } from '@/components/ColorSchemeToggle'
+import { ChatInput } from '@/components/ChatInput'
+import { AuthButton } from '@/components/AuthButton'
+import { useAuth } from '@/contexts/AuthContext'
+import { Navigation } from '@/components/Navagation'
+
+interface Message {
+  text: string
+  sender: 'user' | 'bot'
+}
+
+export default function Home() {
+  const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
+  const [messages, setMessages] = useState<Message[]>([])
+  const [input, setInput] = useState('')
+  const { user } = useAuth()
+
+  const handleSend = () => {
+    if (input.trim()) {
+      setMessages([...messages, { text: input, sender: 'user' }])
+      // Here you would typically send the message to your AI backend
+      // and then add the response to the messages
+      setInput('')
+    }
+  }
+
   return (
-    <>
-      <HeroSection />
-      
-      <Container maxWidth="lg" sx={{ mt: 8, mb: 8 }}>
-        <Typography variant="h4" component="h2" textAlign="center" gutterBottom>
-          Why Choose Univise?
-        </Typography>
-        <Grid container spacing={4} justifyContent="center">
-          <Grid item xs={12} sm={4}>
-            <Card
-              title="Connect with Peers"
-              content={
-                <Box display="flex" flexDirection="column" alignItems="center">
-                  <EmojiPeopleIcon fontSize="large" color="primary" sx={{ mb: 2 }} />
-                  <Typography>
-                    Build a network with students from your university and beyond.
-                  </Typography>
-                </Box>
-              }
-            />
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <Card
-              title="Get Expert Advice"
-              content={
-                <Box display="flex" flexDirection="column" alignItems="center">
-                  <SchoolIcon fontSize="large" color="primary" sx={{ mb: 2 }} />
-                  <Typography>
-                    Receive guidance from experienced students and mentors.
-                  </Typography>
-                </Box>
-              }
-            />
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <Card
-              title="AI-Powered Chats"
-              content={
-                <Box display="flex" flexDirection="column" alignItems="center">
-                  <ChatIcon fontSize="large" color="primary" sx={{ mb: 2 }} />
-                  <Typography>
-                    Get instant answers with our AI academic advisor.
-                  </Typography>
-                </Box>
-              }
-            />
-          </Grid>
-        </Grid>
-      </Container>
+    <AppShell
+      header={{ height: 60 }}
+      navbar={{
+        width: 300,
+        breakpoint: 'sm',
+        collapsed: { mobile: !mobileOpened },
+      }}
+      padding="md"
+    >
+      <AppShell.Header>
+        <Group h="100%" px="md" justify="space-between">
+          <Group>
+            <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
+            <Text size="lg" fw={700}>AI Chatbot</Text>
+          </Group>
+          <Navigation/>
+        </Group>
+      </AppShell.Header>
 
-      <Box sx={{ bgcolor: 'background.paper', py: 8 }}>
-        <Container maxWidth="md">
-          <Typography variant="h4" component="h2" textAlign="center" gutterBottom>
-            Ready to Get Started?
-          </Typography>
-          <Typography variant="body1" textAlign="center" paragraph>
-            Join Univise today and take the first step towards a more connected and informed university experience.
-          </Typography>
-          <Box display="flex" justifyContent="center" mt={4}>
-            <Button variant="contained" color="primary" size="large" href="/login">
-              Sign Up Now
-            </Button>
-          </Box>
-        </Container>
-      </Box>
-    </>
+      <AppShell.Navbar p="md">
+        <Text>Settings</Text>
+        {/* Add navigation items or settings here */}
+      </AppShell.Navbar> 
+
+      <AppShell.Main>
+        <Paper shadow="xs" p="md" style={{ height: 'calc(100vh - 100px)' }}>
+          <Stack h="100%">
+            {user ? (
+              <>
+                <ScrollArea h="calc(100% - 60px)" offsetScrollbars>
+                  {messages.map((message, index) => (
+                    <Group key={index} justify={message.sender === 'user' ? 'flex-end' : 'flex-start'}>
+                      <Text>{message.text}</Text>
+                    </Group>
+                  ))}
+                </ScrollArea>
+                <Group>
+                  <TextInput
+                    placeholder="Type your message..."
+                    value={input}
+                    onChange={(event) => setInput(event.currentTarget.value)}
+                    style={{ flex: 1 }}
+                  />
+                  <Button onClick={handleSend}>Send</Button>
+                </Group>
+              </>
+            ) : (
+              <Text>Please log in to use the chat.</Text>
+            )}
+          </Stack>
+        </Paper>
+      </AppShell.Main>
+    </AppShell>
   )
 }

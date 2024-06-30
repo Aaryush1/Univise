@@ -1,95 +1,24 @@
-"use client"
+// components/Navigation.tsx
+import React from 'react';
+import { Group, Button, Text } from '@mantine/core';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
+import { AuthButton } from './AuthButton';
 
-import React from 'react'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { AuthButton } from './AuthButton'
-import { auth } from '@/services/firebase'
-import { Box, Container, Group, Button, useMantineTheme } from '@mantine/core';
-
-export function Navigation(): JSX.Element {
-  const pathname: string = usePathname()
-  const theme = useMantineTheme();
-
-  const linkStyle = {
-    color: theme.white,
-    textDecoration: 'none',
-    '&:hover': {
-      textDecoration: 'underline',
-    },
-  };
-
-  const activeLinkStyle = {
-    ...linkStyle,
-    fontWeight: 700,
-  };
+export function Navigation() {
+  const router = useRouter();
+  const { user } = useAuth();
 
   return (
-    <Box component="header" style={{ backgroundColor: theme.colors.blue[6] }}>
-      <Container size="lg" h={60}>
-        <Group justify="space-between" h="100%">
-          <Group>
-            <Button
-              component={Link}
-              href="/"
-              variant="subtle"
-              styles={(theme) => ({
-                root: pathname === '/' ? activeLinkStyle : linkStyle,
-              })}
-            >
-              Home
-            </Button>
-            <Button
-              component={Link}
-              href="/about"
-              variant="subtle"
-              styles={(theme) => ({
-                root: pathname === '/about' ? activeLinkStyle : linkStyle,
-              })}
-            >
-              About
-            </Button>
-            <Button
-              component={Link}
-              href="/chats"
-              variant="subtle"
-              styles={(theme) => ({
-                root: pathname === '/chats' ? activeLinkStyle : linkStyle,
-              })}
-            >
-              Chats List
-            </Button>
-          </Group>
-          <Group>
-            {!auth.currentUser ? (
-              <Button
-                component={Link}
-                href="/login"
-                variant="subtle"
-                styles={(theme) => ({
-                  root: pathname === '/login' ? activeLinkStyle : linkStyle,
-                })}
-              >
-                Login
-              </Button>
+    <Group>
+      <Button onClick={() => router.push('/')}>Home</Button>
+      <Button onClick={() => router.push('/about')}>About</Button>
+      {user && <Button onClick={() => router.push('/chats')}>Chats</Button>}
+      {user ? (
+        <AuthButton/>
             ) : (
-              <>
-                <Button
-                  component={Link}
-                  href="/chat/new"
-                  variant="subtle"
-                  styles={(theme) => ({
-                    root: pathname === '/chat/new' ? activeLinkStyle : linkStyle,
-                  })}
-                >
-                  New Chat
-                </Button>
-                <AuthButton />
-              </>
-            )}
-          </Group>
-        </Group>
-      </Container>
-    </Box>
-  )
+        <Button onClick={() => router.push('/login')}>Login</Button>
+      )}
+    </Group>
+  );
 }

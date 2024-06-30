@@ -1,11 +1,9 @@
-// app/layout.tsx
 import React from 'react';
 import { MantineProvider, ColorSchemeScript } from '@mantine/core';
 import { theme } from '@/theme/theme';
-import { Navigation } from '@/components/Navagation';
 import '@mantine/core/styles.css';
 import { Roboto } from 'next/font/google';
-
+import { AuthProvider } from '@/contexts/AuthContext';
 
 const roboto = Roboto({
   weight: ['300', '400', '500', '700'],
@@ -26,12 +24,13 @@ export default function RootLayout({
   return (
     <html lang="en" className={roboto.className}>
       <head>
-        <ColorSchemeScript defaultColorScheme="light" />
+        <ColorSchemeScript/>
       </head>
       <body>
-        <MantineProvider theme={theme} defaultColorScheme="light">
-          <Navigation />
-          {children}
+        <MantineProvider theme={theme} defaultColorScheme='dark'>
+          <AuthProvider>
+            {children}
+          </AuthProvider>
         </MantineProvider>
       </body>
     </html>

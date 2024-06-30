@@ -1,24 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { Button, Menu, Avatar, Text, MantineProvider } from '@mantine/core';
-import { signOut, auth } from '@/services/firebase';
+'use client';
+
+import React from 'react';
+import { Button, Menu, Avatar, Text } from '@mantine/core';
 import { IconUser, IconUserCircle, IconLogout } from '@tabler/icons-react';
-import { theme } from '@/theme/theme'; // Import your custom theme
+import { useAuth } from '@/contexts/AuthContext';
+import { signOut } from '@/services/firebase';
+import { useRouter } from 'next/navigation';
 
 export function AuthButton(): JSX.Element {
   const router = useRouter();
-  const [user, setUser] = useState(auth.currentUser);
-
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      setUser(user);
-    });
-    return () => unsubscribe();
-  }, []);
-
-  const handleLogin = () => {
-    router.push('/login');
-  };
+  const { user } = useAuth();
 
   const handleLogout = async () => {
     try {
@@ -29,54 +20,49 @@ export function AuthButton(): JSX.Element {
     }
   };
 
+  if (!user) {
+    return (
+      <Button onClick={() => router.push('/login')} variant="filled" color="blue">
+        Login
+      </Button>
+    );
+  }
+
   return (
-    <MantineProvider theme={theme}>
-      {user ? (
-        <Menu position="bottom-end" withArrow shadow="md" width={200}>
-          <Menu.Target>
-            <Button
-              variant="subtle"
-              leftSection={
-                user.photoURL ? (
-                  <Avatar src={user.photoURL} size="sm" radius="xl" />
-                ) : (
-                  <Avatar color="blue" radius="xl">
-                    <IconUser size={theme.fontSizes!.md} />
-                  </Avatar>
-                )
-              }
-            >
-              <Text size="sm" fw={500} truncate>
-                {user.displayName || user.email}
-              </Text>
-            </Button>
-          </Menu.Target>
-          <Menu.Dropdown>
-            <Menu.Item
-              leftSection={<IconUserCircle size={theme.fontSizes!.md} />}
-              onClick={() => router.push('/profile')}
-            >
-              Profile
-            </Menu.Item>
-            <Menu.Item
-              color="red"
-              leftSection={<IconLogout size={theme.fontSizes!.md} />}
-              onClick={handleLogout}
-            >
-              Logout
-            </Menu.Item>
-          </Menu.Dropdown>
-        </Menu>
-      ) : (
+    <Menu position="bottom-end" withArrow shadow="md" width={200}>
+      <Menu.Target>
         <Button
-          onClick={handleLogin}
-          variant="filled"
-          color="blue"
-          radius={theme.radius!.md}
+          variant="subtle"
+          leftSection={
+            user.photoURL ? (
+              <Avatar src={user.photoURL} size="sm" radius="xl" />
+            ) : (
+              <Avatar color="blue" radius="xl">
+                <IconUser size="1rem" />
+              </Avatar>
+            )
+          }
         >
-          Login
+          <Text size="sm" fw={500} truncate>
+            {user.displayName || user.email}
+          </Text>
         </Button>
-      )}
-    </MantineProvider>
+      </Menu.Target>
+      <Menu.Dropdown>
+        <Menu.Item
+          leftSection={<IconUserCircle size="1rem" />}
+          onClick={() => router.push('/profile')}
+        >
+          Profile
+        </Menu.Item>
+        <Menu.Item
+          color="red"
+          leftSection={<IconLogout size="1rem" />}
+          onClick={handleLogout}
+        >
+          Logout
+        </Menu.Item>
+      </Menu.Dropdown>
+    </Menu>
   );
 }

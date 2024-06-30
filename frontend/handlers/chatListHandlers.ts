@@ -1,7 +1,7 @@
 // handlers/chatListHandlers.ts
 
 import { useState } from 'react';
-import { fetchRecentChatSessions, createNewChat, ChatSession } from '@/utils/firebaseUtils';
+import { fetchRecentChatSessions, createNewChat, ChatSession } from '@/utils/firestoreUtils';
 
 export const useChatListHandlers = () => {
   const [chatSessions, setChatSessions] = useState<ChatSession[]>([]);
