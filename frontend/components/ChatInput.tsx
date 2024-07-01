@@ -1,33 +1,26 @@
 import React, { useState } from 'react';
-import { Textarea, ActionIcon, Box, Transition, rem, useMantineTheme } from '@mantine/core';
-import { IconArrowUp, IconPaperclip } from '@tabler/icons-react';
+import { Box, Textarea, ActionIcon, Transition } from '@mantine/core';
+import { IconArrowUp } from '@tabler/icons-react';
 import { auth } from '@/services/firebase';
 import { sendMessage } from '@/utils/firestoreUtils';
 
 interface ChatInputProps {
   chatId: string;
-  onMessageSent?: () => void;
+  onMessageSent: () => void;
 }
 
 export function ChatInput({ chatId, onMessageSent }: ChatInputProps) {
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const theme = useMantineTheme();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (message.trim() && auth.currentUser) {
       setIsLoading(true);
       try {
-        const updatedMessages = await sendMessage(chatId, message.trim());
-        if (updatedMessages) {
-          setMessage('');
-          if (onMessageSent) {
-            onMessageSent();
-          }
-        } else {
-          throw new Error("Failed to update messages");
-        }
+        await sendMessage(chatId, message.trim());
+        setMessage('');
+        onMessageSent();
       } catch (error) {
         console.error("Error sending message: ", error);
       } finally {
@@ -36,89 +29,83 @@ export function ChatInput({ chatId, onMessageSent }: ChatInputProps) {
     }
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      handleSubmit(event);
+    }
+  };
+
   return (
-    <Box 
+    <Box
       component="form"
       onSubmit={handleSubmit}
       style={{
-        backgroundColor: theme.colors.dark[6],
-        borderRadius: theme.radius.lg,
-        padding: theme.spacing.sm,
-        position: 'relative',
+        backgroundColor: '#25262b',
+        borderTop: '1px solid #373A40',
+        borderTopLeftRadius: '0.5rem',
+        borderTopRightRadius: '0.5rem',
+        padding: '0.75rem',
         width: '100%',
-        margin: '0 auto',
-        boxShadow: `0 0 0 1px ${theme.colors.dark[4]}`,
+        transition: 'all 200ms ease',
+        display: 'flex',
+        alignItems: 'flex-end',
       }}
     >
       <Textarea
-        placeholder="Type a message..."
+        placeholder="Type a message and press Enter to send..."
         value={message}
-        onChange={(e) => setMessage(e.currentTarget.value)}
+        onChange={(event) => setMessage(event.currentTarget.value)}
+        onKeyDown={handleKeyDown}
+        disabled={isLoading}
         autosize
         minRows={1}
-        maxRows={6}
-        style={{ paddingRight: rem(100) }}
-        styles={(theme) => ({
-          root: {
-            backgroundColor: 'transparent',
-          },
+        maxRows={5}
+        style={{ flex: 1, marginRight: '0.5rem' }}
+        styles={{
           input: {
-            border: 'none',
             backgroundColor: 'transparent',
-            color: theme.colors.dark[0],
-            fontSize: theme.fontSizes.sm,
-            lineHeight: rem(20),
-            maxRows: 6,
-            overflow: 'auto',
+            border: 'none',
+            color: '#C1C2C5',
+            fontSize: '0.875rem',
+            padding: '0.5rem',
             '&::placeholder': {
-              color: theme.colors.dark[2],
+              color: '#5C5F66',
             },
             '&:focus': {
               outline: 'none',
             },
+            scrollbarWidth: 'thin',
+            scrollbarColor: '#373A40 transparent',
             '&::-webkit-scrollbar': {
-              width: rem(8),
+              width: '6px',
             },
             '&::-webkit-scrollbar-track': {
-              backgroundColor: theme.colors.dark[5],
+              background: 'transparent',
             },
             '&::-webkit-scrollbar-thumb': {
-              backgroundColor: theme.colors.dark[3],
-              borderRadius: theme.radius.sm,
+              backgroundColor: '#373A40',
+              borderRadius: '3px',
             },
           },
-        })}
-      />
-      <ActionIcon
-        size="md"
-        color="teal"
-        variant="light"
-        style={{
-          position: 'absolute',
-          top: `calc(${theme.spacing.sm} - 2px)`,
-          right: rem(52),
-          backgroundColor: theme.colors.dark[5],
         }}
+      />
+      <Transition
+        mounted={message.trim().length > 0}
+        transition="pop"
+        duration={200}
+        timingFunction="ease"
       >
-        <IconPaperclip size={rem(16)} />
-      </ActionIcon>
-      <Transition mounted={message.trim().length > 0} transition="pop" duration={200} timingFunction="ease">
         {(styles) => (
           <ActionIcon
-            type="submit"
-            size="md"
+            size="lg"
             color="blue"
             variant="filled"
             disabled={isLoading}
-            style={{
-              ...styles,
-              position: 'absolute',
-              top: `calc(${theme.spacing.sm} - 2px)`,
-              right: rem(10),
-              backgroundColor: theme.colors.blue[6],
-            }}
+            type="submit"
+            style={styles}
           >
-            <IconArrowUp size={rem(16)} />
+            <IconArrowUp size={18} />
           </ActionIcon>
         )}
       </Transition>

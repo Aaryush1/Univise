@@ -1,5 +1,3 @@
-// app/chat/[chatId]/page.tsx
-
 'use client';
 
 import React from 'react';
@@ -58,6 +56,10 @@ export default function ChatPage() {
     );
   }
 
+  const handleMessageSent = async () => {
+    await loadChat();
+  };
+
   return (
     <Container>
       <Navigation />
@@ -74,7 +76,7 @@ export default function ChatPage() {
               />
             ))}
           </ScrollArea>
-          <ChatInput chatId={chatId} onMessageSent={loadChat} />
+          <ChatInput chatId={chatId} onMessageSent={handleMessageSent} />
         </Stack>
       </Paper>
     </Container>

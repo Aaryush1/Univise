@@ -21,6 +21,7 @@ export default function Home() {
 
   const handleMessageSent = () => {
     console.log('Message sent, update UI if necessary');
+    // You might want to fetch new messages here or update the UI
   }
 
   return (
