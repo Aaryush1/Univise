@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Textarea, ActionIcon, Box, Transition, rem, useMantineTheme } from '@mantine/core';
-import { IconSend, IconPaperclip } from '@tabler/icons-react';
+import { IconArrowUp, IconPaperclip } from '@tabler/icons-react';
 import { auth } from '@/services/firebase';
 import { sendMessage } from '@/utils/firestoreUtils';
 
@@ -41,12 +41,13 @@ export function ChatInput({ chatId, onMessageSent }: ChatInputProps) {
       component="form"
       onSubmit={handleSubmit}
       style={{
-        backgroundColor: theme.colors.neutral[1],
+        backgroundColor: theme.colors.dark[6],
         borderRadius: theme.radius.lg,
         padding: theme.spacing.sm,
         position: 'relative',
-        maxWidth: '90%',
+        width: '100%',
         margin: '0 auto',
+        boxShadow: `0 0 0 1px ${theme.colors.dark[4]}`,
       }}
     >
       <Textarea
@@ -56,18 +57,21 @@ export function ChatInput({ chatId, onMessageSent }: ChatInputProps) {
         autosize
         minRows={1}
         maxRows={6}
-        style={{ paddingRight: rem(80) }}
-        styles={{
+        style={{ paddingRight: rem(100) }}
+        styles={(theme) => ({
+          root: {
+            backgroundColor: 'transparent',
+          },
           input: {
             border: 'none',
             backgroundColor: 'transparent',
-            color: theme.colors.neutral[9],
+            color: theme.colors.dark[0],
             fontSize: theme.fontSizes.sm,
             lineHeight: rem(20),
             maxRows: 6,
             overflow: 'auto',
             '&::placeholder': {
-              color: theme.colors.neutral[5],
+              color: theme.colors.dark[2],
             },
             '&:focus': {
               outline: 'none',
@@ -76,43 +80,45 @@ export function ChatInput({ chatId, onMessageSent }: ChatInputProps) {
               width: rem(8),
             },
             '&::-webkit-scrollbar-track': {
-              backgroundColor: theme.colors.neutral[1],
+              backgroundColor: theme.colors.dark[5],
             },
             '&::-webkit-scrollbar-thumb': {
-              backgroundColor: theme.colors.neutral[4],
+              backgroundColor: theme.colors.dark[3],
               borderRadius: theme.radius.sm,
             },
           },
-        }}
+        })}
       />
       <ActionIcon
-        size="lg"
-        color="neutral.6"
-        variant="subtle"
+        size="md"
+        color="teal"
+        variant="light"
         style={{
           position: 'absolute',
-          top: theme.spacing.sm,
-          right: theme.spacing.sm,
+          top: `calc(${theme.spacing.sm} - 2px)`,
+          right: rem(52),
+          backgroundColor: theme.colors.dark[5],
         }}
       >
-        <IconPaperclip size={rem(20)} />
+        <IconPaperclip size={rem(16)} />
       </ActionIcon>
       <Transition mounted={message.trim().length > 0} transition="pop" duration={200} timingFunction="ease">
         {(styles) => (
           <ActionIcon
             type="submit"
-            size="lg"
-            color="blue.6"
-            variant="subtle"
+            size="md"
+            color="blue"
+            variant="filled"
             disabled={isLoading}
             style={{
               ...styles,
               position: 'absolute',
-              top: theme.spacing.sm,
-              right: rem(52),
+              top: `calc(${theme.spacing.sm} - 2px)`,
+              right: rem(10),
+              backgroundColor: theme.colors.blue[6],
             }}
           >
-            <IconSend size={rem(20)} />
+            <IconArrowUp size={rem(16)} />
           </ActionIcon>
         )}
       </Transition>
