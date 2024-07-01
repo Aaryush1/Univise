@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Textarea, ActionIcon, Box, Flex, Transition } from '@mantine/core';
-import { IconArrowUp } from '@tabler/icons-react';
+import React, { useState } from 'react';
+import { Textarea, ActionIcon, Box, Transition, rem, useMantineTheme } from '@mantine/core';
+import { IconSend, IconPaperclip } from '@tabler/icons-react';
 import { auth } from '@/services/firebase';
 import { sendMessage } from '@/utils/firestoreUtils';
 
@@ -12,14 +12,7 @@ interface ChatInputProps {
 export function ChatInput({ chatId, onMessageSent }: ChatInputProps) {
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (containerRef.current) {
-      containerRef.current.style.height = 'auto';
-      containerRef.current.style.height = `${containerRef.current.scrollHeight}px`;
-    }
-  }, [message]);
+  const theme = useMantineTheme();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,75 +38,81 @@ export function ChatInput({ chatId, onMessageSent }: ChatInputProps) {
 
   return (
     <Box 
-      pos="relative" 
-      maw={600} 
-      w="100%"
-      mx="auto" 
+      component="form"
+      onSubmit={handleSubmit}
       style={{
-        backgroundColor: '#f0f0f0',
-        borderRadius: '8px',
-        padding: '8px',
-        minHeight: '40px',
+        backgroundColor: theme.colors.neutral[1],
+        borderRadius: theme.radius.lg,
+        padding: theme.spacing.sm,
+        position: 'relative',
+        maxWidth: '90%',
+        margin: '0 auto',
       }}
     >
-      <Flex 
-        ref={containerRef} 
-        direction="column" 
-        style={{ 
-          maxHeight: '112px', 
-          overflow: 'hidden',
-          marginRight: '40px', // Make space for the button
+      <Textarea
+        placeholder="Type a message..."
+        value={message}
+        onChange={(e) => setMessage(e.currentTarget.value)}
+        autosize
+        minRows={1}
+        maxRows={6}
+        style={{ paddingRight: rem(80) }}
+        styles={{
+          input: {
+            border: 'none',
+            backgroundColor: 'transparent',
+            color: theme.colors.neutral[9],
+            fontSize: theme.fontSizes.sm,
+            lineHeight: rem(20),
+            maxRows: 6,
+            overflow: 'auto',
+            '&::placeholder': {
+              color: theme.colors.neutral[5],
+            },
+            '&:focus': {
+              outline: 'none',
+            },
+            '&::-webkit-scrollbar': {
+              width: rem(8),
+            },
+            '&::-webkit-scrollbar-track': {
+              backgroundColor: theme.colors.neutral[1],
+            },
+            '&::-webkit-scrollbar-thumb': {
+              backgroundColor: theme.colors.neutral[4],
+              borderRadius: theme.radius.sm,
+            },
+          },
+        }}
+      />
+      <ActionIcon
+        size="lg"
+        color="neutral.6"
+        variant="subtle"
+        style={{
+          position: 'absolute',
+          top: theme.spacing.sm,
+          right: theme.spacing.sm,
         }}
       >
-        <Textarea
-          placeholder="Write a message..."
-          value={message}
-          onChange={(e) => setMessage(e.currentTarget.value)}
-          autosize
-          minRows={1}
-          maxRows={4}
-          styles={{
-            root: {
-              flexGrow: 1,
-            },
-            input: {
-              border: 'none',
-              padding: '8px 8px 8px 8px',
-              backgroundColor: 'transparent',
-              fontSize: '14px',
-              overflowY: 'auto',
-              '&:focus': {
-                outline: 'none',
-              },
-              '&::-webkit-scrollbar': {
-                width: '8px',
-              },
-              '&::-webkit-scrollbar-thumb': {
-                backgroundColor: '#888',
-                borderRadius: '4px',
-              },
-            },
-          }}
-        />
-      </Flex>
-      <Transition mounted={message.trim().length > 0} transition="pop" duration={200}>
+        <IconPaperclip size={rem(20)} />
+      </ActionIcon>
+      <Transition mounted={message.trim().length > 0} transition="pop" duration={200} timingFunction="ease">
         {(styles) => (
           <ActionIcon
-            color="blue"
-            variant="filled"
+            type="submit"
             size="lg"
+            color="blue.6"
+            variant="subtle"
             disabled={isLoading}
-            loading={isLoading}
-            onClick={handleSubmit}
             style={{
               ...styles,
               position: 'absolute',
-              top: '8px',
-              right: '8px',
-              borderRadius: '4px',
+              top: theme.spacing.sm,
+              right: rem(52),
             }}
           >
-            <IconArrowUp size={18} />
+            <IconSend size={rem(20)} />
           </ActionIcon>
         )}
       </Transition>

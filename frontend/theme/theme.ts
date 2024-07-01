@@ -1,5 +1,5 @@
 // theme/theme.ts
-import { createTheme, rem, rgba } from '@mantine/core';
+import { createTheme, rem } from '@mantine/core';
 
 export const theme = createTheme({
   primaryColor: 'teal',
@@ -8,10 +8,13 @@ export const theme = createTheme({
       '#E6FCF5', '#C3FAE8', '#96F2D7', '#63E6BE', '#38D9A9',
       '#20C997', '#12B886', '#0CA678', '#099268', '#087F5B'
     ],
-    // Adding a neutral color palette for more design flexibility
     neutral: [
       '#F8F9FA', '#F1F3F5', '#E9ECEF', '#DEE2E6', '#CED4DA',
       '#ADB5BD', '#868E96', '#495057', '#343A40', '#212529'
+    ],
+    blue: [
+      '#E7F5FF', '#D0EBFF', '#A5D8FF', '#74C0FC', '#4DABF7',
+      '#339AF0', '#228BE6', '#1C7ED6', '#1971C2', '#1864AB'
     ],
   },
 
@@ -42,7 +45,7 @@ export const theme = createTheme({
     xs: rem(2),
     sm: rem(4),
     md: rem(8),
-    lg: rem(16),
+    lg: rem(12),
     xl: rem(24),
   },
 

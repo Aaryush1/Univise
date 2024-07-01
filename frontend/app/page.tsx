@@ -1,12 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import { AppShell, Burger, Group, Text, Paper, Stack, ScrollArea } from '@mantine/core'
+import { AppShell, Burger, Group, Text, Paper, Box, ScrollArea } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { ColorSchemeToggle } from '@/components/ColorSchemeToggle'
 import { ChatInput } from '@/components/ChatInput'
 import { ChatMessage } from '@/components/ChatMessage'
-import { AuthButton } from '@/components/AuthButton'
 import { useAuth } from '@/contexts/AuthContext'
 import { Navigation } from '@/components/Navagation'
 
@@ -22,8 +20,6 @@ export default function Home() {
   const { user } = useAuth()
 
   const handleMessageSent = () => {
-    // Reload messages or perform any other necessary actions
-    // This is a placeholder function since the actual message sending is now handled in ChatInput
     console.log('Message sent, update UI if necessary');
   }
 
@@ -53,27 +49,26 @@ export default function Home() {
       </AppShell.Navbar> 
 
       <AppShell.Main>
-        <Paper shadow="xs" p="md" style={{ height: 'calc(100vh - 100px)' }}>
-          <Stack h="100%">
-            {user ? (
-              <>
-                <ScrollArea h="calc(100% - 60px)" offsetScrollbars>
-                  {messages.map((message, index) => (
-                    <ChatMessage
-                      key={index}
-                      content={message.text}
-                      timestamp={message.timestamp}
-                      isUser={message.sender === 'user'}
-                    />
-                  ))}
-                </ScrollArea>
-                {/* Note: You'll need to provide a valid chatId here */}
+        <Paper shadow="xs" p="md" style={{ height: 'calc(100vh - 92px)', display: 'flex', flexDirection: 'column' }}>
+          {user ? (
+            <>
+              <ScrollArea style={{ flex: 1, marginBottom: '16px' }} offsetScrollbars>
+                {messages.map((message, index) => (
+                  <ChatMessage
+                    key={index}
+                    content={message.text}
+                    timestamp={message.timestamp}
+                    isUser={message.sender === 'user'}
+                  />
+                ))}
+              </ScrollArea>
+              <Box style={{ flexShrink: 0 }}>
                 <ChatInput chatId="home-chat" onMessageSent={handleMessageSent} />
-              </>
-            ) : (
-              <Text>Please log in to use the chat.</Text>
-            )}
-          </Stack>
+              </Box>
+            </>
+          ) : (
+            <Text>Please log in to use the chat.</Text>
+          )}
         </Paper>
       </AppShell.Main>
     </AppShell>
