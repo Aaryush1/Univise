@@ -1,37 +1,44 @@
-"use client"
+// app/login/page.tsx
+'use client';
 
-import { AppShell, Burger, Group, Skeleton } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import React, { useEffect } from 'react';
+import { Button, Container, Title, Text, Stack } from '@mantine/core';
+import { signInWithGoogle } from '@/services/firebase';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
 
-export default function Page() {
-  const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
-  const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
+export default function LoginPage() {
+  const router = useRouter();
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      router.push('/');
+    }
+  }, [user, router]);
+
+  const handleLogin = async () => {
+    try {
+      await signInWithGoogle();
+      router.push('/');
+    } catch (error) {
+      console.error('Login failed:', error);
+    }
+  };
+
+  if (user) {
+    return null; // or a loading spinner
+  }
 
   return (
-    <AppShell
-      header={{ height: 60 }}
-      navbar={{
-        width: 300,
-        breakpoint: 'sm',
-        collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
-      }}
-      padding="md"
-    >
-      <AppShell.Header>
-        <Group h="100%" px="md">
-          <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
-          <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
-        </Group>
-      </AppShell.Header>
-      <AppShell.Navbar p="md">
-        Navbar
-        {Array(15)
-          .fill(0)
-          .map((_, index) => (
-            <Skeleton key={index} h={28} mt="sm" animate={false} />
-          ))}
-      </AppShell.Navbar>
-      <AppShell.Main>Login</AppShell.Main>
-    </AppShell>
+    <Container size="sm">
+      <Stack align="center" mt="xl">
+        <Title order={1}>Welcome</Title>
+        <Text>Please sign in with your university email to continue.</Text>
+        <Button onClick={handleLogin} size="lg">
+          Sign in with Google
+        </Button>
+      </Stack>
+    </Container>
   );
 }
