@@ -1,147 +1,37 @@
-'use client'
+"use client"
 
-import React, { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { useChatListHandlers } from '@/handlers/chatListHandlers'
-import { 
-  Box, 
-  Title, 
-  Button, 
-  Card, 
-  Text, 
-  List, 
-  Group,
-  Loader,
-  Alert,
-  Container
-} from '@mantine/core'
-import { IconPlus, IconBook, IconBriefcase, IconUser } from '@tabler/icons-react'
-import { useAuth } from '@/contexts/AuthContext'
-import { Navigation } from '@/components/Navagation'
-import { AdvisingTopicSelector } from '@/components/AdvisingTopicSelector'
+import { AppShell, Burger, Group, Skeleton } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 
-export default function ChatsListPage() {
-  const {
-    chatSessions,
-    loading,
-    error,
-    indexBuilding,
-    loadChatSessions,
-    handleCreateNewChat,
-  } = useChatListHandlers();
-
-  const router = useRouter();
-  const { user } = useAuth();
-
-  useEffect(() => {
-    if (user) {
-      loadChatSessions();
-    }
-  }, [user, loadChatSessions]);
-
-  const onCreateNewChat = async () => {
-    const newChatId = await handleCreateNewChat();
-    if (newChatId) {
-      router.push(`/chat/${newChatId}`);
-    }
-  };
-
-  const topics = [
-    { id: 'academic', title: 'Academic Advising', icon: <IconBook size={24} /> },
-    { id: 'career', title: 'Career Guidance', icon: <IconBriefcase size={24} /> },
-    { id: 'personal', title: 'Personal Development', icon: <IconUser size={24} /> },
-  ];
-
-  const handleSelectTopic = (topicId: string) => {
-    console.log(`Selected topic: ${topicId}`);
-    // You might want to call handleCreateNewChat here with the selected topic
-  };
-
-  if (!user) {
-    return (
-      <Container>
-        <Navigation />
-        <Text>Please log in to view your chats.</Text>
-      </Container>
-    );
-  }
-
-  if (loading) {
-    return (
-      <Container style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-        <Loader />
-      </Container>
-    );
-  }
-
-  if (indexBuilding) {
-    return (
-      <Container size="sm">
-        <Navigation />
-        <Title order={2} mb="md">Preparing Your Chats</Title>
-        <Text mb="md">
-          We are setting up some things to make your chat list load faster. This may take a few minutes.
-        </Text>
-        <Text>
-          Please try again in a moment.
-        </Text>
-      </Container>
-    );
-  }
-
-  if (error) {
-    return (
-      <Container size="sm">
-        <Navigation />
-        <Alert title="Error loading chats" color="red">
-          <Text mb="md">{error}</Text>
-          <Text>
-            Please try refreshing the page. If the problem persists, contact support.
-          </Text>
-        </Alert>
-      </Container>
-    );
-  }
+export default function Page() {
+  const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
+  const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
 
   return (
-    <Container size="md">
-      <Navigation />
-      <Group mb="md">
-        <Title order={2}>Your Recent Chats</Title>
-        <Button 
-          leftSection={<IconPlus size={14} />}
-          onClick={onCreateNewChat}
-        >
-          Start New Chat
-        </Button>
-      </Group>
-      
-      <AdvisingTopicSelector topics={topics} onSelectTopic={handleSelectTopic} />
-      
-      {chatSessions.length === 0 ? (
-        <Text>You have not had any chats yet. Start a new one!</Text>
-      ) : (
-        <List spacing="md" style={{ listStyleType: 'none' }}>
-          {chatSessions.map((session) => (
-            <List.Item key={session.id}>
-              <Card 
-                shadow="sm" 
-                p="lg" 
-                radius="md" 
-                withBorder 
-                onClick={() => router.push(`/chat/${session.id}`)}
-                style={{ cursor: 'pointer' }}
-              >
-                <Title order={4} mb="xs">{session.title}</Title>
-                <Text color="dimmed" size="sm" mb="xs">{session.lastMessage}</Text>
-                <Text size="xs" color="dimmed">
-                  Last updated: {session.lastMessageTimestamp.toLocaleString()}
-                </Text>
-              </Card>
-            </List.Item>
+    <AppShell
+      header={{ height: 60 }}
+      navbar={{
+        width: 300,
+        breakpoint: 'sm',
+        collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
+      }}
+      padding="md"
+    >
+      <AppShell.Header>
+        <Group h="100%" px="md">
+          <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
+          <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
+        </Group>
+      </AppShell.Header>
+      <AppShell.Navbar p="md">
+        Navbar
+        {Array(15)
+          .fill(0)
+          .map((_, index) => (
+            <Skeleton key={index} h={28} mt="sm" animate={false} />
           ))}
-        </List>
-      )}
-    </Container>
+      </AppShell.Navbar>
+      <AppShell.Main>Chatlist</AppShell.Main>
+    </AppShell>
   );
 }

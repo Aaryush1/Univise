@@ -1,28 +1,11 @@
-'use client'
+"use client"
 
-import { useState } from 'react'
-import { AppShell, Burger, Group, Text, Paper, Box, ScrollArea } from '@mantine/core'
-import { useDisclosure } from '@mantine/hooks'
-import { ChatInput } from '@/components/ChatInput'
-import { ChatMessage } from '@/components/ChatMessage'
-import { useAuth } from '@/contexts/AuthContext'
-import { Navigation } from '@/components/Navagation'
+import { AppShell, Burger, Group, Skeleton } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 
-interface Message {
-  text: string
-  sender: 'user' | 'bot'
-  timestamp: string
-}
-
-export default function Home() {
+export default function Page() {
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
-  const [messages, setMessages] = useState<Message[]>([])
-  const { user } = useAuth()
-
-  const handleMessageSent = () => {
-    console.log('Message sent, update UI if necessary');
-    // You might want to fetch new messages here or update the UI
-  }
+  const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
 
   return (
     <AppShell
@@ -30,48 +13,25 @@ export default function Home() {
       navbar={{
         width: 300,
         breakpoint: 'sm',
-        collapsed: { mobile: !mobileOpened },
+        collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
       }}
       padding="md"
     >
       <AppShell.Header>
-        <Group h="100%" px="md" justify="space-between">
-          <Group>
-            <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
-            <Text size="lg" fw={700}>AI Chatbot</Text>
-          </Group>
-          <Navigation/>
+        <Group h="100%" px="md">
+          <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
+          <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
         </Group>
       </AppShell.Header>
-
       <AppShell.Navbar p="md">
-        <Text>Settings</Text>
-        {/* Add navigation items or settings here */}
-      </AppShell.Navbar> 
-
-      <AppShell.Main>
-        <Paper shadow="xs" p="md" style={{ height: 'calc(100vh - 92px)', display: 'flex', flexDirection: 'column' }}>
-          {user ? (
-            <>
-              <ScrollArea style={{ flex: 1, marginBottom: '16px' }} offsetScrollbars>
-                {messages.map((message, index) => (
-                  <ChatMessage
-                    key={index}
-                    content={message.text}
-                    timestamp={message.timestamp}
-                    isUser={message.sender === 'user'}
-                  />
-                ))}
-              </ScrollArea>
-              <Box style={{ flexShrink: 0 }}>
-                <ChatInput chatId="home-chat" onMessageSent={handleMessageSent} />
-              </Box>
-            </>
-          ) : (
-            <Text>Please log in to use the chat.</Text>
-          )}
-        </Paper>
-      </AppShell.Main>
+        Navbar
+        {Array(15)
+          .fill(0)
+          .map((_, index) => (
+            <Skeleton key={index} h={28} mt="sm" animate={false} />
+          ))}
+      </AppShell.Navbar>
+      <AppShell.Main>Main</AppShell.Main>
     </AppShell>
-  )
+  );
 }

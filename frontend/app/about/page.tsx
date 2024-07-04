@@ -1,31 +1,37 @@
 "use client"
 
-import React from 'react'
-import { Container, Title, Text, Group } from '@mantine/core'
-import { Navigation } from '@/components/Navagation'
-import { UserProfileCard } from '@/components/UserProfileCard'
+import { AppShell, Burger, Group, Skeleton } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 
-export default function AboutPage() {
-  const handleEditProfile = () => {
-    // Handle edit profile action
-    console.log('Edit profile clicked');
-  };
+export default function Page() {
+  const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
+  const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
 
   return (
-    <Container>
-      <Navigation />
-      <Title order={1}>About Univise</Title>
-      <Text>Univise is a platform for university students to connect and share advice.</Text>
-      
-      <Group mt="xl">
-        <UserProfileCard
-          name="John Doe"
-          email="john.doe@example.com"
-          avatar="https://example.com/avatar.jpg"
-          program="Computer Science"
-          onEdit={handleEditProfile}
-        />
-      </Group>
-    </Container>
-  )
+    <AppShell
+      header={{ height: 60 }}
+      navbar={{
+        width: 300,
+        breakpoint: 'sm',
+        collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
+      }}
+      padding="md"
+    >
+      <AppShell.Header>
+        <Group h="100%" px="md">
+          <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
+          <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
+        </Group>
+      </AppShell.Header>
+      <AppShell.Navbar p="md">
+        Navbar
+        {Array(15)
+          .fill(0)
+          .map((_, index) => (
+            <Skeleton key={index} h={28} mt="sm" animate={false} />
+          ))}
+      </AppShell.Navbar>
+      <AppShell.Main>About</AppShell.Main>
+    </AppShell>
+  );
 }
