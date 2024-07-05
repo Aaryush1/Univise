@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { AppShell, Box, ActionIcon, Tooltip } from '@mantine/core';
-import { IconChevronRight } from '@tabler/icons-react';
+import { IconLayoutSidebar } from '@tabler/icons-react';
 import { ChatInput } from '@/components/ChatInput';
 import { Navbar } from '@/components/Navbar/Navbar';
 
@@ -86,10 +86,10 @@ export default function Page() {
             zIndex: 1000,
           }}
           size="lg"
-          variant="filled"
+          variant="transparent"          
           onClick={showNavbar}
         >
-          <IconChevronRight size={20} />
+        <IconLayoutSidebar/>
         </ActionIcon>
       </Tooltip>
     </AppShell>
