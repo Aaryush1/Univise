@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Textarea, Button, Group, Stack, Popover, List, Text, ActionIcon, Container, Box, Transition } from '@mantine/core';
+import { Textarea, Button, Group, Stack, Popover, List, Text, ActionIcon, Box, Transition } from '@mantine/core';
 import { IconArrowUp, IconChevronDown, IconPaperclip } from '@tabler/icons-react';
 
 export function ChatInput() {
@@ -31,13 +31,16 @@ export function ChatInput() {
   };
 
   return (
-    <Container size="sm" style={{ 
-      border: '1px solid #373A40', 
-      borderRadius: '4px', 
-      padding: '16px',
-      backgroundColor: '#25262B'
-    }}>
-      <Stack>
+    <Box
+      style={{ 
+        border: '1px solid #373A40', 
+        borderRadius: '4px', 
+        padding: '16px',
+        backgroundColor: '#25262B',
+        width: '100%'
+      }}
+    >
+      <Stack gap="xs">
         <Box style={{ display: 'flex', alignItems: 'flex-start' }}>
           <Textarea
             placeholder="Type your message here..."
@@ -104,9 +107,8 @@ export function ChatInput() {
           </Box>
         </Box>
 
-        <Group gap="apart">
-          <Popover opened={modelOpen} onChange={setModelOpen} position="bottom" width={200} offset={{ mainAxis: 8, crossAxis: 30 }}
-          >
+        <Group>
+          <Popover opened={modelOpen} onChange={setModelOpen} position="bottom" width="target" withinPortal={false}>
             <Popover.Target>
               <Button 
                 variant="subtle" 
@@ -140,6 +142,6 @@ export function ChatInput() {
           </Popover>
         </Group>
       </Stack>
-    </Container>
+    </Box>
   );
 }
