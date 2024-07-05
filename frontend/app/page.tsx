@@ -1,5 +1,6 @@
 "use client"
 
+import { ChatInput } from '@/components/ChatInput';
 import { AppShell, Burger, Group, Skeleton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
@@ -31,7 +32,10 @@ export default function Page() {
             <Skeleton key={index} h={28} mt="sm" animate={false} />
           ))}
       </AppShell.Navbar>
-      <AppShell.Main>Main</AppShell.Main>
+      <AppShell.Main>
+        Main
+      <ChatInput/>
+      </AppShell.Main>
     </AppShell>
   );
 }
