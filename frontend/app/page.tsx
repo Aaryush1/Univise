@@ -1,10 +1,10 @@
 "use client"
 
 import { useState, useRef, useEffect } from 'react';
-import { AppShell, Box, ActionIcon, Tooltip } from '@mantine/core';
-import { IconLayoutSidebar } from '@tabler/icons-react';
+import { AppShell, Box } from '@mantine/core';
 import { ChatInput } from '@/components/ChatInput';
 import { Navbar } from '@/components/Navbar/Navbar';
+import { Header } from '@/components/Header';
 
 export default function Page() {
   const [isNavbarVisible, setIsNavbarVisible] = useState(false);
@@ -26,6 +26,13 @@ export default function Page() {
     }
   };
 
+  const toggleNavbar = () => {
+    setIsNavbarVisible(!isNavbarVisible);
+    if (!isNavbarVisible) {
+      setIsPinned(true);
+    }
+  };
+
   const togglePin = () => {
     setIsPinned(!isPinned);
     setIsNavbarVisible(true);
@@ -39,8 +46,17 @@ export default function Page() {
     };
   }, []);
 
+  const navbarWidth = '25vw';
+
   return (
-    <AppShell padding="md">
+    <AppShell
+      header={{ height: 60 }}
+      padding="md"
+    >
+      <AppShell.Header>
+        <Header onToggleNavbar={toggleNavbar} />
+      </AppShell.Header>
+      
       <Navbar
         isVisible={isNavbarVisible}
         isPinned={isPinned}
@@ -52,46 +68,38 @@ export default function Page() {
       <AppShell.Main>
         <Box
           style={{
-            width: '55%',
-            marginLeft: 'auto',
-            marginRight: 'auto',
-            height: 'calc(100vh - 60px)',
+            width: '100%',
+            minHeight: 'calc(100vh - 60px)', // Subtract header height
             display: 'flex',
             flexDirection: 'column',
-            transition: 'transform 300ms ease',
-            transform: isNavbarVisible && isPinned ? 'translateX(150px)' : 'translateX(0)',
+            alignItems: 'center',
+            transition: 'padding-left 300ms ease',
+            paddingLeft: isNavbarVisible && isPinned ? navbarWidth : '0',
           }}
         >
-          <Box style={{ flexGrow: 1, overflowY: 'auto' }}>
+          <Box
+            style={{
+              width: '55%',
+              maxWidth: '800px',
+              paddingBottom: '80px', // Space for ChatInput
+            }}
+          >
             {/* Main content goes here */}
-            Main content
+            <h2>Main content</h2>
             {Array(20)
               .fill(0)
               .map((_, index) => (
                 <p key={index}>This is a paragraph of main content. It's repeated to demonstrate scrolling.</p>
               ))}
           </Box>
-          <Box style={{ width: '100%' }}>
-            <ChatInput />
-          </Box>
         </Box>
-      </AppShell.Main>
 
-      <Tooltip label="Open navbar" position="right">
-        <ActionIcon
-          style={{
-            position: 'fixed',
-            left: '1rem',
-            bottom: '1rem',
-            zIndex: 1000,
-          }}
-          size="lg"
-          variant="transparent"          
-          onClick={showNavbar}
-        >
-        <IconLayoutSidebar/>
-        </ActionIcon>
-      </Tooltip>
+        <ChatInput 
+          isNavbarVisible={isNavbarVisible} 
+          isPinned={isPinned}
+          navbarWidth={navbarWidth}
+        />
+      </AppShell.Main>
     </AppShell>
   );
 }

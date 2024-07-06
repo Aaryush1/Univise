@@ -1,147 +1,98 @@
-import { useState, useRef, useEffect } from 'react';
-import { Textarea, Button, Group, Stack, Popover, List, Text, ActionIcon, Box, Transition } from '@mantine/core';
-import { IconArrowUp, IconChevronDown, IconPaperclip } from '@tabler/icons-react';
+import { useState, useRef } from 'react';
+import { Textarea, ActionIcon, Box, Group } from '@mantine/core';
+import { IconPaperclip, IconArrowUp } from '@tabler/icons-react';
 
-export function ChatInput() {
-  const [modelOpen, setModelOpen] = useState(false);
-  const [showScrollbar, setShowScrollbar] = useState(false);
-  const [hasContent, setHasContent] = useState(false);
+interface ChatInputProps {
+  isNavbarVisible: boolean;
+  isPinned: boolean;
+  navbarWidth: string;
+}
+
+export function ChatInput({ isNavbarVisible, isPinned, navbarWidth }: ChatInputProps) {
+  const [message, setMessage] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  useEffect(() => {
-    const checkOverflow = () => {
-      if (textareaRef.current) {
-        const isOverflowing = textareaRef.current.scrollHeight > textareaRef.current.clientHeight;
-        setShowScrollbar(isOverflowing);
-      }
-    };
-
-    checkOverflow();
-    window.addEventListener('resize', checkOverflow);
-
-    return () => window.removeEventListener('resize', checkOverflow);
-  }, []);
-
-  const handleInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    if (textareaRef.current) {
-      const isOverflowing = textareaRef.current.scrollHeight > textareaRef.current.clientHeight;
-      setShowScrollbar(isOverflowing);
-      setHasContent(event.target.value.trim().length > 0);
+  const handleSubmit = () => {
+    if (message.trim()) {
+      // Handle message submission here
+      console.log('Sending message:', message);
+      setMessage('');
     }
   };
 
   return (
     <Box
-      style={{ 
-        border: '1px solid #373A40', 
-        borderRadius: '4px', 
-        padding: '16px',
-        backgroundColor: '#25262B',
-        width: '100%'
+      style={{
+        position: 'fixed',
+        bottom: 0,
+        left: '50%',
+        width: '55%',
+        maxWidth: '800px',
+        transition: 'transform 300ms ease',
+        transform: `translateX(-50%) ${isNavbarVisible && isPinned ? `translateX(calc(${navbarWidth} / 2))` : ''}`,
+        border: '2px solid #6b6c70',
+        borderBottomWidth: 0,
+        borderTopLeftRadius: '8px',
+        borderTopRightRadius: '8px',
+        overflow: 'hidden',
       }}
     >
-      <Stack gap="xs">
-        <Box style={{ display: 'flex', alignItems: 'flex-start' }}>
+      <Box
+        style={{ 
+          padding: '10px 14px',
+          backgroundColor: '#2C2E33',
+          width: '100%',
+        }}
+      >
+        <Group align="flex-end" gap={8}>
+          <ActionIcon variant="subtle" color="gray" size="lg">
+            <IconPaperclip size={20} />
+          </ActionIcon>
           <Textarea
-            placeholder="Type your message here..."
-            minRows={2}
-            maxRows={10}
-            autosize
             ref={textareaRef}
-            onChange={handleInput}
-            style={{ flex: 1, marginRight: '10px' }}
+            value={message}
+            onChange={(event) => setMessage(event.currentTarget.value)}
+            placeholder="Message Univise"
+            onKeyPress={(event) => {
+              if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                handleSubmit();
+              }
+            }}
+            autosize
+            minRows={2}
+            maxRows={5}
+            style={{ flex: 1 }}
             styles={{
               input: {
                 border: 'none',
-                backgroundColor: '#25262B',
-                color: '#C1C2C5',
-                padding: '8px',
-                overflow: showScrollbar ? 'auto' : 'hidden',
+                backgroundColor: '#2C2E33',
+                color: '#E1E2E6',
+                padding: '8px 0',
                 '&::placeholder': {
-                  color: '#5C5F66'
-                }
+                  color: '#7A7C85'
+                },
+                '&:focus': {
+                  border: 'none',
+                  outline: 'none',
+                },
               },
+              wrapper: {
+                padding: 0,
+              }
             }}
           />
-          <Box style={{ display: 'flex', alignItems: 'center', height: '36px', width: '80px', justifyContent: 'flex-end', position: 'relative' }}>
-            <Transition mounted={true} transition="slide-right" duration={200} timingFunction="ease">
-              {(styles) => (
-                <ActionIcon
-                  variant="filled"
-                  color="gray"
-                  size="lg"
-                  style={{
-                    ...styles,
-                    position: 'absolute',
-                    right: hasContent ? '44px' : '0',
-                    transition: 'right 200ms ease',
-                  }}
-                >
-                  <IconPaperclip size={18} />
-                </ActionIcon>
-              )}
-            </Transition>
-            <Transition 
-              mounted={hasContent} 
-              transition="pop"
-              duration={200}
-              timingFunction="ease"
-              enterDelay={100}
-              exitDelay={0}
-            >
-              {(styles) => (
-                <ActionIcon
-                  variant="filled"
-                  color="blue"
-                  size="lg"
-                  style={{
-                    ...styles,
-                    position: 'absolute',
-                    right: '0',
-                  }}
-                >
-                  <IconArrowUp size={18} />
-                </ActionIcon>
-              )}
-            </Transition>
-          </Box>
-        </Box>
-
-        <Group>
-          <Popover opened={modelOpen} onChange={setModelOpen} position="bottom" width="target" withinPortal={false}>
-            <Popover.Target>
-              <Button 
-                variant="subtle" 
-                rightSection={<IconChevronDown size={16} />} 
-                onClick={() => setModelOpen((o) => !o)}
-                styles={{
-                  root: {
-                    color: '#C1C2C5',
-                    '&:hover': {
-                      backgroundColor: '#2C2E33'
-                    }
-                  }
-                }}
-              >
-                Select Model
-              </Button>
-            </Popover.Target>
-            <Popover.Dropdown style={{ backgroundColor: '#25262B', borderColor: '#373A40' }}>
-              <List>
-                <List.Item onClick={() => setModelOpen(false)}>
-                  <Text color="#C1C2C5">Model 1</Text>
-                </List.Item>
-                <List.Item onClick={() => setModelOpen(false)}>
-                  <Text color="#C1C2C5">Model 2</Text>
-                </List.Item>
-                <List.Item onClick={() => setModelOpen(false)}>
-                  <Text color="#C1C2C5">Model 3</Text>
-                </List.Item>
-              </List>
-            </Popover.Dropdown>
-          </Popover>
+          <ActionIcon
+            variant="subtle"
+            color="gray"
+            size="lg"
+            onClick={handleSubmit}
+            disabled={!message.trim()}
+          >
+            <IconArrowUp size={20} />
+          </ActionIcon>
         </Group>
-      </Stack>
+      </Box>
     </Box>
   );
 }

@@ -27,7 +27,7 @@ export function Navbar({ isVisible, isPinned, onPinToggle, onMouseEnter, onMouse
               position: 'fixed',
               top: 0,
               left: 0,
-              width: '300px',
+              width: '25vw',
               height: '100vh',
               backgroundColor: 'var(--mantine-color-body)',
               borderRight: '1px solid var(--mantine-color-gray-2)',
