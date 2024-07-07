@@ -59,6 +59,7 @@ export function OChatInput({ isNavbarVisible, isPinned, navbarWidth, onSendMessa
             height: '32px',
             flexShrink: 0,
             marginRight: '8px',
+            marginBottom: '2px',
             alignSelf: 'flex-end',
           }}
         >
@@ -120,6 +121,7 @@ export function OChatInput({ isNavbarVisible, isPinned, navbarWidth, onSendMessa
             transition: 'background-color 0.2s ease',
             flexShrink: 0,
             marginLeft: '8px',
+            marginBottom: '2px',
             alignSelf: 'flex-end',
           }}
         >
