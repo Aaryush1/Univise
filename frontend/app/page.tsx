@@ -2,9 +2,9 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { AppShell, Box } from '@mantine/core';
-import { ChatInput } from '@/components/ChatInput';
 import { Navbar } from '@/components/Navbar/Navbar';
 import { Header } from '@/components/Header';
+import { OChatInput } from '@/components/ChatInput/OChatInput';
 
 export default function Page() {
   const [isNavbarVisible, setIsNavbarVisible] = useState(false);
@@ -47,6 +47,11 @@ export default function Page() {
   }, []);
 
   const navbarWidth = '25vw';
+
+  const handleSendMessage = (message: string) => {
+    // Handle sending the message here
+    console.log('Sending message:', message);
+  };
 
   return (
     <AppShell
@@ -94,11 +99,14 @@ export default function Page() {
           </Box>
         </Box>
 
-        <ChatInput 
-          isNavbarVisible={isNavbarVisible} 
-          isPinned={isPinned}
-          navbarWidth={navbarWidth}
-        />
+        <Box style={{ position: 'sticky', bottom: 20, width: '100%', maxWidth: '800px', margin: '0 auto' }}>
+          <OChatInput 
+            isNavbarVisible={isNavbarVisible}
+            isPinned={isPinned}
+            navbarWidth={navbarWidth}
+            onSendMessage={handleSendMessage}
+          />
+        </Box>
       </AppShell.Main>
     </AppShell>
   );
