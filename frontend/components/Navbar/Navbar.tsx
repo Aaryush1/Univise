@@ -1,63 +1,51 @@
-import React, { useRef, useEffect } from 'react';
-import { Box, ActionIcon, Transition, Skeleton } from '@mantine/core';
-import { IconPinnedFilled, IconPinned } from '@tabler/icons-react';
-import { NavbarProps } from './types';
+// components/Navbar/Navbar.tsx
+import React from 'react';
+import { Box, ScrollArea, Text, ActionIcon, Transition } from '@mantine/core';
+import { IconX } from '@tabler/icons-react';
 
-export function Navbar({ isVisible, isPinned, onPinToggle, onMouseEnter, onMouseLeave }: NavbarProps) {
+interface NavbarProps {
+  isVisible: boolean;
+  onClose: () => void;
+}
+
+export function Navbar({ isVisible, onClose }: NavbarProps) {
   return (
-    <>
-      <div
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100px',
-          height: '100vh',
-          zIndex: 1000,
-          pointerEvents: isVisible ? 'none' : 'auto',
-        }}
-        onMouseEnter={onMouseEnter}
-      />
-
-      <Transition mounted={isVisible} transition="slide-right" duration={300}>
-        {(styles) => (
-          <nav
-            style={{
-              ...styles,
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              width: '25vw',
-              height: '100vh',
-              backgroundColor: 'var(--mantine-color-body)',
-              borderRight: '1px solid var(--mantine-color-gray-2)',
-              display: 'flex',
-              flexDirection: 'column',
-              padding: '1rem',
-              zIndex: 1001,
-            }}
-            onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-          >
+    <Transition mounted={isVisible} transition="slide-right" duration={300}>
+      {(styles) => (
+        <Box
+          style={{
+            ...styles,
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '300px',
+            height: '100vh',
+            backgroundColor: 'var(--mantine-color-body)',
+            borderRight: '1px solid var(--mantine-color-gray-2)',
+            zIndex: 1001,
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
+          <Box p="md" style={{ borderBottom: '1px solid var(--mantine-color-gray-2)' }}>
+            <Text size="xl" fw={700}>Navbar Title</Text>
             <ActionIcon
-              variant="subtle"
-              onClick={onPinToggle}
               style={{ position: 'absolute', top: 10, right: 10 }}
+              onClick={onClose}
             >
-              {isPinned ? <IconPinnedFilled size={20} /> : <IconPinned size={20} />}
+              <IconX size={20} />
             </ActionIcon>
-
-            <Box mt={40}>
-              {/* Skeleton sections */}
-              {Array(15)
-                .fill(0)
-                .map((_, index) => (
-                  <Skeleton key={index} height={28} mt="sm" width="100%" radius="sm" />
-                ))}
+          </Box>
+          <ScrollArea style={{ flex: 1 }}>
+            <Box p="md">
+              {/* Example content */}
+              {Array(20).fill(0).map((_, index) => (
+                <Text key={index} my="sm">Navbar Item {index + 1}</Text>
+              ))}
             </Box>
-          </nav>
-        )}
-      </Transition>
-    </>
+          </ScrollArea>
+        </Box>
+      )}
+    </Transition>
   );
 }

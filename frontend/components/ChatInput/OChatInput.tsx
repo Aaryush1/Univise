@@ -1,15 +1,15 @@
+// components/ChatInput/OChatInput.tsx
 import { useState, useRef } from 'react';
 import { Textarea, ActionIcon, Box, Flex } from '@mantine/core';
 import { IconPaperclip, IconArrowUp } from '@tabler/icons-react';
 
 interface ChatInputProps {
   isNavbarVisible: boolean;
-  isPinned: boolean;
   navbarWidth: string;
   onSendMessage: (message: string) => void;
 }
 
-export function OChatInput({ isNavbarVisible, isPinned, navbarWidth, onSendMessage }: ChatInputProps) {
+export function OChatInput({ isNavbarVisible, navbarWidth, onSendMessage }: ChatInputProps) {
   const [message, setMessage] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -28,10 +28,8 @@ export function OChatInput({ isNavbarVisible, isPinned, navbarWidth, onSendMessa
     <Box
       style={{
         width: '100%',
-        maxWidth: '1100px',
+        maxWidth: '750px',
         margin: '0 auto',
-        transition: 'transform 300ms ease',
-        transform: isNavbarVisible && isPinned ? `translateX(calc(${navbarWidth} / 2))` : 'none',
         border: '1.5px solid #6b6c70',
         borderRadius: '20px',
         overflow: 'hidden',
@@ -43,7 +41,7 @@ export function OChatInput({ isNavbarVisible, isPinned, navbarWidth, onSendMessa
           padding: '8px 12px',
           backgroundColor: '#2C2E33',
           width: '100%',
-          minHeight: '52px', // Ensures minimum height for single line input
+          minHeight: '52px',
         }}
       >
         <ActionIcon 
