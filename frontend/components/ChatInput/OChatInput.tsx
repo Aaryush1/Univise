@@ -1,15 +1,12 @@
-// components/ChatInput/OChatInput.tsx
 import { useState, useRef } from 'react';
 import { Textarea, ActionIcon, Box, Flex } from '@mantine/core';
 import { IconPaperclip, IconArrowUp } from '@tabler/icons-react';
 
 interface ChatInputProps {
-  isNavbarVisible: boolean;
-  navbarWidth: string;
   onSendMessage: (message: string) => void;
 }
 
-export function OChatInput({ isNavbarVisible, navbarWidth, onSendMessage }: ChatInputProps) {
+export function OChatInput({ onSendMessage }: ChatInputProps) {
   const [message, setMessage] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -27,9 +24,6 @@ export function OChatInput({ isNavbarVisible, navbarWidth, onSendMessage }: Chat
   return (
     <Box
       style={{
-        width: '100%',
-        maxWidth: '750px',
-        margin: '0 auto',
         border: '1.5px solid #6b6c70',
         borderRadius: '20px',
         overflow: 'hidden',
@@ -49,16 +43,11 @@ export function OChatInput({ isNavbarVisible, navbarWidth, onSendMessage }: Chat
           color="gray" 
           size="lg"
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
             borderRadius: '25%',
             width: '32px',
             height: '32px',
-            flexShrink: 0,
             marginRight: '8px',
             marginBottom: '2px',
-            alignSelf: 'flex-end',
           }}
         >
           <IconPaperclip size={20} stroke={2.5} />
@@ -79,12 +68,6 @@ export function OChatInput({ isNavbarVisible, navbarWidth, onSendMessage }: Chat
           maxRows={6}
           style={{ flex: 1 }}
           styles={{
-            root: {
-              alignSelf: 'flex-end',
-            },
-            wrapper: {
-              padding: 0,
-            },
             input: {
               border: 'none',
               backgroundColor: '#2C2E33',
@@ -109,18 +92,12 @@ export function OChatInput({ isNavbarVisible, navbarWidth, onSendMessage }: Chat
           onClick={handleSubmit}
           disabled={!message.trim()}
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
             backgroundColor: message.trim() ? '#4C6EF5' : '#3A3C42',
             borderRadius: '25%',
             width: '32px',
             height: '32px',
-            transition: 'background-color 0.2s ease',
-            flexShrink: 0,
             marginLeft: '8px',
             marginBottom: '2px',
-            alignSelf: 'flex-end',
           }}
         >
           <IconArrowUp size={20} stroke={2.5} color={message.trim() ? '#FFFFFF' : '#7A7C85'} />

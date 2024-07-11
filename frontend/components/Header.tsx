@@ -1,7 +1,5 @@
-import { useState } from 'react';
-import { Box, Group, Menu, Button, Avatar, Text, rem } from '@mantine/core';
+import { Group, Menu, Button, Avatar, Text, rem, Burger } from '@mantine/core';
 import { 
-  IconLayoutSidebar, 
   IconPlus, 
   IconChevronDown, 
   IconUser, 
@@ -10,65 +8,24 @@ import {
 } from '@tabler/icons-react';
 
 interface HeaderProps {
+  opened: boolean;
   onToggleNavbar: () => void;
   onNewChat: () => void;
 }
 
-export function Header({ onToggleNavbar, onNewChat }: HeaderProps) {
-  const actionIconStyle = {
-    backgroundColor: 'transparent',
-    border: 'none',
-    cursor: 'pointer',
-    padding: '8px',
-    borderRadius: '8px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '40px',
-    height: '40px',
-    color: 'var(--mantine-color-gray-6)',
-    ':hover': {
-      backgroundColor: 'var(--mantine-color-gray-1)',
-    },
-  };
-
+export function Header({ opened, onToggleNavbar, onNewChat }: HeaderProps) {
   return (
-    <Box
-      style={{
-        position: 'sticky',
-        top: 0,
-        zIndex: 10,
-        height: '60px', // Changed to match AppShell.Header height
-        padding: '0 16px', // Added horizontal padding
-        backgroundColor: 'var(--mantine-color-body)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        fontWeight: 600,
-      }}
-    >
+    <Group justify="space-between" h="100%" px="md">
       <Group>
-        <div style={actionIconStyle} onClick={onToggleNavbar}>
-          <IconLayoutSidebar size={24} stroke={1.5} />
-        </div>
-        <div style={actionIconStyle} onClick={onNewChat}>
-          <IconPlus size={24} stroke={1.5} />
-        </div>
+        <Burger opened={opened} onClick={onToggleNavbar} size="sm" />
+        <Button variant="subtle" onClick={onNewChat} leftSection={<IconPlus size={20} />}>
+          New Chat
+        </Button>
         <Menu shadow="md" width={200}>
           <Menu.Target>
             <Button
               variant="subtle"
-              rightSection={<IconChevronDown size={16} stroke={1.5} />}
-              styles={{
-                root: {
-                  padding: '8px 12px',
-                  height: 'auto',
-                  color: 'var(--mantine-color-text)',
-                  '&:hover': {
-                    backgroundColor: 'var(--mantine-color-gray-1)',
-                  },
-                },
-              }}
+              rightSection={<IconChevronDown size={16} />}
             >
               Models
             </Button>
@@ -87,11 +44,7 @@ export function Header({ onToggleNavbar, onNewChat }: HeaderProps) {
 
       <Menu shadow="md" width={200} position="bottom-end">
         <Menu.Target>
-          <Avatar
-            size={32}
-            radius="xl"
-            style={{ cursor: 'pointer' }}
-          />
+          <Avatar size={32} radius="xl" style={{ cursor: 'pointer' }} />
         </Menu.Target>
 
         <Menu.Dropdown>
@@ -111,6 +64,6 @@ export function Header({ onToggleNavbar, onNewChat }: HeaderProps) {
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>
-    </Box>
+    </Group>
   );
 }
