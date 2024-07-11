@@ -1,3 +1,4 @@
+import { useAuth } from '@/utils/authUtils';
 import { Group, Menu, Button, Avatar, Text, rem, Burger } from '@mantine/core';
 import { 
   IconPlus, 
@@ -14,6 +15,18 @@ interface HeaderProps {
 }
 
 export function Header({ opened, onToggleNavbar, onNewChat }: HeaderProps) {
+  const { logout } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      // The router.push('/login') is handled inside the logout function in useAuth
+    } catch (error) {
+      console.error('Logout failed:', error);
+      // You might want to show an error message to the user here
+    }
+  };
+
   return (
     <Group justify="space-between" h="100%" px="md">
       <Group>
@@ -59,6 +72,7 @@ export function Header({ opened, onToggleNavbar, onNewChat }: HeaderProps) {
           <Menu.Item 
             color="red" 
             leftSection={<IconLogout style={{ width: rem(14), height: rem(14) }} />}
+            onClick={handleLogout}
           >
             Logout
           </Menu.Item>

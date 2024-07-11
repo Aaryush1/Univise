@@ -1,7 +1,7 @@
 // handlers/chatListHandlers.ts
 
 import { useState } from 'react';
-import { fetchRecentChatSessions, createNewChat, ChatSession } from '@/utils/firestoreUtils';
+import { fetchRecentChatSessions, createNewChat, ChatSession, sendMessage } from '@/utils/firestoreUtils';
 
 export const useChatListHandlers = () => {
   const [chatSessions, setChatSessions] = useState<ChatSession[]>([]);
@@ -25,13 +25,15 @@ export const useChatListHandlers = () => {
     }
   };
 
-  const handleCreateNewChat = async () => {
+  const handleCreateNewChat = async (initialMessage?: string) => {
     try {
       const newChatId = await createNewChat();
+      if (initialMessage) {
+        await sendMessage(newChatId, initialMessage);
+      }
       return newChatId;
     } catch (error) {
-      console.error("Error creating new chat:", error);
-      setError("Failed to create a new chat. Please try again.");
+      console.error('Error creating new chat:', error);
       return null;
     }
   };

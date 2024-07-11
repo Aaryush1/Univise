@@ -1,13 +1,9 @@
 import { Box } from '@mantine/core';
 import { MessageBubble } from './MessageBubble';
-
-interface Message {
-  content: string;
-  isUserMessage: boolean;
-}
+import { Message as FirestoreMessage } from '@/utils/firestoreUtils';
 
 interface MessageListProps {
-  messages: Message[];
+  messages: FirestoreMessage[];
 }
 
 export function MessageList({ messages }: MessageListProps) {
@@ -22,11 +18,11 @@ export function MessageList({ messages }: MessageListProps) {
           flexGrow: 1,
         }}
       >
-        {messages.map((message, index) => (
+        {messages.map((message) => (
           <MessageBubble
-            key={index}
+            key={message.id}
             content={message.content}
-            isUserMessage={message.isUserMessage}
+            isUserMessage={message.sender === 'user'}
           />
         ))}
       </Box>

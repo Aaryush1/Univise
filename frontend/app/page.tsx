@@ -1,38 +1,35 @@
-"use client"
+'use client';
 
-import { useState } from 'react';
-import { AppShell, Box, Container } from '@mantine/core';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { AppShell, Container, Box, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Navbar } from '@/components/Navbar/Navbar';
 import { Header } from '@/components/Header';
 import { OChatInput } from '@/components/ChatInput/OChatInput';
-import { MessageList } from '@/components/MessageList';
-
-interface Message {
-  content: string;
-  isUserMessage: boolean;
-}
+import { useChatListHandlers } from '@/handlers/chatListHandlers';
 
 export default function Home() {
   const [opened, { toggle }] = useDisclosure();
-  const [messages, setMessages] = useState<Message[]>([]);
+  const router = useRouter();
+  const { handleCreateNewChat, loadChatSessions } = useChatListHandlers();
 
-  const handleSendMessage = (content: string) => {
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      { content, isUserMessage: true },
-    ]);
+  useEffect(() => {
+    loadChatSessions();
+  }, [loadChatSessions]);
 
-    setTimeout(() => {
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { content: 'This is an AI response.', isUserMessage: false },
-      ]);
-    }, 500);
+  const handleNewChat = async () => {
+    const newChatId = await handleCreateNewChat();
+    if (newChatId) {
+      router.push(`/chat/${newChatId}`);
+    }
   };
 
-  const handleNewChat = () => {
-    setMessages([]);
+  const handleSendMessage = async (content: string) => {
+    const newChatId = await handleCreateNewChat(content);
+    if (newChatId) {
+      router.push(`/chat/${newChatId}`);
+    }
   };
 
   return (
@@ -69,12 +66,14 @@ export default function Home() {
       <AppShell.Main 
         style={{ 
           transition: 'padding-left 300ms ease, margin-left 300ms ease',
-          paddingBottom: 'calc(60px + var(--mantine-spacing-md))'
+          paddingBottom: 'calc(60px + var(--mantine-spacing-md))',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
-        <Container size="md" px="xs">
-          <MessageList messages={messages} />
-        </Container>
+        <Text size="md" mb="xl">Start a new conversation by typing a message below.</Text>
       </AppShell.Main>
 
       <AppShell.Footer 
