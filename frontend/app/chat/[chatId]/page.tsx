@@ -1,15 +1,16 @@
+// pages/chat/[chatId].tsx
+
 'use client';
 
 import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { AppShell, Container, Text, Box, TextInput, ActionIcon } from '@mantine/core';
+import { AppShell, Container, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { useChatSessionHandlers } from '@/handlers/chatSessionHandlers';
 import { OChatInput } from '@/components/ChatInput/OChatInput';
 import { MessageList } from '@/components/MessageList';
 import { Header } from '@/components/Header';
 import { Navbar } from '@/components/Navbar/Navbar';
-import { IconEdit, IconCheck } from '@tabler/icons-react';
+import { initializeChat, Message, sendMessage } from '@/utils/firestoreUtils';
 
 export default function ChatPage() {
   const [opened, { toggle }] = useDisclosure();
@@ -17,44 +18,64 @@ export default function ChatPage() {
   const router = useRouter();
   const chatId = params.chatId as string;
 
-  const {
-    messages,
-    title,
-    loading,
-    error,
-    handleSendMessage,
-    handleTitleChange,
-    loadChat,
-  } = useChatSessionHandlers(chatId);
-
-  const [isEditingTitle, setIsEditingTitle] = useState(false);
-  const [newTitle, setNewTitle] = useState(title);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (chatId) {
       loadChat();
     }
-  }, [chatId, loadChat]);
+  }, [chatId]);
 
-  useEffect(() => {
-    setNewTitle(title);
-  }, [title]);
+  const loadChat = async () => {
+    if (!chatId) {
+      setLoading(false);
+      setError("Invalid chat session");
+      return;
+    }
+    try {
+      setLoading(true);
+      const { messages } = await initializeChat(chatId);
+      if (messages.length === 0) {
+        // Chat not found or deleted
+        throw new Error("Chat not found");
+      }
+      setMessages(messages);
+    } catch (error) {
+      console.error("Error initializing chat:", error);
+      setError(error instanceof Error ? error.message : "An error occurred while loading the chat");
+      // Redirect to home page after a short delay
+      setTimeout(() => router.push('/'), 3000);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSendMessage = async (newMessage: string) => {
+    if (!newMessage.trim() || !chatId) return;
+
+    try {
+      const updatedMessages = await sendMessage(chatId, newMessage);
+      if (updatedMessages) {
+        setMessages(updatedMessages);
+        return true;
+      } else {
+        throw new Error("Failed to update messages");
+      }
+    } catch (error) {
+      console.error("Error sending message: ", error);
+      setError(error instanceof Error ? error.message : "An error occurred while sending the message");
+      return false;
+    }
+  };
 
   const handleNewChat = () => {
     router.push('/');
   };
 
-  const handleEditTitle = () => {
-    setIsEditingTitle(true);
-  };
-
-  const handleSaveTitle = () => {
-    handleTitleChange(newTitle);
-    setIsEditingTitle(false);
-  };
-
   if (loading) return <Text>Loading...</Text>;
-  if (error) return <Text color="red">{error}</Text>;
+  if (error) return <Text color="red">{error}. Redirecting to home page...</Text>;
 
   return (
     <AppShell
@@ -65,65 +86,22 @@ export default function ChatPage() {
         collapsed: { desktop: !opened, mobile: !opened } 
       }}
       padding="md"
-      styles={{
-        main: {
-          transition: 'padding-left 300ms ease, margin-left 300ms ease',
-        },
-        navbar: {
-          transition: 'width 300ms ease, min-width 300ms ease, transform 300ms ease',
-        },
-      }}
     >
       <AppShell.Header>
         <Header opened={opened} onToggleNavbar={toggle} onNewChat={handleNewChat} />
       </AppShell.Header>
 
-      <AppShell.Navbar 
-        p="md" 
-        style={{
-          transition: 'width 300ms ease, min-width 300ms ease, transform 300ms ease',
-        }}
-      >
+      <AppShell.Navbar p="md">
         <Navbar />
       </AppShell.Navbar>
 
-      <AppShell.Main 
-        style={{ 
-          transition: 'padding-left 300ms ease, margin-left 300ms ease',
-          paddingBottom: 'calc(60px + var(--mantine-spacing-md))'
-        }}
-      >
+      <AppShell.Main>
         <Container size="md" px="xs">
-          {isEditingTitle ? (
-            <Box style={{ display: 'flex', alignItems: 'center', marginBottom: 'var(--mantine-spacing-md)' }}>
-              <TextInput
-                value={newTitle}
-                onChange={(event) => setNewTitle(event.currentTarget.value)}
-                style={{ flexGrow: 1, marginRight: 'var(--mantine-spacing-xs)' }}
-              />
-              <ActionIcon onClick={handleSaveTitle} variant="filled" color="blue">
-                <IconCheck size="1.125rem" />
-              </ActionIcon>
-            </Box>
-          ) : (
-            <Box style={{ display: 'flex', alignItems: 'center', marginBottom: 'var(--mantine-spacing-md)' }}>
-              <Text size="xl" fw={700} style={{ flexGrow: 1 }}>{title}</Text>
-              <ActionIcon onClick={handleEditTitle} variant="subtle">
-                <IconEdit size="1.125rem" />
-              </ActionIcon>
-            </Box>
-          )}
           <MessageList messages={messages} />
         </Container>
       </AppShell.Main>
 
-      <AppShell.Footer 
-        p="md" 
-        style={{
-          transition: 'padding-left 300ms ease',
-          paddingLeft: opened ? 'calc(300px + var(--mantine-spacing-md))' : 'var(--mantine-spacing-md)',
-        }}
-      >
+      <AppShell.Footer p="md">
         <Container size="md" px="xs">
           <OChatInput onSendMessage={handleSendMessage} />
         </Container>

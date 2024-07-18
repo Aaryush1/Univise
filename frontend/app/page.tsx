@@ -1,34 +1,57 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { AppShell, Container, Box, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Navbar } from '@/components/Navbar/Navbar';
 import { Header } from '@/components/Header';
 import { OChatInput } from '@/components/ChatInput/OChatInput';
-import { useChatListHandlers } from '@/handlers/chatListHandlers';
+import { ChatSession, createNewChat, fetchRecentChatSessions, sendMessage } from '@/utils/firestoreUtils';
 
 export default function Home() {
   const [opened, { toggle }] = useDisclosure();
   const router = useRouter();
-  const { handleCreateNewChat, loadChatSessions } = useChatListHandlers();
+  const [chatSessions, setChatSessions] = useState<ChatSession[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     loadChatSessions();
-  }, [loadChatSessions]);
+  }, []);
+
+  const loadChatSessions = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const sessions = await fetchRecentChatSessions();
+      setChatSessions(sessions);
+    } catch (error) {
+      console.error("Error fetching chat sessions:", error);
+      setError(error instanceof Error ? error.message : String(error));
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleNewChat = async () => {
-    const newChatId = await handleCreateNewChat();
-    if (newChatId) {
+    try {
+      const newChatId = await createNewChat();
       router.push(`/chat/${newChatId}`);
+    } catch (error) {
+      console.error('Error creating new chat:', error);
+      setError('Failed to create new chat');
     }
   };
 
   const handleSendMessage = async (content: string) => {
-    const newChatId = await handleCreateNewChat(content);
-    if (newChatId) {
+    try {
+      const newChatId = await createNewChat();
+      await sendMessage(newChatId, content);
       router.push(`/chat/${newChatId}`);
+    } catch (error) {
+      console.error('Error creating new chat and sending message:', error);
+      setError('Failed to create new chat and send message');
     }
   };
 
@@ -41,48 +64,20 @@ export default function Home() {
         collapsed: { desktop: !opened, mobile: !opened } 
       }}
       padding="md"
-      styles={{
-        main: {
-          transition: 'padding-left 300ms ease, margin-left 300ms ease',
-        },
-        navbar: {
-          transition: 'width 300ms ease, min-width 300ms ease, transform 300ms ease',
-        },
-      }}
     >
       <AppShell.Header>
         <Header opened={opened} onToggleNavbar={toggle} onNewChat={handleNewChat} />
       </AppShell.Header>
 
-      <AppShell.Navbar 
-        p="md" 
-        style={{
-          transition: 'width 300ms ease, min-width 300ms ease, transform 300ms ease',
-        }}
-      >
-        <Navbar />
+      <AppShell.Navbar p="md">
+        <Navbar/>
       </AppShell.Navbar>
 
-      <AppShell.Main 
-        style={{ 
-          transition: 'padding-left 300ms ease, margin-left 300ms ease',
-          paddingBottom: 'calc(60px + var(--mantine-spacing-md))',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
+      <AppShell.Main>
         <Text size="md" mb="xl">Start a new conversation by typing a message below.</Text>
       </AppShell.Main>
 
-      <AppShell.Footer 
-        p="md" 
-        style={{
-          transition: 'padding-left 300ms ease',
-          paddingLeft: opened ? 'calc(300px + var(--mantine-spacing-md))' : 'var(--mantine-spacing-md)',
-        }}
-      >
+      <AppShell.Footer p="md">
         <Container size="md" px="xs">
           <OChatInput onSendMessage={handleSendMessage} />
         </Container>

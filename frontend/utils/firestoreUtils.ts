@@ -1,6 +1,6 @@
 // utils/firebaseUtils.ts
 
-import { doc, getDoc, collection, query, orderBy, getDocs, addDoc, updateDoc, setDoc, where, limit, FirestoreError } from 'firebase/firestore'
+import { doc, getDoc, collection, query, orderBy, getDocs, addDoc, updateDoc, setDoc, where, limit, deleteDoc } from 'firebase/firestore'
 import { auth, db } from '@/services/firebase'
 
 export interface Message {
@@ -101,7 +101,7 @@ export const sendMessage = async (chatId: string, newMessage: string): Promise<M
   }
 }
 
-export const changeTitle = async (chatId: string, newTitle: string): Promise<void> => {
+export const updateChatTitle = async (chatId: string, newTitle: string): Promise<void> => {
   if (!auth.currentUser) {
     throw new Error("User not authenticated. Please log in and try again.")
   }
@@ -123,7 +123,7 @@ export const changeTitle = async (chatId: string, newTitle: string): Promise<voi
       title: newTitle
     })
   } catch (error) {
-    console.error("Error in changeTitle:", error)
+    console.error("Error in updateChatTitle:", error)
     throw error // Re-throw the error to be caught in the component
   }
 }
@@ -174,6 +174,39 @@ export const createNewChat = async (): Promise<string> => {
     return newChatRef.id
   } catch (error) {
     console.error("Error in createNewChat:", error)
+    throw error // Re-throw the error to be caught in the component
+  }
+}
+
+export const deleteChat = async (chatId: string): Promise<void> => {
+  if (!auth.currentUser) {
+    throw new Error("User not authenticated. Please log in and try again.")
+  }
+
+  const chatSessionRef = doc(db, 'chatSessions', chatId)
+
+  try {
+    const chatSessionSnap = await getDoc(chatSessionRef)
+
+    if (!chatSessionSnap.exists()) {
+      throw new Error("Chat session not found")
+    }
+
+    if (chatSessionSnap.data().userId !== auth.currentUser.uid) {
+      throw new Error("You don't have permission to delete this chat")
+    }
+
+    // Delete all messages in the chat
+    const messagesRef = collection(db, 'chatSessions', chatId, 'messages')
+    const messagesSnapshot = await getDocs(messagesRef)
+    const deleteMessagePromises = messagesSnapshot.docs.map(doc => deleteDoc(doc.ref))
+    await Promise.all(deleteMessagePromises)
+
+    // Delete the chat session document
+    await deleteDoc(chatSessionRef)
+
+  } catch (error) {
+    console.error("Error in deleteChat:", error)
     throw error // Re-throw the error to be caught in the component
   }
 }
