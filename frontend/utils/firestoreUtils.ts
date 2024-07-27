@@ -1,5 +1,3 @@
-// utils/firebaseUtils.ts
-
 import { doc, getDoc, collection, query, orderBy, getDocs, addDoc, updateDoc, setDoc, where, limit, deleteDoc } from 'firebase/firestore'
 import { auth, db } from '@/services/firebase'
 
@@ -54,10 +52,10 @@ export const initializeChat = async (chatId: string): Promise<{ messages: Messag
 }
 
 export const sendMessage = async (chatId: string, newMessage: string): Promise<Message[]> => {
-  if (!newMessage.trim() || !auth.currentUser) return []
+  if (!newMessage.trim() || !auth.currentUser) return [];
 
-  const messagesRef = collection(db, 'chatSessions', chatId, 'messages')
-  const chatSessionRef = doc(db, 'chatSessions', chatId)
+  const messagesRef = collection(db, 'chatSessions', chatId, 'messages');
+  const chatSessionRef = doc(db, 'chatSessions', chatId);
 
   try {
     // Add user message
@@ -65,41 +63,56 @@ export const sendMessage = async (chatId: string, newMessage: string): Promise<M
       content: newMessage,
       sender: 'user',
       timestamp: new Date()
-    })
+    });
 
     // Update chat session with last message info
     await updateDoc(chatSessionRef, {
       lastMessageTimestamp: new Date(),
       lastMessage: newMessage
-    })
+    });
 
-    // Add mock AI response
+    // Call the RAG API
+    const response = await fetch('/api/rag', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ query: newMessage })
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to get response from RAG pipeline');
+    }
+
+    const { response: aiResponse } = await response.json();
+
+    // Add AI response
     await addDoc(messagesRef, {
-      content: "This is a mock AI response.",
+      content: aiResponse,
       sender: 'ai',
       timestamp: new Date()
-    })
+    });
 
     // Update chat session with AI's last message info
     await updateDoc(chatSessionRef, {
       lastMessageTimestamp: new Date(),
-      lastMessage: "This is a mock AI response."
-    })
+      lastMessage: aiResponse
+    });
 
     // Fetch updated messages
-    const q = query(messagesRef, orderBy('timestamp'))
-    const querySnapshot = await getDocs(q)
+    const q = query(messagesRef, orderBy('timestamp'));
+    const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map(doc => ({
       id: doc.id,
       content: doc.data().content,
       sender: doc.data().sender,
       timestamp: doc.data().timestamp.toDate(),
-    }))
+    }));
   } catch (error) {
-    console.error("Error in sendMessage:", error)
-    throw error // Re-throw the error to be caught in the component
+    console.error("Error in sendMessage:", error);
+    throw error; // Re-throw the error to be caught in the component
   }
-}
+};
 
 export const updateChatTitle = async (chatId: string, newTitle: string): Promise<void> => {
   if (!auth.currentUser) {

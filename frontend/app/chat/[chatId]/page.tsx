@@ -1,5 +1,3 @@
-// pages/chat/[chatId].tsx
-
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -85,7 +83,7 @@ export default function ChatPage() {
         breakpoint: 'sm', 
         collapsed: { desktop: !opened, mobile: !opened } 
       }}
-      padding="md"
+      padding="xl"
     >
       <AppShell.Header>
         <Header opened={opened} onToggleNavbar={toggle} onNewChat={handleNewChat} />
